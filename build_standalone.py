@@ -546,6 +546,11 @@ html_template = f'''<!DOCTYPE html>
                 font-size: 12px !important;
             }}
         }}
+
+        /* Ensure popups render above map controls (+/- and eye button) */
+        .leaflet-popup-pane {{
+            z-index: 1005 !important;
+        }}
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans antialiased h-[100dvh] w-full overflow-hidden flex flex-col md:flex-row">
@@ -867,22 +872,17 @@ html_template = f'''<!DOCTYPE html>
                 container.onclick = function(e){{
                     e.preventDefault();
                     e.stopPropagation();
-                    document.getElementById('map-container').classList.add('hidden');
-                    document.getElementById('map-container').style.display = '';
                     
-                    // Trigger the same logic as hiding map
                     const mapContainer = document.getElementById('map-container');
                     const resizer = document.getElementById('resizer');
                     const contentContainer = document.getElementById('content-container');
                     const showMapBtn = document.getElementById('show-map-btn');
                     
-                    if (window.innerWidth < 768) {{
-                        mapContainer.classList.add('hidden');
-                    }} else {{
-                        mapContainer.style.display = 'none';
-                        resizer.style.display = 'none';
-                        contentContainer.style.height = '100dvh';
-                    }}
+                    mapContainer.classList.add('hidden');
+                    mapContainer.style.display = 'none';
+                    resizer.style.display = 'none';
+                    contentContainer.style.height = '100dvh';
+                    
                     showMapBtn.classList.remove('hidden');
                 }}
                 return container;
@@ -972,6 +972,7 @@ html_template = f'''<!DOCTYPE html>
 
 
         showMapBtn.addEventListener('click', () => {{
+            mapContainer.classList.remove('hidden');
             mapContainer.style.display = 'block';
             resizer.style.display = 'flex';
             
@@ -1246,7 +1247,8 @@ html_template = f'''<!DOCTYPE html>
                 tr.addEventListener('click', () => {{
                     highlightSection(index);
                     highlightRow(index);
-                    if (window.innerWidth < 768 && mapContainer.style.display !== 'none') {{
+                    const isMapVisible = !mapContainer.classList.contains('hidden') && mapContainer.style.display !== 'none';
+                    if (window.innerWidth < 768 && isMapVisible) {{
                         document.getElementById('map-container').scrollIntoView({{ behavior: 'smooth' }});
                     }}
                 }});
