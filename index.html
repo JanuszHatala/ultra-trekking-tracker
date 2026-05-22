@@ -18678,6 +18678,28 @@ Check your Browserslist config to be sure that your targets are set up correctly
         });
         map.addControl(new HideMapControl());
 
+        // Custom Fit Track Control (Fit to view / zoom out)
+        var FitTrackControl = L.Control.extend({
+            options: { position: 'topright' },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+                container.innerHTML = `<a href="#" title="Fit Entire Track to View" style="display: flex; align-items: center; justify-content: center;" class="hover:bg-slate-50 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#475569" stroke-width="2.5" style="width: 16px; height: 16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0l-5.25-5.25" />
+                    </svg>
+                </a>`;
+                container.onclick = function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (gpxLayer) {
+                        map.fitBounds(gpxLayer.getBounds(), { padding: [30, 30], animate: true, duration: 1 });
+                    }
+                }
+                return container;
+            }
+        });
+        map.addControl(new FitTrackControl());
+
         const gpxLayer = new L.GPX(rawGpxData, {
             async: true,
             marker_options: { startIconUrl: '', endIconUrl: '', shadowUrl: '' },
