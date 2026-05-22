@@ -554,6 +554,18 @@ html_template = f'''<!DOCTYPE html>
         .leaflet-popup-pane {{
             z-index: 1005 !important;
         }}
+
+        /* Smooth transitions for map controls */
+        .leaflet-control-zoom, .leaflet-control-custom {{
+            transition: opacity 0.2s ease-in-out !important;
+        }}
+
+        /* Fade out controls when a popup is open to prevent overlapping */
+        .leaflet-container:has(.leaflet-popup) .leaflet-control-zoom,
+        .leaflet-container:has(.leaflet-popup) .leaflet-control-custom {{
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }}
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans antialiased h-[100dvh] w-full overflow-hidden flex flex-col md:flex-row">
