@@ -1,5 +1,7 @@
 # 100km Ultra-Trekking Tracker Dashboard
 
+👉 **Live Demo:** [https://januszhatala.github.io/ultra-trekking-tracker/](https://januszhatala.github.io/ultra-trekking-tracker/)
+
 An interactive, installable mobile-optimized PWA application designed for preparation and real-time offline strategy tracking during a 100km ultra-trekking challenge.
 
 ## Features
