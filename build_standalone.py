@@ -548,6 +548,9 @@ html_template = f'''<!DOCTYPE html>
         }}
 
         /* Ensure popups render above map controls (+/- and eye button) */
+        .leaflet-map-pane {{
+            z-index: auto !important;
+        }}
         .leaflet-popup-pane {{
             z-index: 1005 !important;
         }}
