@@ -1025,7 +1025,10 @@ html_template = f'''<!DOCTYPE html>
                     e.preventDefault();
                     e.stopPropagation();
                     if (gpxLayer) {{
-                        map.fitBounds(gpxLayer.getBounds(), {{ padding: [30, 30], animate: true, duration: 1 }});
+                        map.invalidateSize();
+                        const mapContainer = document.getElementById('map-container');
+                        const paddingVal = (mapContainer && mapContainer.offsetHeight < 400) ? [10, 10] : [30, 30];
+                        map.fitBounds(gpxLayer.getBounds(), {{ padding: paddingVal, animate: true, duration: 1 }});
                     }}
                 }}
                 return container;
@@ -1043,7 +1046,10 @@ html_template = f'''<!DOCTYPE html>
                 lineCap: 'round'
             }}
         }}).on('loaded', function(e) {{
-            map.fitBounds(e.target.getBounds(), {{ padding: [20, 20] }});
+            map.invalidateSize();
+            const mapContainer = document.getElementById('map-container');
+            const paddingVal = (mapContainer && mapContainer.offsetHeight < 400) ? [10, 10] : [20, 20];
+            map.fitBounds(e.target.getBounds(), {{ padding: paddingVal }});
             gpxElevationData = e.target.get_elevation_data();
             
             // Build gpxTrackPoints
@@ -1329,7 +1335,9 @@ html_template = f'''<!DOCTYPE html>
                 const mapContainer = document.getElementById('map-container');
                 const isMapVisible = mapContainer && !mapContainer.classList.contains('hidden') && mapContainer.style.display !== 'none';
                 if (isMapVisible) {{
-                    map.fitBounds(highlightedPolyline.getBounds(), {{ padding: [40, 40], animate: true, duration: 1 }});
+                    map.invalidateSize();
+                    const paddingVal = (mapContainer && mapContainer.offsetHeight < 400) ? [15, 15] : [40, 40];
+                    map.fitBounds(highlightedPolyline.getBounds(), {{ padding: paddingVal, animate: true, duration: 1 }});
                     const marker = markers[index];
                     if (marker) {{
                         setTimeout(() => marker.openPopup(), 600);
