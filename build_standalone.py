@@ -883,7 +883,12 @@ html_template = f'''<!DOCTYPE html>
             options: {{ position: 'topleft' }},
             onAdd: function (map) {{
                 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-                container.innerHTML = '<a href="#" title="Hide Map" style="text-align: center; text-decoration: none; color: #333; background-color: #fff; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px;">👁️</a>';
+                container.innerHTML = `<a href="#" title="Hide Map" style="display: flex; align-items: center; justify-content: center;" class="hover:bg-slate-50 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#475569" stroke-width="2.5" style="width: 16px; height: 16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </a>`;
                 container.onclick = function(e){{
                     e.preventDefault();
                     e.stopPropagation();
