@@ -956,8 +956,8 @@ html_template = f'''<!DOCTYPE html>
             // Recenter only if the pointer gets close to the edge of the viewport
             const containerPoint = map.latLngToContainerPoint(closestTrackPt.latlng);
             const mapSize = map.getSize();
-            const marginX = mapSize.x * 0.15; // 15% margin from left/right edges
-            const marginY = mapSize.y * 0.15; // 15% margin from top/bottom edges
+            const marginX = mapSize.x * 0.05; // 5% margin from left/right edges
+            const marginY = mapSize.y * 0.05; // 5% margin from top/bottom edges
             
             if (containerPoint.x < marginX || 
                 containerPoint.x > mapSize.x - marginX || 
