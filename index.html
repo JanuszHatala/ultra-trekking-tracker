@@ -966,6 +966,26 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 </div>
 
             </div>
+
+            <!-- Elevation Profile Card -->
+            <div class="bg-slate-800/50 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl mt-3 md:mt-4">
+                <h2 class="text-base md:text-lg font-bold text-cyan-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2">
+                    <span class="lang-pl">Profil Wysokości Trasy</span>
+                    <span class="lang-en">Route Elevation Profile</span>
+                </h2>
+                <div class="w-full relative mb-4">
+                    <canvas id="overview-elevation-canvas" class="w-full bg-[#0f172a] border border-slate-700/50 rounded shadow-inner h-48 md:h-64 cursor-crosshair"></canvas>
+                </div>
+                
+                <!-- Legend for slope colors -->
+                <div class="flex flex-wrap gap-2 md:gap-4 text-[10px] md:text-xs font-semibold justify-center bg-slate-900/60 p-2 md:p-3 rounded border border-slate-800">
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 bg-red-600 inline-block mr-1.5 rounded-full"></span><span class="lang-pl">Stromo w górę (&gt;15%)</span><span class="lang-en">Steep Up (&gt;15%)</span></div>
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 bg-orange-500 inline-block mr-1.5 rounded-full"></span><span class="lang-pl">W górę (5-15%)</span><span class="lang-en">Up (5-15%)</span></div>
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 bg-blue-500 inline-block mr-1.5 rounded-full"></span><span class="lang-pl">Płasko (-5 do 5%)</span><span class="lang-en">Flat (-5 to 5%)</span></div>
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 bg-lime-500 inline-block mr-1.5 rounded-full"></span><span class="lang-pl">W dół (-15 do -5%)</span><span class="lang-en">Down (-15 to -5%)</span></div>
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 bg-green-600 inline-block mr-1.5 rounded-full"></span><span class="lang-pl">Stromo w dół (&lt;-15%)</span><span class="lang-en">Steep Down (&lt;-15%)</span></div>
+                </div>
+            </div>
         </div>
 
         <!-- Tab Content: Data Table -->
@@ -18616,6 +18636,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
 </trk>
 </gpx>`;
         let gpxElevationData = [];
+        let overviewHoveredPoint = null;
 
         const map = L.map('map').setView([49.762544, 19.086507], 11);
 
@@ -18670,6 +18691,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
             gpxElevationData = e.target.get_elevation_data();
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderMiniCharts();
+                renderOverviewElevationChart();
             }
         }).addTo(map);
 
@@ -18723,6 +18745,12 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 // Important: If we switch back to the map/table, we might want to invalidate size
                 if (targetId === 'tab-table') {
                     setTimeout(() => map.invalidateSize(), 100);
+                } else if (targetId === 'tab-overview') {
+                    setTimeout(() => {
+                        if (gpxElevationData && gpxElevationData.length > 0) {
+                            renderOverviewElevationChart();
+                        }
+                    }, 50);
                 }
             });
         });
@@ -18780,6 +18808,9 @@ Check your Browserslist config to be sure that your targets are set up correctly
             document.body.classList.remove('no-select');
             document.body.style.cursor = '';
             map.invalidateSize();
+            if (gpxElevationData && gpxElevationData.length > 0) {
+                renderOverviewElevationChart();
+            }
         }
 
         function handleResize(e) {
@@ -18807,6 +18838,9 @@ Check your Browserslist config to be sure that your targets are set up correctly
                         contentContainer.style.height = `calc(100dvh - ${newHeight}vh - 12px)`;
                     }
                 }
+            }
+            if (gpxElevationData && gpxElevationData.length > 0) {
+                renderOverviewElevationChart();
             }
         }
         // -------------------------------------
@@ -19187,6 +19221,259 @@ Check your Browserslist config to be sure that your targets are set up correctly
             
             document.getElementById('chart-modal').showModal();
         }
+
+        function renderOverviewElevationChart() {
+            const canvas = document.getElementById('overview-elevation-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            
+            // Handle high DPI screens
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            const w = rect.width;
+            const h = rect.height;
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            if (!gpxElevationData || gpxElevationData.length < 2) {
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '13px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(
+                    document.documentElement.getAttribute('lang') === 'pl' 
+                        ? 'Ładowanie profilu wysokości...' 
+                        : 'Loading elevation profile...', 
+                    w / 2, 
+                    h / 2
+                );
+                return;
+            }
+            
+            const paddingLeft = 45;
+            const paddingTop = 25;
+            const paddingRight = 15;
+            const paddingBottom = 25;
+            const plotW = w - paddingLeft - paddingRight;
+            const plotH = h - paddingTop - paddingBottom;
+            
+            const minEle = Math.min(...gpxElevationData.map(pt => pt[1]));
+            const maxEle = Math.max(...gpxElevationData.map(pt => pt[1]));
+            const elePad = Math.max((maxEle - minEle) * 0.1, 10);
+            const plotMin = Math.max(0, minEle - elePad);
+            const plotMax = maxEle + elePad;
+            const eleRange = plotMax - plotMin;
+            const maxDist = gpxElevationData[gpxElevationData.length - 1][0];
+            
+            // 1. Draw Grid Lines (Horizontal for elevation)
+            ctx.strokeStyle = '#1e293b'; // slate-800
+            ctx.fillStyle = '#64748b'; // slate-500
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'right';
+            ctx.lineWidth = 1;
+            
+            const gridLines = 4;
+            for (let i = 0; i <= gridLines; i++) {
+                const eleVal = plotMin + (eleRange / gridLines) * i;
+                const y = paddingTop + (1 - (eleVal - plotMin) / eleRange) * plotH;
+                
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, y);
+                ctx.lineTo(w - paddingRight, y);
+                ctx.stroke();
+                
+                ctx.fillText(Math.round(eleVal) + 'm', paddingLeft - 8, y + 3);
+            }
+            
+            // 2. Draw Checkpoint lines and labels
+            ctx.textAlign = 'center';
+            checkpoints.forEach(cp => {
+                const cpX = paddingLeft + (cp.km / maxDist) * plotW;
+                
+                // Dotted vertical line
+                ctx.strokeStyle = 'rgba(148, 163, 184, 0.15)'; // very light gray
+                ctx.beginPath();
+                ctx.setLineDash([2, 4]);
+                ctx.moveTo(cpX, paddingTop);
+                ctx.lineTo(cpX, h - paddingBottom);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Label at bottom
+                ctx.fillStyle = '#64748b';
+                ctx.font = '9px sans-serif';
+                ctx.fillText(cp.km.toString(), cpX, h - paddingBottom + 12);
+            });
+            
+            // 3. Map elevation data points
+            const mappedPts = gpxElevationData.map(pt => {
+                const x = paddingLeft + (pt[0] / maxDist) * plotW;
+                const y = paddingTop + (1 - (pt[1] - plotMin) / eleRange) * plotH;
+                return { x, y, dist: pt[0], ele: pt[1] };
+            });
+            
+            // 4. Fill area under the curve with a gradient
+            const grad = ctx.createLinearGradient(0, paddingTop, 0, h - paddingBottom);
+            grad.addColorStop(0, 'rgba(59, 130, 246, 0.15)'); // blue gradient
+            grad.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+            ctx.fillStyle = grad;
+            
+            ctx.beginPath();
+            ctx.moveTo(paddingLeft, h - paddingBottom);
+            mappedPts.forEach(pt => {
+                ctx.lineTo(pt.x, pt.y);
+            });
+            ctx.lineTo(paddingLeft + plotW, h - paddingBottom);
+            ctx.closePath();
+            ctx.fill();
+            
+            // 5. Draw the colored slope segments
+            ctx.lineWidth = 2;
+            for (let i = 0; i < mappedPts.length - 1; i++) {
+                const p1 = mappedPts[i];
+                const p2 = mappedPts[i+1];
+                
+                const dDist = (p2.dist - p1.dist) * 1000;
+                const dEle = p2.ele - p1.ele;
+                let slope = 0;
+                if (dDist > 0) slope = (dEle / dDist) * 100;
+                
+                if (slope > 15) ctx.strokeStyle = '#dc2626';      // steep up (red)
+                else if (slope > 5) ctx.strokeStyle = '#f97316';   // up (orange)
+                else if (slope < -15) ctx.strokeStyle = '#16a34a'; // steep down (green)
+                else if (slope < -5) ctx.strokeStyle = '#84cc16';  // down (lime)
+                else ctx.strokeStyle = '#3b82f6';                 // flat (blue)
+                
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+            
+            // 6. Draw dots on the elevation curve for checkpoints
+            checkpoints.forEach(cp => {
+                const closestPt = gpxElevationData.reduce((prev, curr) => {
+                    return Math.abs(curr[0] - cp.km) < Math.abs(prev[0] - cp.km) ? curr : prev;
+                });
+                const cpX = paddingLeft + (cp.km / maxDist) * plotW;
+                const cpY = paddingTop + (1 - (closestPt[1] - plotMin) / eleRange) * plotH;
+                
+                ctx.beginPath();
+                ctx.arc(cpX, cpY, 3.5, 0, 2 * Math.PI);
+                ctx.fillStyle = '#a3e635'; // lime-400
+                ctx.fill();
+                ctx.strokeStyle = '#0f172a'; // slate-900 outline
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+            
+            // 7. Draw hover effects (tooltip & cursor)
+            if (overviewHoveredPoint) {
+                const hoverX = paddingLeft + (overviewHoveredPoint[0] / maxDist) * plotW;
+                const hoverY = paddingTop + (1 - (overviewHoveredPoint[1] - plotMin) / eleRange) * plotH;
+                
+                // Draw vertical line
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.setLineDash([3, 3]);
+                ctx.moveTo(hoverX, paddingTop);
+                ctx.lineTo(hoverX, h - paddingBottom);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Draw highlight circle
+                ctx.beginPath();
+                ctx.arc(hoverX, hoverY, 5.5, 0, 2 * Math.PI);
+                ctx.fillStyle = '#22d3ee'; // cyan-400
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Draw floating tooltip
+                const tooltipText = `${overviewHoveredPoint[0].toFixed(1)} km | ${Math.round(overviewHoveredPoint[1])} m`;
+                ctx.font = 'bold 10px sans-serif';
+                const textWidth = ctx.measureText(tooltipText).width;
+                const boxW = textWidth + 12;
+                const boxH = 20;
+                let boxX = hoverX - boxW / 2;
+                let boxY = hoverY - boxH - 8;
+                
+                if (boxX < paddingLeft) boxX = paddingLeft;
+                if (boxX + boxW > w - paddingRight) boxX = w - paddingRight - boxW;
+                if (boxY < paddingTop) boxY = hoverY + 8;
+                
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.rect(boxX, boxY, boxW, boxH);
+                ctx.fill();
+                ctx.stroke();
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.fillText(tooltipText, boxX + boxW / 2, boxY + 13);
+            }
+        }
+
+        // Register hover listeners for Overview Elevation Chart
+        const overviewCanvas = document.getElementById('overview-elevation-canvas');
+        if (overviewCanvas) {
+            const handleHover = (e) => {
+                if (!gpxElevationData || gpxElevationData.length < 2) return;
+                const rect = overviewCanvas.getBoundingClientRect();
+                const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
+                const x = clientX - rect.left;
+                
+                const paddingLeft = 45;
+                const paddingRight = 15;
+                
+                if (x >= paddingLeft && x <= rect.width - paddingRight) {
+                    const pct = (x - paddingLeft) / (rect.width - paddingLeft - paddingRight);
+                    const maxDist = gpxElevationData[gpxElevationData.length - 1][0];
+                    const hoverKm = pct * maxDist;
+                    
+                    // Find closest point in gpxElevationData
+                    let closest = gpxElevationData[0];
+                    let minDist = Math.abs(closest[0] - hoverKm);
+                    for (let i = 1; i < gpxElevationData.length; i++) {
+                        const d = Math.abs(gpxElevationData[i][0] - hoverKm);
+                        if (d < minDist) {
+                            minDist = d;
+                            closest = gpxElevationData[i];
+                        }
+                    }
+                    overviewHoveredPoint = closest;
+                } else {
+                    overviewHoveredPoint = null;
+                }
+                renderOverviewElevationChart();
+            };
+            
+            overviewCanvas.addEventListener('mousemove', handleHover);
+            overviewCanvas.addEventListener('mouseleave', () => {
+                overviewHoveredPoint = null;
+                renderOverviewElevationChart();
+            });
+            
+            overviewCanvas.addEventListener('touchstart', handleHover, { passive: true });
+            overviewCanvas.addEventListener('touchmove', handleHover, { passive: true });
+            overviewCanvas.addEventListener('touchend', () => {
+                overviewHoveredPoint = null;
+                renderOverviewElevationChart();
+            });
+        }
+
+        window.addEventListener('resize', () => {
+            if (gpxElevationData && gpxElevationData.length > 0) {
+                renderOverviewElevationChart();
+            }
+        });
         
         renderApp();
 
