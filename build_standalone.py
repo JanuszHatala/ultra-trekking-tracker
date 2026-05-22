@@ -892,8 +892,77 @@ html_template = f'''<!DOCTYPE html>
         let gpxElevationData = [];
         let overviewHoveredPoint = null;
         let highlightedSectionIndex = null;
+        let gpxTrackPoints = [];
+        let mapHoverMarker = null;
 
         const map = L.map('map').setView([49.762544, 19.086507], 11);
+
+        function getLayerLatLngs(layer) {{
+            let pts = [];
+            function extract(l) {{
+                if (typeof l.getLatLngs === 'function') {{
+                    const latlngs = l.getLatLngs();
+                    if (latlngs.length > 0) {{
+                        if (Array.isArray(latlngs[0])) {{
+                            latlngs.forEach(arr => {{
+                                if (Array.isArray(arr)) {{
+                                    pts.push(...arr);
+                                }} else {{
+                                    pts.push(arr);
+                                }}
+                            }});
+                        }} else {{
+                            pts.push(...latlngs);
+                        }}
+                    }}
+                }} else if (typeof l.eachLayer === 'function') {{
+                    l.eachLayer(extract);
+                }}
+            }}
+            extract(layer);
+            return pts;
+        }}
+
+        function updateMapHoverPointer(hoverKm) {{
+            const mapContainer = document.getElementById('map-container');
+            const isMapVisible = mapContainer && !mapContainer.classList.contains('hidden') && mapContainer.style.display !== 'none';
+            if (!isMapVisible || !gpxTrackPoints || gpxTrackPoints.length === 0) return;
+            
+            // Find closest point in gpxTrackPoints
+            let closestTrackPt = gpxTrackPoints[0];
+            let minDist = Math.abs(closestTrackPt.km - hoverKm);
+            for (let i = 1; i < gpxTrackPoints.length; i++) {{
+                const d = Math.abs(gpxTrackPoints[i].km - hoverKm);
+                if (d < minDist) {{
+                    minDist = d;
+                    closestTrackPt = gpxTrackPoints[i];
+                }}
+            }}
+            
+            // Update or create the marker
+            if (!mapHoverMarker) {{
+                mapHoverMarker = L.circleMarker(closestTrackPt.latlng, {{
+                    radius: 7,
+                    fillColor: '#22d3ee', // Cyan-400
+                    fillOpacity: 1,
+                    color: '#ffffff', // White border
+                    weight: 2,
+                    className: 'map-hover-pointer'
+                }}).addTo(map);
+            }} else {{
+                mapHoverMarker.setLatLng(closestTrackPt.latlng);
+            }}
+            
+            // Move/pan the map keeping the current zoom
+            map.panTo(closestTrackPt.latlng, {{ animate: false }});
+        }}
+
+        function clearMapHoverPointer() {{
+            if (mapHoverMarker) {{
+                map.removeLayer(mapHoverMarker);
+                mapHoverMarker = null;
+            }}
+        }}
 
         L.tileLayer('https://{{s}}.tile.opentopomap.org/{{z}}/{{x}}/{{y}}.png', {{
             maxZoom: 17,
@@ -966,6 +1035,21 @@ html_template = f'''<!DOCTYPE html>
         }}).on('loaded', function(e) {{
             map.fitBounds(e.target.getBounds(), {{ padding: [20, 20] }});
             gpxElevationData = e.target.get_elevation_data();
+            
+            // Build gpxTrackPoints
+            const allLatLngs = getLayerLatLngs(e.target);
+            let currentDist = 0;
+            gpxTrackPoints = [];
+            for (let i = 0; i < allLatLngs.length; i++) {{
+                if (i > 0) {{
+                    currentDist += allLatLngs[i-1].distanceTo(allLatLngs[i]) / 1000.0;
+                }}
+                gpxTrackPoints.push({{
+                    latlng: allLatLngs[i],
+                    km: currentDist
+                }});
+            }}
+
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderMiniCharts();
                 renderOverviewElevationChart();
@@ -1203,30 +1287,7 @@ html_template = f'''<!DOCTYPE html>
             const startKm = index === 0 ? 0 : checkpoints[index-1].km;
             const endKm = cp.km;
             
-            let allLatLngs = [];
-            
-            function extractLatLngs(layer) {{
-                if (typeof layer.getLatLngs === 'function') {{
-                    const latlngs = layer.getLatLngs();
-                    if (latlngs.length > 0) {{
-                        if (Array.isArray(latlngs[0])) {{
-                            latlngs.forEach(arr => {{
-                                if (Array.isArray(arr)) {{
-                                    allLatLngs.push(...arr);
-                                }} else {{
-                                    allLatLngs.push(arr);
-                                }}
-                            }});
-                        }} else {{
-                            allLatLngs.push(...latlngs);
-                        }}
-                    }}
-                }} else if (typeof layer.eachLayer === 'function') {{
-                    layer.eachLayer(extractLatLngs);
-                }}
-            }}
-            
-            extractLatLngs(gpxLayer);
+            const allLatLngs = getLayerLatLngs(gpxLayer);
             
             let segmentLatLngs = [];
             let currentDist = 0;
@@ -1255,7 +1316,8 @@ html_template = f'''<!DOCTYPE html>
                     lineCap: 'round'
                 }}).addTo(map);
                 
-                const isMapVisible = !mapContainer.classList.contains('hidden') && mapContainer.style.display !== 'none';
+                const mapContainer = document.getElementById('map-container');
+                const isMapVisible = mapContainer && !mapContainer.classList.contains('hidden') && mapContainer.style.display !== 'none';
                 if (isMapVisible) {{
                     map.fitBounds(highlightedPolyline.getBounds(), {{ padding: [40, 40], animate: true, duration: 1 }});
                     const marker = markers[index];
@@ -1809,8 +1871,10 @@ html_template = f'''<!DOCTYPE html>
                         }}
                     }}
                     overviewHoveredPoint = closest;
+                    updateMapHoverPointer(closest[0]);
                 }} else {{
                     overviewHoveredPoint = null;
+                    clearMapHoverPointer();
                 }}
                 renderOverviewElevationChart();
             }};
@@ -1818,6 +1882,7 @@ html_template = f'''<!DOCTYPE html>
             overviewCanvas.addEventListener('mousemove', handleHover);
             overviewCanvas.addEventListener('mouseleave', () => {{
                 overviewHoveredPoint = null;
+                clearMapHoverPointer();
                 renderOverviewElevationChart();
             }});
             
@@ -1825,6 +1890,7 @@ html_template = f'''<!DOCTYPE html>
             overviewCanvas.addEventListener('touchmove', handleHover, {{ passive: true }});
             overviewCanvas.addEventListener('touchend', () => {{
                 overviewHoveredPoint = null;
+                clearMapHoverPointer();
                 renderOverviewElevationChart();
             }});
         }}
