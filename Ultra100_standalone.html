@@ -18699,8 +18699,18 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 mapHoverMarker.setLatLng(closestTrackPt.latlng);
             }
             
-            // Move/pan the map keeping the current zoom
-            map.panTo(closestTrackPt.latlng, { animate: false });
+            // Recenter only if the pointer gets close to the edge of the viewport
+            const containerPoint = map.latLngToContainerPoint(closestTrackPt.latlng);
+            const mapSize = map.getSize();
+            const marginX = mapSize.x * 0.15; // 15% margin from left/right edges
+            const marginY = mapSize.y * 0.15; // 15% margin from top/bottom edges
+            
+            if (containerPoint.x < marginX || 
+                containerPoint.x > mapSize.x - marginX || 
+                containerPoint.y < marginY || 
+                containerPoint.y > mapSize.y - marginY) {
+                map.panTo(closestTrackPt.latlng, { animate: true, duration: 0.4 });
+            }
         }
 
         function clearMapHoverPointer() {
