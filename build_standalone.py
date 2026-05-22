@@ -891,6 +891,7 @@ html_template = f'''<!DOCTYPE html>
         const rawGpxData = `{gpx_content_escaped}`;
         let gpxElevationData = [];
         let overviewHoveredPoint = null;
+        let highlightedSectionIndex = null;
 
         const map = L.map('map').setView([49.762544, 19.086507], 11);
 
@@ -949,7 +950,17 @@ html_template = f'''<!DOCTYPE html>
             }}
         }}).addTo(map);
 
-        
+        map.on('click', () => {{
+            if (highlightedPolyline) {{
+                map.removeLayer(highlightedPolyline);
+                highlightedPolyline = null;
+            }}
+            highlightedSectionIndex = null;
+            document.querySelectorAll('tbody tr').forEach(row => row.classList.remove('table-row-highlight'));
+            if (gpxElevationData && gpxElevationData.length > 0) {{
+                renderOverviewElevationChart();
+            }}
+        }});
         
         // --- LANGUAGE LOGIC ---
         const btnPl = document.getElementById('btn-lang-pl');
@@ -1160,6 +1171,11 @@ html_template = f'''<!DOCTYPE html>
 
         function highlightSection(index) {{
             if (!gpxLayer) return;
+            
+            highlightedSectionIndex = index;
+            if (gpxElevationData && gpxElevationData.length > 0) {{
+                renderOverviewElevationChart();
+            }}
             
             const cp = checkpoints[index];
             const startKm = index === 0 ? 0 : checkpoints[index-1].km;
@@ -1522,6 +1538,32 @@ html_template = f'''<!DOCTYPE html>
             const eleRange = plotMax - plotMin;
             const maxDist = gpxElevationData[gpxElevationData.length - 1][0];
             
+            // 0. Draw Highlighted Section Background Band (if selected)
+            if (highlightedSectionIndex !== null) {{
+                const cp = checkpoints[highlightedSectionIndex];
+                const startKm = highlightedSectionIndex === 0 ? 0 : checkpoints[highlightedSectionIndex - 1].km;
+                const endKm = cp.km;
+                
+                const hsXStart = paddingLeft + (startKm / maxDist) * plotW;
+                const hsXEnd = paddingLeft + (endKm / maxDist) * plotW;
+                
+                // Draw a soft translucent highlight background band
+                ctx.fillStyle = 'rgba(34, 211, 238, 0.08)'; // cyan-400 translucent
+                ctx.fillRect(hsXStart, paddingTop, hsXEnd - hsXStart, plotH);
+                
+                // Draw vertical dashed bounds for the highlighted section
+                ctx.strokeStyle = 'rgba(34, 211, 238, 0.4)'; // cyan border
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(hsXStart, paddingTop);
+                ctx.lineTo(hsXStart, h - paddingBottom);
+                ctx.moveTo(hsXEnd, paddingTop);
+                ctx.lineTo(hsXEnd, h - paddingBottom);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }}
+
             // 1. Draw Grid Lines (Horizontal for elevation)
             ctx.strokeStyle = '#1e293b'; // slate-800
             ctx.fillStyle = '#64748b'; // slate-500
@@ -1584,8 +1626,32 @@ html_template = f'''<!DOCTYPE html>
             ctx.closePath();
             ctx.fill();
             
+            // 4.5. Draw a thick glowing cyan guide line for the highlighted section
+            if (highlightedSectionIndex !== null) {{
+                const startKm = highlightedSectionIndex === 0 ? 0 : checkpoints[highlightedSectionIndex - 1].km;
+                const endKm = checkpoints[highlightedSectionIndex].km;
+                
+                ctx.strokeStyle = 'rgba(34, 211, 238, 0.35)'; // semi-translucent cyan
+                ctx.lineWidth = 7;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                
+                let first = true;
+                for (let i = 0; i < mappedPts.length; i++) {{
+                    const pt = mappedPts[i];
+                    if (pt.dist >= startKm && pt.dist <= endKm) {{
+                        if (first) {{
+                            if (i > 0) ctx.moveTo(mappedPts[i-1].x, mappedPts[i-1].y);
+                            else ctx.moveTo(pt.x, pt.y);
+                            first = false;
+                        }}
+                        ctx.lineTo(pt.x, pt.y);
+                    }}
+                }}
+                ctx.stroke();
+            }}
+
             // 5. Draw the colored slope segments
-            ctx.lineWidth = 2;
             for (let i = 0; i < mappedPts.length - 1; i++) {{
                 const p1 = mappedPts[i];
                 const p2 = mappedPts[i+1];
@@ -1601,6 +1667,17 @@ html_template = f'''<!DOCTYPE html>
                 else if (slope < -5) ctx.strokeStyle = '#84cc16';  // down (lime)
                 else ctx.strokeStyle = '#3b82f6';                 // flat (blue)
                 
+                // Determine line width: make highlighted section thicker
+                let isHighlighted = false;
+                if (highlightedSectionIndex !== null) {{
+                    const startKm = highlightedSectionIndex === 0 ? 0 : checkpoints[highlightedSectionIndex - 1].km;
+                    const endKm = checkpoints[highlightedSectionIndex].km;
+                    if (p1.dist >= startKm && p2.dist <= endKm) {{
+                        isHighlighted = true;
+                    }}
+                }}
+                ctx.lineWidth = isHighlighted ? 3.5 : 2;
+                
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(p2.x, p2.y);
@@ -1608,7 +1685,7 @@ html_template = f'''<!DOCTYPE html>
             }}
             
             // 6. Draw dots on the elevation curve for checkpoints
-            checkpoints.forEach(cp => {{
+            checkpoints.forEach((cp, idx) => {{
                 const closestPt = gpxElevationData.reduce((prev, curr) => {{
                     return Math.abs(curr[0] - cp.km) < Math.abs(prev[0] - cp.km) ? curr : prev;
                 }});
@@ -1616,11 +1693,18 @@ html_template = f'''<!DOCTYPE html>
                 const cpY = paddingTop + (1 - (closestPt[1] - plotMin) / eleRange) * plotH;
                 
                 ctx.beginPath();
-                ctx.arc(cpX, cpY, 3.5, 0, 2 * Math.PI);
-                ctx.fillStyle = '#a3e635'; // lime-400
+                let isBound = false;
+                if (highlightedSectionIndex !== null) {{
+                    if (idx === highlightedSectionIndex || idx === highlightedSectionIndex - 1) {{
+                        isBound = true;
+                    }}
+                }}
+                
+                ctx.arc(cpX, cpY, isBound ? 5.5 : 3.5, 0, 2 * Math.PI);
+                ctx.fillStyle = isBound ? '#22d3ee' : '#a3e635'; // cyan-400 or lime-400
                 ctx.fill();
                 ctx.strokeStyle = '#0f172a'; // slate-900 outline
-                ctx.lineWidth = 1;
+                ctx.lineWidth = isBound ? 1.5 : 1;
                 ctx.stroke();
             }});
             
