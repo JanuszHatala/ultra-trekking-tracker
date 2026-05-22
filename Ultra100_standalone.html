@@ -863,6 +863,9 @@ Check your Browserslist config to be sure that your targets are set up correctly
         }
 
         /* Ensure popups render above map controls (+/- and eye button) */
+        .leaflet-map-pane {
+            z-index: auto !important;
+        }
         .leaflet-popup-pane {
             z-index: 1005 !important;
         }
