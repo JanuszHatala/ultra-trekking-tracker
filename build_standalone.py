@@ -1,5 +1,8 @@
 import urllib.request
 import json
+import time
+
+app_version = f"ultra-trekking-v{int(time.time())}"
 
 def fetch(url):
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -1932,6 +1935,15 @@ html_template = f'''<!DOCTYPE html>
                     console.log('SW registration failed: ', registrationError);
                 }});
             }});
+
+            // Force refresh when new service worker takes control
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {{
+                if (!refreshing) {{
+                    refreshing = true;
+                    window.location.reload();
+                }}
+            }});
         }}
     </script>
 </body>
@@ -1969,8 +1981,70 @@ manifest_data = {
     ]
 }
 
-import json
 with open('manifest.json', 'w', encoding='utf-8') as f:
     json.dump(manifest_data, f, indent=4)
 
-print('Successfully generated index.html, Ultra100_standalone.html, and manifest.json.')
+sw_content = f'''const CACHE_NAME = '{app_version}';
+const ASSETS = [
+    './',
+    './index.html',
+    './manifest.json',
+    './icon-192.svg',
+    './icon-512.svg',
+    './wyrypa-100km.gpx',
+    'https://cdn.tailwindcss.com',
+    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js'
+];
+
+self.addEventListener('install', event => {{
+    self.skipWaiting();
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {{
+            return cache.addAll(ASSETS);
+        }})
+    );
+}});
+
+self.addEventListener('fetch', event => {{
+    if (event.request.method !== 'GET') return;
+    
+    if (event.request.url.includes('cartocdn.com')) {{
+        event.respondWith(
+            caches.match(event.request).then(response => {{
+                return response || fetch(event.request).then(fetchResponse => {{
+                    return caches.open('ultra-tiles-v1').then(cache => {{
+                        cache.put(event.request, fetchResponse.clone());
+                        return fetchResponse;
+                    }});
+                }});
+            }})
+        );
+        return;
+    }}
+
+    event.respondWith(
+        caches.match(event.request).then(response => {{
+            return response || fetch(event.request);
+        }})
+    );
+}});
+
+self.addEventListener('activate', event => {{
+    event.waitUntil(
+        caches.keys().then(keys => {{
+            return Promise.all(keys
+                .filter(key => key !== CACHE_NAME && key !== 'ultra-tiles-v1')
+                .map(key => caches.delete(key))
+            );
+        }}).then(() => self.clients.claim())
+    );
+}});
+'''
+
+print('Writing sw.js...')
+with open('sw.js', 'w', encoding='utf-8') as f:
+    f.write(sw_content)
+
+print('Successfully generated index.html, Ultra100_standalone.html, manifest.json, and sw.js.')

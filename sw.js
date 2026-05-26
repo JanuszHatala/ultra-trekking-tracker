@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ultra-trekking-v1';
+const CACHE_NAME = 'ultra-trekking-v1779796834';
 const ASSETS = [
     './',
     './index.html',
@@ -13,6 +13,7 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', event => {
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             return cache.addAll(ASSETS);
@@ -21,12 +22,8 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-    // Only cache GET requests
     if (event.request.method !== 'GET') return;
     
-    // Check if the request is for an external tile (CartoDB)
-    // We can use a cache-first or network-first strategy for tiles.
-    // Here we'll use cache-first for everything else, but for maps, you might want a dynamic cache.
     if (event.request.url.includes('cartocdn.com')) {
         event.respondWith(
             caches.match(event.request).then(response => {
@@ -55,6 +52,6 @@ self.addEventListener('activate', event => {
                 .filter(key => key !== CACHE_NAME && key !== 'ultra-tiles-v1')
                 .map(key => caches.delete(key))
             );
-        })
+        }).then(() => self.clients.claim())
     );
 });

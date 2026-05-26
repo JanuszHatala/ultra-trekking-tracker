@@ -19678,6 +19678,15 @@ Check your Browserslist config to be sure that your targets are set up correctly
                     console.log('SW registration failed: ', registrationError);
                 });
             });
+
+            // Force refresh when new service worker takes control
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
+            });
         }
     </script>
 </body>
