@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ultra-trekking-v1779796834';
+const CACHE_NAME = 'ultra-trekking-v1779820863';
 const ASSETS = [
     './',
     './index.html',
@@ -24,14 +24,18 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
     if (event.request.method !== 'GET') return;
     
-    if (event.request.url.includes('cartocdn.com')) {
+    if (event.request.url.includes('tile.opentopomap.org')) {
+        const normalizedUrl = event.request.url.replace(/https:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
         event.respondWith(
-            caches.match(event.request).then(response => {
+            caches.match(normalizedUrl).then(response => {
                 return response || fetch(event.request).then(fetchResponse => {
-                    return caches.open('ultra-tiles-v1').then(cache => {
-                        cache.put(event.request, fetchResponse.clone());
-                        return fetchResponse;
-                    });
+                    if (fetchResponse.ok) {
+                        const responseClone = fetchResponse.clone();
+                        caches.open('ultra-tiles-v1').then(cache => {
+                            cache.put(normalizedUrl, responseClone);
+                        });
+                    }
+                    return fetchResponse;
                 });
             })
         );
