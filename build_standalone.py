@@ -2018,7 +2018,7 @@ html_template = f'''<!DOCTYPE html>
             
             if (segmentLatLngs.length > 0) {{
                 highlightedPolyline = L.polyline(segmentLatLngs, {{
-                    color: '#3b82f6', // blue-500 (elevation profile blue)
+                    color: '#c084fc', // purple-400 (distinct selection highlight)
                     weight: 8,
                     opacity: 0.95,
                     lineCap: 'round'
@@ -2344,11 +2344,11 @@ html_template = f'''<!DOCTYPE html>
                 const hsXEnd = paddingLeft + (endKm / maxDist) * plotW;
                 
                 // Draw a soft translucent highlight background band
-                ctx.fillStyle = 'rgba(34, 211, 238, 0.08)'; // cyan-400 translucent
+                ctx.fillStyle = 'rgba(168, 85, 247, 0.08)'; // purple-500 translucent
                 ctx.fillRect(hsXStart, paddingTop, hsXEnd - hsXStart, plotH);
                 
                 // Draw vertical dashed bounds for the highlighted section
-                ctx.strokeStyle = 'rgba(34, 211, 238, 0.4)'; // cyan border
+                ctx.strokeStyle = 'rgba(168, 85, 247, 0.45)'; // purple border
                 ctx.lineWidth = 1.5;
                 ctx.setLineDash([4, 4]);
                 ctx.beginPath();
@@ -2427,7 +2427,7 @@ html_template = f'''<!DOCTYPE html>
                 const startKm = highlightedSectionIndex === 0 ? 0 : checkpoints[highlightedSectionIndex - 1].km;
                 const endKm = checkpoints[highlightedSectionIndex].km;
                 
-                ctx.strokeStyle = 'rgba(34, 211, 238, 0.35)'; // semi-translucent cyan
+                ctx.strokeStyle = 'rgba(168, 85, 247, 0.35)'; // semi-translucent purple
                 ctx.lineWidth = 7;
                 ctx.lineCap = 'round';
                 ctx.beginPath();
@@ -2497,7 +2497,7 @@ html_template = f'''<!DOCTYPE html>
                 }}
                 
                 ctx.arc(cpX, cpY, isBound ? 5.5 : 3.5, 0, 2 * Math.PI);
-                ctx.fillStyle = isBound ? '#22d3ee' : '#a3e635'; // cyan-400 or lime-400
+                ctx.fillStyle = isBound ? '#c084fc' : '#a3e635'; // purple-400 or lime-400
                 ctx.fill();
                 ctx.strokeStyle = '#0f172a'; // slate-900 outline
                 ctx.lineWidth = isBound ? 1.5 : 1;
