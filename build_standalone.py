@@ -696,6 +696,7 @@ html_template = f'''<!DOCTYPE html>
                             <span class="lang-en">GPS Interval:</span>
                         </label>
                         <select id="gps-poll-interval" class="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1 md:px-2 py-0 text-xs md:text-sm outline-none focus:border-lime-400 cursor-pointer h-[20px] md:h-[26px] align-middle">
+                            <option value="0">Wyłączone / Disabled</option>
                             <option value="15000">15 s</option>
                             <option value="30000" selected>30 s</option>
                             <option value="60000">1 min</option>
@@ -1414,6 +1415,13 @@ html_template = f'''<!DOCTYPE html>
                         }}
                     }}
                     
+                    if (gpsMarker) {{
+                        gpsMarker.bringToFront();
+                    }}
+                    if (gpsAccuracyCircle) {{
+                        gpsAccuracyCircle.bringToBack();
+                    }}
+                    
                     const containerPoint = map.latLngToContainerPoint(gpsLatLng);
                     const mapSize = map.getSize();
                     const marginX = mapSize.x * 0.05;
@@ -1460,13 +1468,19 @@ html_template = f'''<!DOCTYPE html>
             const isPl = document.documentElement.getAttribute('lang') === 'pl';
             
             if (!isTracking) {{
+                const intervalVal = parseInt(document.getElementById('gps-poll-interval').value);
+                if (intervalVal === 0) {{
+                    showToast(isPl 
+                        ? "Śledzenie automatyczne jest wyłączone w ustawieniach." 
+                        : "Auto-positioning is disabled in settings.");
+                    return;
+                }}
+                
                 isTracking = true;
                 if (btn) {{
                     btn.classList.add('leaflet-control-gps-active');
                     btn.querySelector('a').title = isPl ? "Wyłącz śledzenie GPS" : "Disable GPS tracking";
                 }}
-                
-                const intervalVal = parseInt(document.getElementById('gps-poll-interval').value) || 30000;
                 
                 showToast(isPl ? "Uruchamianie śledzenia GPS..." : "Starting GPS tracking...");
                 locateMe(function() {{
@@ -1601,6 +1615,21 @@ html_template = f'''<!DOCTYPE html>
                     try {{
                         localStorage.setItem('ultra_gps_interval', intervalSelect.value);
                     }} catch(e) {{}}
+                    
+                    const isPl = document.documentElement.getAttribute('lang') === 'pl';
+                    const intervalVal = parseInt(intervalSelect.value);
+                    
+                    if (isTracking) {{
+                        if (intervalVal === 0) {{
+                            toggleTracking();
+                        }} else {{
+                            if (gpsTrackingInterval) {{
+                                clearInterval(gpsTrackingInterval);
+                            }}
+                            gpsTrackingInterval = setInterval(locateMe, intervalVal);
+                            showToast(isPl ? "Zaktualizowano interwał GPS" : "GPS interval updated");
+                        }}
+                    }}
                 }});
             }}
 
@@ -2023,6 +2052,10 @@ html_template = f'''<!DOCTYPE html>
                     opacity: 0.95,
                     lineCap: 'round'
                 }}).addTo(map);
+                
+                if (gpsMarker) {{
+                    gpsMarker.bringToFront();
+                }}
                 
                 const mapContainer = document.getElementById('map-container');
                 const isMapVisible = mapContainer && !mapContainer.classList.contains('hidden') && mapContainer.style.display !== 'none';
