@@ -569,6 +569,56 @@ html_template = f'''<!DOCTYPE html>
             opacity: 0 !important;
             pointer-events: none !important;
         }}
+
+        /* GPS Ring Pulse animation */
+        @keyframes gps-ring-pulse {{
+            0% {{
+                fill-opacity: 0.12;
+                stroke-opacity: 0.45;
+            }}
+            50% {{
+                fill-opacity: 0.25;
+                stroke-opacity: 0.75;
+            }}
+            100% {{
+                fill-opacity: 0.12;
+                stroke-opacity: 0.45;
+            }}
+        }}
+        .gps-ring-pulse {{
+            animation: gps-ring-pulse 2s infinite ease-in-out;
+        }}
+
+        /* GPS Toast Notification */
+        .gps-toast {{
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            background-color: rgba(15, 23, 42, 0.95);
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+            white-space: nowrap;
+        }}
+
+        /* Leaflet GPS Custom Buttons */
+        .leaflet-control-gps-active {{
+            background-color: #22d3ee !important; /* cyan-400 */
+        }}
+        .leaflet-control-gps-active svg {{
+            stroke: #0f172a !important;
+        }}
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans antialiased h-[100dvh] w-full overflow-hidden flex flex-col md:flex-row">
@@ -576,7 +626,7 @@ html_template = f'''<!DOCTYPE html>
     <!-- Map Section -->
     <div id="map-container" class="w-full h-[33vh] md:h-screen md:w-[45%] flex-shrink-0 z-0 relative transition-all duration-300">
         <div id="map" class="w-full h-full bg-[#f8f9fa]"></div>
-
+        <div id="gps-toast" class="gps-toast opacity-0"></div>
     </div>
 
     <!-- Resizer -->
@@ -620,9 +670,34 @@ html_template = f'''<!DOCTYPE html>
                 <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">Ustawienia</span><span class="lang-en">Settings</span></h2>
                 <div class="flex flex-row flex-wrap gap-2 md:gap-3 items-center mb-4 md:mb-6">
                     <!-- Start Time Input -->
-                    <div class="flex items-center space-x-2 bg-slate-800 p-1.5 md:p-2 px-2 md:px-3 rounded border border-slate-600 shadow-sm">
+                    <div class="flex items-center space-x-2 bg-slate-800 p-1.5 md:p-2 px-2 md:px-3 rounded border border-slate-600 shadow-sm h-[28px] md:h-[38px]">
                         <label for="start-time-input" class="text-xs md:text-sm font-bold text-slate-300 whitespace-nowrap"><span class="lang-pl">Godzina Startu:</span><span class="lang-en">Start Time:</span></label>
-                        <input type="time" id="start-time-input" class="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1.5 md:px-2 py-0.5 md:py-1 text-xs md:text-sm text-center outline-none focus:border-lime-400 cursor-pointer">
+                        <input type="time" id="start-time-input" class="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1.5 md:px-2 py-0.5 text-xs md:text-sm text-center outline-none focus:border-lime-400 cursor-pointer h-full">
+                    </div>
+
+                    <!-- GPS Polling Interval -->
+                    <div class="flex items-center space-x-2 bg-slate-800 p-1.5 md:p-2 px-2 md:px-3 rounded border border-slate-600 shadow-sm h-[28px] md:h-[38px]">
+                        <label for="gps-poll-interval" class="text-xs md:text-sm font-bold text-slate-300 whitespace-nowrap">
+                            <span class="lang-pl">Interwał GPS:</span>
+                            <span class="lang-en">GPS Interval:</span>
+                        </label>
+                        <select id="gps-poll-interval" class="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1 md:px-2 py-0.5 text-xs md:text-sm outline-none focus:border-lime-400 cursor-pointer h-full">
+                            <option value="15000">15 s</option>
+                            <option value="30000" selected>30 s</option>
+                            <option value="60000">1 min</option>
+                            <option value="120000">2 min</option>
+                        </select>
+                    </div>
+
+                    <!-- Map Pre-Cache Button -->
+                    <div class="flex bg-slate-800 rounded border border-slate-600 overflow-hidden shadow-sm h-[28px] md:h-[38px] items-center">
+                        <button id="btn-download-map" class="px-3 md:px-4 text-xs md:text-sm font-bold bg-slate-700 text-slate-300 hover:text-white transition-colors h-full cursor-pointer">
+                            <span class="lang-pl">📥 Pobierz mapę offline</span>
+                            <span class="lang-en">📥 Download offline map</span>
+                        </button>
+                        <div id="download-progress-bar" class="hidden h-full bg-slate-900 border-l border-slate-600 px-3 flex items-center text-[10px] md:text-xs font-mono text-lime-400">
+                            0%
+                        </div>
                     </div>
 
                     <!-- Language Toggle -->
@@ -653,6 +728,85 @@ html_template = f'''<!DOCTYPE html>
                     </div>
                 </div>
 
+            </div>
+
+            <!-- GPS Status Card -->
+            <div id="gps-status-card" class="hidden bg-slate-800/50 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl mb-3 md:mb-4">
+                <div class="flex justify-between items-center mb-2 border-b border-slate-700 pb-1 md:pb-2">
+                    <h2 class="text-base md:text-lg font-bold text-lime-400 flex items-center gap-1.5">
+                        <span>📍</span>
+                        <span class="lang-pl">Moja Pozycja</span>
+                        <span class="lang-en">My Position</span>
+                    </h2>
+                    <span id="gps-accuracy-badge" class="text-[10px] md:text-xs font-bold px-2 py-0.5 rounded bg-slate-900 text-slate-400">
+                        GPS: --
+                    </span>
+                </div>
+                
+                <!-- Active Content -->
+                <div id="gps-card-active" class="space-y-3">
+                    <!-- Progress Bar -->
+                    <div>
+                        <div class="flex justify-between text-xs md:text-sm font-semibold mb-1">
+                            <span class="text-slate-300">
+                                <span class="lang-pl">Dystans:</span>
+                                <span class="lang-en">Distance:</span>
+                                <span id="gps-progress-km" class="text-lime-400 font-bold ml-1">-- / 100 km</span>
+                            </span>
+                            <span id="gps-progress-pct" class="text-lime-400 font-bold">--%</span>
+                        </div>
+                        <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
+                            <div id="gps-progress-fill" class="bg-gradient-to-r from-lime-500 to-cyan-500 h-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Section Info and Schedule -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs md:text-sm">
+                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800/50">
+                            <div class="text-slate-500 font-semibold uppercase tracking-wider text-[9px] md:text-[10px]"><span class="lang-pl">Aktualny Odcinek</span><span class="lang-en">Current Section</span></div>
+                            <div id="gps-section-name" class="font-bold text-slate-200 mt-0.5">--</div>
+                        </div>
+                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800/50">
+                            <div class="text-slate-500 font-semibold uppercase tracking-wider text-[9px] md:text-[10px]"><span class="lang-pl">Tempo vs Plan</span><span class="lang-en">Pace vs Plan</span></div>
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                <span id="gps-schedule-delta" class="font-bold text-slate-300">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Finish ETA -->
+                    <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800/50 flex justify-between items-center text-xs md:text-sm font-semibold">
+                        <span class="text-slate-300">
+                            <span class="lang-pl">Szacowana meta (ETA):</span>
+                            <span class="lang-en">Estimated Finish (ETA):</span>
+                        </span>
+                        <span id="gps-finish-eta" class="font-mono font-bold text-cyan-400 text-sm md:text-base">--:--</span>
+                    </div>
+
+                    <!-- Warnings zone -->
+                    <div id="gps-card-warnings" class="space-y-1.5">
+                        <!-- Off Route -->
+                        <div id="warn-off-route" class="hidden bg-yellow-500/10 border border-yellow-500/30 text-yellow-500 px-2 py-1.5 rounded text-xs flex items-center gap-1.5">
+                            <span>⚠️</span>
+                            <span>
+                                <span class="lang-pl">Poza trasą (>200m) - wskazania mogą być niedokładne.</span>
+                                <span class="lang-en">Off route (>200m) - values may be approximate.</span>
+                            </span>
+                        </div>
+                        <!-- Poor Signal -->
+                        <div id="warn-poor-signal" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 px-2 py-1.5 rounded text-xs flex items-center gap-1.5">
+                            <span>⚠️</span>
+                            <span>
+                                <span class="lang-pl">Słaby sygnał GPS - pozycja jest przybliżona.</span>
+                                <span class="lang-en">Poor GPS signal - position is approximate.</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Status / Error Text -->
+                <div id="gps-card-message" class="hidden text-xs md:text-sm text-slate-400 py-1 italic text-center">
+                </div>
             </div>
 
             <!-- Elevation Profile Card -->
@@ -898,6 +1052,13 @@ html_template = f'''<!DOCTYPE html>
         let gpxTrackPoints = [];
         let mapHoverMarker = null;
 
+        // GPS State globals
+        let gpsMarker = null;
+        let gpsAccuracyCircle = null;
+        let gpsTrackingInterval = null;
+        let isTracking = false;
+        let gpsHintShown = false;
+
         const map = L.map('map').setView([49.762544, 19.086507], 11);
 
         function getLayerLatLngs(layer) {{
@@ -977,6 +1138,462 @@ html_template = f'''<!DOCTYPE html>
             }}
         }}
 
+        // --- GPS AND OFFLINE CACHING FUNCTIONS ---
+        function showToast(msgHtml) {{
+            const toast = document.getElementById('gps-toast');
+            if (!toast) return;
+            toast.innerHTML = msgHtml;
+            toast.style.opacity = '1';
+            setTimeout(() => {{
+                toast.style.opacity = '0';
+            }}, 5000);
+        }}
+
+        function checkAndShowIosHint() {{
+            try {{
+                const shown = localStorage.getItem('ultra_gps_hint_shown');
+                if (!shown) {{
+                    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                    if (isIos) {{
+                        showToast('<span class="lang-pl">Przeglądarka zapyta o zgodę na lokalizację. Kliknij <strong>Zezwól</strong>.</span><span class="lang-en">Your browser will ask for location permission. Tap <strong>Allow</strong>.</span>');
+                    }} else {{
+                        showToast('<span class="lang-pl">Przeglądarka zapyta o zgodę na lokalizację.</span><span class="lang-en">Your browser will ask for location permission.</span>');
+                    }}
+                    localStorage.setItem('ultra_gps_hint_shown', '1');
+                }}
+            }} catch (e) {{}}
+        }}
+
+        function updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres) {{
+            const card = document.getElementById('gps-status-card');
+            const activeZone = document.getElementById('gps-card-active');
+            const msgZone = document.getElementById('gps-card-message');
+            
+            card.classList.remove('hidden');
+            activeZone.classList.remove('hidden');
+            msgZone.classList.add('hidden');
+            
+            const accuracyBadge = document.getElementById('gps-accuracy-badge');
+            accuracyBadge.innerHTML = `GPS: ±${{Math.round(accuracy)}} m`;
+            
+            accuracyBadge.className = "text-[10px] md:text-xs font-bold px-2 py-0.5 rounded ";
+            if (accuracy <= 50) {{
+                accuracyBadge.className += "bg-blue-500/20 text-blue-400 border border-blue-500/30";
+            }} else if (accuracy <= 100) {{
+                accuracyBadge.className += "bg-orange-500/20 text-orange-400 border border-orange-500/30";
+            }} else {{
+                accuracyBadge.className += "bg-red-500/20 text-red-400 border border-red-500/30";
+            }}
+            
+            const warnOffRoute = document.getElementById('warn-off-route');
+            const isOffRoute = minDistanceMetres > 200;
+            if (isOffRoute) {{
+                warnOffRoute.classList.remove('hidden');
+            }} else {{
+                warnOffRoute.classList.add('hidden');
+            }}
+            
+            const warnPoorSignal = document.getElementById('warn-poor-signal');
+            if (accuracy > 100) {{
+                warnPoorSignal.classList.remove('hidden');
+            }} else {{
+                warnPoorSignal.classList.add('hidden');
+            }}
+            
+            let currentKm = 0;
+            const gpsLatLng = L.latLng(lat, lon);
+            if (gpxTrackPoints && gpxTrackPoints.length > 0) {{
+                let closestPt = gpxTrackPoints[0];
+                let minDist = gpsLatLng.distanceTo(closestPt.latlng);
+                for (let i = 1; i < gpxTrackPoints.length; i++) {{
+                    const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
+                    if (d < minDist) {{
+                        minDist = d;
+                        closestPt = gpxTrackPoints[i];
+                    }}
+                }}
+                currentKm = closestPt.km;
+            }}
+            
+            const kmText = document.getElementById('gps-progress-km');
+            kmText.innerHTML = `${{currentKm.toFixed(1)}} / 100 km`;
+            
+            const pct = Math.min(Math.max((currentKm / 100) * 100, 0), 100);
+            document.getElementById('gps-progress-pct').innerHTML = `${{Math.round(pct)}}%`;
+            document.getElementById('gps-progress-fill').style.width = `${{pct}}%`;
+            
+            let sectionName = "";
+            let prevCpKm = 0;
+            for (let i = 0; i < checkpoints.length; i++) {{
+                if (currentKm <= checkpoints[i].km) {{
+                    const secNum = i + 1;
+                    const lang = document.documentElement.getAttribute('lang') || 'pl';
+                    if (lang === 'pl') {{
+                        sectionName = `Odcinek ${{secNum}} · KM ${{prevCpKm}} → KM ${{checkpoints[i].km}}`;
+                    }} else {{
+                        sectionName = `Section ${{secNum}} · KM ${{prevCpKm}} → KM ${{checkpoints[i].km}}`;
+                    }}
+                    break;
+                }}
+                prevCpKm = checkpoints[i].km;
+            }}
+            if (!sectionName) {{
+                const lang = document.documentElement.getAttribute('lang') || 'pl';
+                sectionName = lang === 'pl' ? "META" : "FINISH";
+            }}
+            document.getElementById('gps-section-name').innerHTML = sectionName;
+            
+            const timeInput = document.getElementById('start-time-input');
+            const startParts = timeInput.value.split(':');
+            const now = new Date();
+            let startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(startParts[0] || 19), parseInt(startParts[1] || 0), 0);
+            let diffMs = now.getTime() - startDate.getTime();
+            if (diffMs < -12 * 60 * 60 * 1000) {{
+                startDate.setDate(startDate.getDate() - 1);
+                diffMs = now.getTime() - startDate.getTime();
+            }}
+            const actualElapsedMinutes = diffMs / 60000;
+            
+            let expectedElapsed = 0;
+            if (currentKm <= 0) {{
+                expectedElapsed = 0;
+            }} else if (currentKm >= checkpoints[checkpoints.length - 1].km) {{
+                expectedElapsed = checkpoints[checkpoints.length - 1].elapsed_minutes;
+            }} else {{
+                let prevCp = {{ km: 0, elapsed_minutes: 0 }};
+                let nextCp = checkpoints[0];
+                for (let i = 0; i < checkpoints.length; i++) {{
+                    if (checkpoints[i].km >= currentKm) {{
+                        nextCp = checkpoints[i];
+                        if (i > 0) {{
+                            prevCp = checkpoints[i - 1];
+                        }}
+                        break;
+                    }}
+                }}
+                const kmRatio = (currentKm - prevCp.km) / (nextCp.km - prevCp.km);
+                expectedElapsed = prevCp.elapsed_minutes + kmRatio * (nextCp.elapsed_minutes - prevCp.elapsed_minutes);
+            }}
+            
+            const delta = actualElapsedMinutes - expectedElapsed;
+            const absDelta = Math.round(Math.abs(delta));
+            const deltaSpan = document.getElementById('gps-schedule-delta');
+            
+            const lang = document.documentElement.getAttribute('lang') || 'pl';
+            if (Math.abs(delta) <= 5) {{
+                deltaSpan.className = "font-bold text-slate-300";
+                deltaSpan.innerHTML = lang === 'pl' ? `● W harmonogramie` : `● On schedule`;
+            }} else if (delta < -5) {{
+                deltaSpan.className = "font-bold text-lime-400";
+                deltaSpan.innerHTML = lang === 'pl' ? `▲ ${{absDelta}} min przed planem` : `▲ ${{absDelta}} min ahead of plan`;
+            }} else if (delta <= 20) {{
+                deltaSpan.className = "font-bold text-orange-400";
+                deltaSpan.innerHTML = lang === 'pl' ? `▼ ${{absDelta}} min za planem` : `▼ ${{absDelta}} min behind plan`;
+            }} else {{
+                deltaSpan.className = "font-bold text-red-500";
+                deltaSpan.innerHTML = lang === 'pl' ? `▼ ${{absDelta}} min za planem` : `▼ ${{absDelta}} min behind plan`;
+            }}
+            
+            const lastCp = checkpoints[checkpoints.length - 1];
+            const remainingPlanMins = lastCp.elapsed_minutes - expectedElapsed;
+            const etaMs = now.getTime() + remainingPlanMins * 60000;
+            const etaDate = new Date(etaMs);
+            const etaStr = `${{etaDate.getHours().toString().padStart(2, '0')}}:${{etaDate.getMinutes().toString().padStart(2, '0')}}`;
+            document.getElementById('gps-finish-eta').innerHTML = etaStr;
+        }}
+
+        function showGpsErrorCard(msg) {{
+            const card = document.getElementById('gps-status-card');
+            const activeZone = document.getElementById('gps-card-active');
+            const msgZone = document.getElementById('gps-card-message');
+            
+            card.classList.remove('hidden');
+            activeZone.classList.add('hidden');
+            msgZone.classList.remove('hidden');
+            msgZone.innerHTML = msg;
+        }}
+
+        function locateMe(onSuccess = null) {{
+            checkAndShowIosHint();
+            
+            if (!navigator.geolocation) {{
+                showGpsErrorCard(document.documentElement.getAttribute('lang') === 'pl' ? "Brak wsparcia dla GPS w tej przeglądarce." : "GPS is not supported by this browser.");
+                return;
+            }}
+            
+            navigator.geolocation.getCurrentPosition(
+                function(pos) {{
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    const accuracy = pos.coords.accuracy;
+                    
+                    let dotColor = '#3b82f6';
+                    if (accuracy > 100) {{
+                        dotColor = '#ef4444';
+                    }} else if (accuracy > 50) {{
+                        dotColor = '#f97316';
+                    }}
+                    
+                    let minDistanceMetres = Infinity;
+                    let closestTrackPt = null;
+                    const gpsLatLng = L.latLng(lat, lon);
+                    
+                    if (gpxTrackPoints && gpxTrackPoints.length > 0) {{
+                        closestTrackPt = gpxTrackPoints[0];
+                        minDistanceMetres = gpsLatLng.distanceTo(closestTrackPt.latlng);
+                        for (let i = 1; i < gpxTrackPoints.length; i++) {{
+                            const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
+                            if (d < minDistanceMetres) {{
+                                minDistanceMetres = d;
+                                closestTrackPt = gpxTrackPoints[i];
+                            }}
+                        }}
+                    }}
+                    
+                    const isOffRoute = minDistanceMetres > 200;
+                    const borderCol = isOffRoute ? '#fbbf24' : '#ffffff';
+                    
+                    if (!gpsMarker) {{
+                        gpsMarker = L.circleMarker(gpsLatLng, {{
+                            radius: 8,
+                            fillColor: dotColor,
+                            fillOpacity: 1,
+                            color: borderCol,
+                            weight: 2,
+                            zIndexOffset: 1000
+                        }}).addTo(map);
+                    }} else {{
+                        gpsMarker.setLatLng(gpsLatLng);
+                        gpsMarker.setStyle({{
+                            fillColor: dotColor,
+                            color: borderCol
+                        }});
+                    }}
+                    
+                    if (!gpsAccuracyCircle) {{
+                        gpsAccuracyCircle = L.circle(gpsLatLng, {{
+                            radius: accuracy,
+                            fillColor: dotColor,
+                            fillOpacity: 0.12,
+                            color: dotColor,
+                            opacity: 0.45,
+                            weight: 1.5,
+                            className: isTracking ? 'gps-ring-pulse' : ''
+                        }}).addTo(map);
+                    }} else {{
+                        gpsAccuracyCircle.setLatLng(gpsLatLng);
+                        gpsAccuracyCircle.setRadius(accuracy);
+                        gpsAccuracyCircle.setStyle({{
+                            fillColor: dotColor,
+                            color: dotColor,
+                            className: isTracking ? 'gps-ring-pulse' : ''
+                        }});
+                        const path = gpsAccuracyCircle._path;
+                        if (path) {{
+                            if (isTracking) {{
+                                path.classList.add('gps-ring-pulse');
+                            }} else {{
+                                path.classList.remove('gps-ring-pulse');
+                            }}
+                        }}
+                    }}
+                    
+                    const containerPoint = map.latLngToContainerPoint(gpsLatLng);
+                    const mapSize = map.getSize();
+                    const marginX = mapSize.x * 0.05;
+                    const marginY = mapSize.y * 0.05;
+                    
+                    if (containerPoint.x < marginX || 
+                        containerPoint.x > mapSize.x - marginX || 
+                        containerPoint.y < marginY || 
+                        containerPoint.y > mapSize.y - marginY) {{
+                        map.panTo(gpsLatLng, {{ animate: true, duration: 0.4 }});
+                    }}
+                    
+                    updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres);
+                    
+                    if (onSuccess) onSuccess();
+                }},
+                function(err) {{
+                    console.warn("GPS Error code: " + err.code + " message: " + err.message);
+                    let errStr = "";
+                    const lang = document.documentElement.getAttribute('lang') || 'pl';
+                    
+                    if (err.code === 1) {{
+                        errStr = lang === 'pl' ? "⚠️ Odmowa dostępu do lokalizacji. Włącz GPS w ustawieniach przeglądarki." : "⚠️ Location permission denied. Enable GPS in browser settings.";
+                        if (isTracking) toggleTracking();
+                    }} else if (err.code === 2) {{
+                        errStr = lang === 'pl' ? "⚠️ Pozycja GPS niedostępna na tym urządzeniu." : "⚠️ GPS position unavailable on this device.";
+                    }} else if (err.code === 3) {{
+                        errStr = lang === 'pl' ? "⚠️ Przekroczono limit czasu oczekiwania. Spróbuj na zewnątrz." : "⚠️ GPS request timed out. Try again outdoors.";
+                    }} else {{
+                        errStr = lang === 'pl' ? "⚠️ Błąd lokalizacji: " + err.message : "⚠️ Geolocation error: " + err.message;
+                    }}
+                    showGpsErrorCard(errStr);
+                }},
+                {{ enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }}
+            );
+        }}
+
+        function toggleTracking() {{
+            const btn = document.getElementById('btn-track-me');
+            const isPl = document.documentElement.getAttribute('lang') === 'pl';
+            
+            if (!isTracking) {{
+                isTracking = true;
+                if (btn) {{
+                    btn.classList.add('leaflet-control-gps-active');
+                    btn.querySelector('a').title = isPl ? "Wyłącz śledzenie GPS" : "Disable GPS tracking";
+                }}
+                
+                const intervalVal = parseInt(document.getElementById('gps-poll-interval').value) || 30000;
+                
+                showToast(isPl ? "Uruchamianie śledzenia GPS..." : "Starting GPS tracking...");
+                locateMe(function() {{
+                    gpsTrackingInterval = setInterval(locateMe, intervalVal);
+                }});
+                
+            }} else {{
+                isTracking = false;
+                if (btn) {{
+                    btn.classList.remove('leaflet-control-gps-active');
+                    btn.querySelector('a').title = isPl ? "Śledź moją pozycję (GPS)" : "Track my position (GPS)";
+                }}
+                
+                if (gpsTrackingInterval) {{
+                    clearInterval(gpsTrackingInterval);
+                    gpsTrackingInterval = null;
+                }}
+                
+                if (gpsMarker) {{
+                    map.removeLayer(gpsMarker);
+                    gpsMarker = null;
+                }}
+                if (gpsAccuracyCircle) {{
+                    map.removeLayer(gpsAccuracyCircle);
+                    gpsAccuracyCircle = null;
+                }}
+                
+                const card = document.getElementById('gps-status-card');
+                card.classList.add('hidden');
+                
+                showToast(isPl ? "Śledzenie GPS wyłączone" : "GPS tracking disabled");
+            }}
+        }}
+
+        async function downloadOfflineTiles() {{
+            const btn = document.getElementById('btn-download-map');
+            const progress = document.getElementById('download-progress-bar');
+            const isPl = document.documentElement.getAttribute('lang') === 'pl';
+            
+            if (!btn || btn.disabled) return;
+            
+            btn.disabled = true;
+            btn.classList.add('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+            btn.classList.remove('bg-slate-700', 'text-slate-300', 'hover:text-white');
+            progress.classList.remove('hidden');
+            
+            showToast(isPl ? "Rozpoczynanie pobierania mapy..." : "Starting map download...");
+            
+            try {{
+                const urls = [];
+                const bounds = {{
+                    south: 49.30,
+                    north: 49.95,
+                    west: 18.40,
+                    east: 19.60
+                }};
+                const zooms = [11, 12, 13, 14];
+                
+                zooms.forEach(zoom => {{
+                    const startTile = latLonToTile(bounds.north, bounds.west, zoom);
+                    const endTile = latLonToTile(bounds.south, bounds.east, zoom);
+                    
+                    const minX = Math.min(startTile.x, endTile.x);
+                    const maxX = Math.max(startTile.x, endTile.x);
+                    const minY = Math.min(startTile.y, endTile.y);
+                    const maxY = Math.max(startTile.y, endTile.y);
+                    
+                    for (let x = minX; x <= maxX; x++) {{
+                        for (let y = minY; y <= maxY; y++) {{
+                            urls.push(`https://a.tile.opentopomap.org/${{zoom}}/${{x}}/${{y}}.png`);
+                        }}
+                    }}
+                }});
+                
+                const total = urls.length;
+                const cache = await caches.open('ultra-tiles-v1');
+                
+                for (let i = 0; i < total; i++) {{
+                    const url = urls[i];
+                    try {{
+                        const res = await fetch(url, {{ mode: 'cors' }});
+                        if (res.ok) {{
+                            await cache.put(url, res);
+                        }}
+                    }} catch (e) {{
+                        console.warn("Failed to fetch tile: " + url, e);
+                    }}
+                    
+                    await new Promise(resolve => setTimeout(resolve, 150));
+                    
+                    const pct = Math.round(((i + 1) / total) * 100);
+                    progress.innerHTML = `${{pct}}%`;
+                }}
+                
+                localStorage.setItem('ultra_map_downloaded', '1');
+                btn.innerHTML = `<span class="lang-pl">✓ Mapa offline gotowa</span><span class="lang-en">✓ Offline map ready</span>`;
+                progress.classList.add('hidden');
+                showToast(isPl ? "Pobieranie mapy zakończone sukcesem!" : "Map download completed successfully!");
+                
+            }} catch (err) {{
+                console.error("Offline map cache download failed", err);
+                btn.disabled = false;
+                btn.classList.remove('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                btn.classList.add('bg-slate-700', 'text-slate-300', 'hover:text-white');
+                progress.classList.add('hidden');
+                showToast(isPl ? "Błąd pobierania mapy. Spróbuj ponownie." : "Map download failed. Try again.");
+            }}
+        }}
+
+        function latLonToTile(lat, lon, zoom) {{
+            const latRad = lat * Math.PI / 180;
+            let xtile = Math.floor((lon + 180) / 360 * Math.pow(2, zoom));
+            let ytile = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * Math.pow(2, zoom));
+            return {{ x: xtile, y: ytile }};
+        }}
+
+        // Initialize GPS polling and map pre-caching elements on load
+        document.addEventListener('DOMContentLoaded', () => {{
+            const intervalSelect = document.getElementById('gps-poll-interval');
+            if (intervalSelect) {{
+                try {{
+                    const savedInterval = localStorage.getItem('ultra_gps_interval');
+                    if (savedInterval) {{
+                        intervalSelect.value = savedInterval;
+                    }}
+                }} catch(e) {{}}
+                intervalSelect.addEventListener('change', () => {{
+                    try {{
+                        localStorage.setItem('ultra_gps_interval', intervalSelect.value);
+                    }} catch(e) {{}}
+                }});
+            }}
+
+            const btnDownload = document.getElementById('btn-download-map');
+            if (btnDownload) {{
+                try {{
+                    const downloaded = localStorage.getItem('ultra_map_downloaded');
+                    if (downloaded === '1') {{
+                        btnDownload.innerHTML = `<span class="lang-pl">✓ Mapa offline gotowa</span><span class="lang-en">✓ Offline map ready</span>`;
+                    }}
+                }} catch(e) {{}}
+                btnDownload.addEventListener('click', downloadOfflineTiles);
+            }}
+        }});
+        // ---------------------------------------------
+
+
         L.tileLayer('https://{{s}}.tile.opentopomap.org/{{z}}/{{x}}/{{y}}.png', {{
             maxZoom: 17,
             attribution: 'Map data: &copy; OSM | Style: &copy; OpenTopoMap'
@@ -1013,6 +1630,53 @@ html_template = f'''<!DOCTYPE html>
             }}
         }});
         map.addControl(new HideMapControl());
+
+        // Custom Locate Me Control (Crosshair target SVG)
+        var LocateMeControl = L.Control.extend({{
+            options: {{ position: 'topleft' }},
+            onAdd: function (map) {{
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+                const isPl = document.documentElement.getAttribute('lang') === 'pl';
+                container.innerHTML = `<a href="#" title="${{isPl ? 'Pokaż moją pozycję' : 'Show my current position'}}" style="display: flex; align-items: center; justify-content: center;" class="hover:bg-slate-50 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#475569" stroke-width="2.5" style="width: 16px; height: 16px;">
+                        <circle cx="12" cy="12" r="9" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+                        <circle cx="12" cy="12" r="2.5" fill="#475569" />
+                    </svg>
+                </a>`;
+                container.onclick = function(e){{
+                    e.preventDefault();
+                    e.stopPropagation();
+                    locateMe();
+                }};
+                return container;
+            }}
+        }});
+        map.addControl(new LocateMeControl());
+
+        // Custom Track Me Control (GPS signal SVG)
+        var TrackMeControl = L.Control.extend({{
+            options: {{ position: 'topleft' }},
+            onAdd: function (map) {{
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+                container.id = 'btn-track-me';
+                const isPl = document.documentElement.getAttribute('lang') === 'pl';
+                container.innerHTML = `<a href="#" title="${{isPl ? 'Śledź moją pozycję (GPS)' : 'Track my position (GPS)'}}" style="display: flex; align-items: center; justify-content: center;" class="hover:bg-slate-50 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#475569" stroke-width="2.5" style="width: 16px; height: 16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22a10 10 0 100-20 10 10 0 000 20z" />
+                        <circle cx="12" cy="12" r="2" fill="#475569" />
+                    </svg>
+                </a>`;
+                container.onclick = function(e){{
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTracking();
+                }};
+                return container;
+            }}
+        }});
+        map.addControl(new TrackMeControl());
 
         // Custom Fit Track Control (Fit to view / zoom out)
         var FitTrackControl = L.Control.extend({{
@@ -2010,14 +2674,18 @@ self.addEventListener('install', event => {{
 self.addEventListener('fetch', event => {{
     if (event.request.method !== 'GET') return;
     
-    if (event.request.url.includes('cartocdn.com')) {{
+    if (event.request.url.includes('tile.opentopomap.org')) {{
+        const normalizedUrl = event.request.url.replace(/https:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
         event.respondWith(
-            caches.match(event.request).then(response => {{
+            caches.match(normalizedUrl).then(response => {{
                 return response || fetch(event.request).then(fetchResponse => {{
-                    return caches.open('ultra-tiles-v1').then(cache => {{
-                        cache.put(event.request, fetchResponse.clone());
-                        return fetchResponse;
-                    }});
+                    if (fetchResponse.ok) {{
+                        const responseClone = fetchResponse.clone();
+                        caches.open('ultra-tiles-v1').then(cache => {{
+                            cache.put(normalizedUrl, responseClone);
+                        }});
+                    }}
+                    return fetchResponse;
                 }});
             }})
         );
