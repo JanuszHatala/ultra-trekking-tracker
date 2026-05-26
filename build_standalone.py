@@ -1497,6 +1497,8 @@ html_template = f'''<!DOCTYPE html>
             const h = canvas.height;
             
             ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(0, 0, w, h);
             
             if(segmentPts.length < 2) return;
             
