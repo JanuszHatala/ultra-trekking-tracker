@@ -1,4 +1,6 @@
 {
+    "id": "./Ultra75_standalone.html",
+    "scope": "./Ultra75_standalone.html",
     "name": "Wyrypa 75km",
     "short_name": "Wyrypa 75k",
     "start_url": "./Ultra75_standalone.html",
@@ -8,13 +10,13 @@
     "description": "Offline tracker for 75km Ultra-Trekking",
     "icons": [
         {
-            "src": "./icon-192.svg",
+            "src": "./icon-192_75.svg",
             "sizes": "192x192",
             "type": "image/svg+xml",
             "purpose": "any maskable"
         },
         {
-            "src": "./icon-512.svg",
+            "src": "./icon-512_75.svg",
             "sizes": "512x512",
             "type": "image/svg+xml",
             "purpose": "any maskable"
