@@ -1,11 +1,11 @@
 {
     "name": "Wyrypa 75km",
-    "short_name": "Wyrypa 100k",
-    "start_url": "./index.html",
+    "short_name": "Wyrypa 75k",
+    "start_url": "./Ultra75_standalone.html",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
-    "description": "Offline tracker for 100km Ultra-Trekking",
+    "description": "Offline tracker for 75km Ultra-Trekking",
     "icons": [
         {
             "src": "./icon-192.svg",

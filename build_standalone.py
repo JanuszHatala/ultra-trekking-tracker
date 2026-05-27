@@ -2010,6 +2010,10 @@ html_template = f'''<!DOCTYPE html>
                 cp.section_speed = "N/A";
             }}
             
+            const sectHours = Math.floor(sectionElapsed / 60);
+            const sectMins = sectionElapsed % 60;
+            cp.section_duration = sectHours > 0 ? '+' + sectHours + 'h ' + sectMins + 'm' : '+' + sectMins + 'm';
+            
             prevKm = cp.km;
             prevElapsed = cp.elapsed_minutes;
         }});
@@ -2115,7 +2119,10 @@ html_template = f'''<!DOCTYPE html>
 
                 tr.innerHTML = `
                     <td class="p-2 md:p-3 text-cyan-400 font-bold">${{cp.km}}</td>
-                    <td class="p-2 md:p-3 text-slate-200 font-bold">${{dynamicTime}}</td>
+                    <td class="p-2 md:p-3 leading-tight">
+                        <div class="text-slate-200 font-bold">${{dynamicTime}}</div>
+                        <div class="text-[10px] text-slate-500 font-bold">${{cp.section_duration}}</div>
+                    </td>
                     <td class="p-2 md:p-3 text-slate-400 leading-tight">
                         <div class="font-semibold text-slate-300">${{cp.overall_pace}}</div>
                         <div class="text-xs">${{cp.overall_speed}}</div>
@@ -2781,9 +2788,6 @@ html_template = f'''<!DOCTYPE html>
 </html>'''
 
 
-with open('index.html', 'w', encoding='utf-8') as f:
-    f.write(html_template)
-
 print('Writing Ultra100_standalone.html...')
 with open('Ultra100_standalone.html', 'w', encoding='utf-8') as f:
     f.write(html_template)
@@ -2791,7 +2795,7 @@ with open('Ultra100_standalone.html', 'w', encoding='utf-8') as f:
 manifest_data = {
     "name": "Wyrypa 100km",
     "short_name": "Wyrypa 100k",
-    "start_url": "./index.html",
+    "start_url": "./Ultra100_standalone.html",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
@@ -2819,6 +2823,7 @@ sw_content = f'''const CACHE_NAME = '{app_version}';
 const ASSETS = [
     './',
     './index.html',
+    './Ultra100_standalone.html',
     './manifest.json',
     './icon-192.svg',
     './icon-512.svg',
