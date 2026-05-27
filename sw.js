@@ -1,7 +1,8 @@
-const CACHE_NAME = 'ultra-trekking-v1779886349';
+const CACHE_NAME = 'ultra-trekking-v1779887028';
 const ASSETS = [
     './',
     './index.html',
+    './Ultra100_standalone.html',
     './manifest.json',
     './icon-192.svg',
     './icon-512.svg',

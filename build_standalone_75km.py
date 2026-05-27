@@ -1722,6 +1722,10 @@ html_template = f'''<!DOCTYPE html>
                 cp.section_speed = "N/A";
             }}
             
+            const sectHours = Math.floor(sectionElapsed / 60);
+            const sectMins = sectionElapsed % 60;
+            cp.section_duration = sectHours > 0 ? '+' + sectHours + 'h ' + sectMins + 'm' : '+' + sectMins + 'm';
+            
             prevKm = cp.km;
             prevElapsed = cp.elapsed_minutes;
         }});
@@ -1827,7 +1831,10 @@ html_template = f'''<!DOCTYPE html>
 
                 tr.innerHTML = `
                     <td class="p-2 md:p-3 text-cyan-400 font-bold">${{cp.km}}</td>
-                    <td class="p-2 md:p-3 text-slate-200 font-bold">${{dynamicTime}}</td>
+                    <td class="p-2 md:p-3 leading-tight">
+                        <div class="text-slate-200 font-bold">${{dynamicTime}}</div>
+                        <div class="text-[10px] text-slate-500 font-bold">${{cp.section_duration}}</div>
+                    </td>
                     <td class="p-2 md:p-3 text-slate-400 leading-tight">
                         <div class="font-semibold text-slate-300">${{cp.overall_pace}}</div>
                         <div class="text-xs">${{cp.overall_speed}}</div>
@@ -2500,12 +2507,12 @@ with open('Ultra75_standalone.html', 'w', encoding='utf-8') as f:
 
 manifest_data = {
     "name": "Wyrypa 75km",
-    "short_name": "Wyrypa 100k",
-    "start_url": "./index.html",
+    "short_name": "Wyrypa 75k",
+    "start_url": "./Ultra75_standalone.html",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
-    "description": "Offline tracker for 100km Ultra-Trekking",
+    "description": "Offline tracker for 75km Ultra-Trekking",
     "icons": [
         {
             "src": "./icon-192.svg",
@@ -2529,6 +2536,7 @@ sw_content = f'''const CACHE_NAME = '{app_version}';
 const ASSETS = [
     './',
     './index.html',
+    './Ultra75_standalone.html',
     './manifest_75.json',
     './icon-192.svg',
     './icon-512.svg',

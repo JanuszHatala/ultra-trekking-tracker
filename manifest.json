@@ -1,7 +1,7 @@
 {
     "name": "Wyrypa 100km",
     "short_name": "Wyrypa 100k",
-    "start_url": "./index.html",
+    "start_url": "./Ultra100_standalone.html",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
