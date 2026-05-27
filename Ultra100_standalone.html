@@ -19531,29 +19531,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
             }
 
 
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderMiniCharts();
@@ -19569,29 +19546,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
             highlightedSectionIndex = null;
             document.querySelectorAll('tbody tr').forEach(row => row.classList.remove('table-row-highlight'));
 
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderOverviewElevationChart();
@@ -19654,29 +19608,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 } else if (targetId === 'tab-overview') {
                     setTimeout(() => {
             
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                             renderOverviewElevationChart();
@@ -19740,29 +19671,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
             document.body.style.cursor = '';
             map.invalidateSize();
 
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderOverviewElevationChart();
@@ -19796,29 +19704,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 }
             }
 
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderOverviewElevationChart();
@@ -19833,7 +19718,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
         let cumulativeEle = 0;
         
         checkpoints.forEach(cp => {
-            const eleMatch = cp.ele.match(/\+?(\d+)m/);
+            const eleMatch = cp.ele.match(/\+?\s*(\d+)\s*m/);
             const eleValue = eleMatch ? parseInt(eleMatch[1]) : 0;
             cumulativeEle += eleValue;
             cp.cumulative_ele = `+${cumulativeEle}m`;
@@ -19890,29 +19775,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
             
             highlightedSectionIndex = index;
 
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderOverviewElevationChart();
@@ -20056,6 +19918,8 @@ Check your Browserslist config to be sure that your targets are set up correctly
             });
             
 
+
+
             if (checkpoints.length > 0) {
                 const lastCp = checkpoints[checkpoints.length - 1];
                 const currentMins = startMins + lastCp.elapsed_minutes;
@@ -20068,7 +19932,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 const totalElapsed = `${totalHours}h ${totalMins}m`;
 
                 const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
+                summaryTr.className = 'bg-slate-900 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
                 summaryTr.innerHTML = `
                     <td colspan="4" class="p-2 md:p-3 text-right">
                         <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
@@ -20079,7 +19943,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 `;
                 tableBody.appendChild(summaryTr);
             }
-
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderMiniCharts();
             }
@@ -20467,29 +20330,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 // Interpolate Y elevation at gpsCurrentKm
                 let gpsEle = minEle;
     
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                     let closestPrev = gpxElevationData[0];
@@ -20652,29 +20492,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
 
         window.addEventListener('resize', () => {
 
-            if (checkpoints.length > 0) {
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${totalHours}h ${totalMins}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${totalElapsed}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${arrivalTime}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }
 
             if (gpxElevationData && gpxElevationData.length > 0) {
                 renderOverviewElevationChart();
