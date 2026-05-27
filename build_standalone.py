@@ -696,7 +696,7 @@ html_template = f'''<!DOCTYPE html>
                             <span class="lang-en">GPS Interval:</span>
                         </label>
                         <select id="gps-poll-interval" class="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1 md:px-2 py-0 text-xs md:text-sm outline-none focus:border-lime-400 cursor-pointer h-[20px] md:h-[26px] align-middle">
-                            <option value="0">Wyłączone / Disabled</option>
+                            <option value="0">Wyłączone</option>
                             <option value="15000">15 s</option>
                             <option value="30000" selected>30 s</option>
                             <option value="60000">1 min</option>
@@ -1827,6 +1827,11 @@ html_template = f'''<!DOCTYPE html>
             }} else {{
                 btnEn.className = 'px-2 py-1 text-xs font-bold bg-lime-500 text-slate-900 transition-colors';
                 btnPl.className = 'px-2 py-1 text-xs font-bold bg-slate-700 text-slate-400 hover:text-white transition-colors';
+            }}
+            
+            const disabledOpt = document.querySelector('#gps-poll-interval option[value="0"]');
+            if (disabledOpt) {{
+                disabledOpt.textContent = lang === 'pl' ? "Wyłączone" : "Disabled";
             }}
         }}
         // ----------------------
