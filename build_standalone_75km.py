@@ -21,413 +21,178 @@ print('Fetching Leaflet GPX...')
 leaflet_gpx_js = fetch('https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js')
 
 print('Reading GPX file...')
-with open('wyrypa-100km.gpx', 'r', encoding='utf-8') as f:
+with open('wyrypa75km.gpx', 'r', encoding='utf-8') as f:
     gpx_content = f.read()
 
 # Escape backticks, dollars, slashes, and closing scripts
 gpx_content_escaped = gpx_content.replace('\\', '\\\\').replace('`', '\\`').replace('$', '\\$').replace('</script>', '<\\/script>')
 
 checkpoints_json = '''[
-    {
-        "km": 5,
-        "lat": 49.77298,
-        "lon": 19.135408,
-        "time": "20:20",
-        "pace": "16:00",
-        "ele": "+542m",
-        "action": "Opróżnij 1. bidon Hyper-Mix.",
-        "bounds": [
-            [
-                49.761016,
-                19.086507
-            ],
-            [
-                49.776999,
-                19.135408
-            ]
-        ],
-        "action_en": "Empty 1st Hyper-Mix flask."
-    },
-    {
-        "km": 10,
-        "lat": 49.756147,
-        "lon": 19.192668,
-        "time": "21:18",
-        "pace": "13:48",
-        "ele": "+99m",
-        "action": "Weź 2 kaps. SaltStick.",
-        "bounds": [
-            [
-                49.756147,
-                19.135492
-            ],
-            [
-                49.772917,
-                19.192668
-            ]
-        ],
-        "action_en": "Take 2 SaltStick caps."
-    },
-    {
-        "km": 15,
-        "lat": 49.752494,
-        "lon": 19.234045,
-        "time": "22:35",
-        "pace": "14:20",
-        "ele": "+475m",
-        "action": "Zjedz 1 kanapkę.",
-        "bounds": [
-            [
-                49.745768,
-                19.193001
-            ],
-            [
-                49.755981,
-                19.234045
-            ]
-        ],
-        "action_en": "Eat 1 sandwich."
-    },
-    {
-        "km": 20,
-        "lat": 49.777629,
-        "lon": 19.279882,
-        "time": "23:41",
-        "pace": "14:03",
-        "ele": "+269m",
-        "action": "1 kostka Dextro Energy.",
-        "bounds": [
-            [
-                49.752507,
-                19.234175
-            ],
-            [
-                49.777629,
-                19.279882
-            ]
-        ],
-        "action_en": "1 cube of Dextro Energy."
-    },
-    {
-        "km": 25,
-        "lat": 49.792141,
-        "lon": 19.304483,
-        "time": "00:44",
-        "pace": "13:45",
-        "ele": "+108m",
-        "action": "PRZERWA 5 MIN. Zmiana skarpet! SaltStick + Baton.",
-        "bounds": [
-            [
-                49.776679,
-                19.280574
-            ],
-            [
-                49.792207,
-                19.316707
-            ]
-        ],
-        "action_en": "5 MIN BREAK. Change socks! SaltStick + Bar."
-    },
-    {
-        "km": 30,
-        "lat": 49.819205,
-        "lon": 19.263115,
-        "time": "01:53",
-        "pace": "13:46",
-        "ele": "+285m",
-        "action": "Opróżnij 3. bidon Hyper-Mix.",
-        "bounds": [
-            [
-                49.792138,
-                19.263115
-            ],
-            [
-                49.819807,
-                19.304321
-            ]
-        ],
-        "action_en": "Empty 3rd Hyper-Mix flask."
-    },
-    {
-        "km": 35,
-        "lat": 49.823822,
-        "lon": 19.213726,
-        "time": "02:50",
-        "pace": "13:25",
-        "ele": "+34m",
-        "action": "1 kanapka + Banan.",
-        "bounds": [
-            [
-                49.817347,
-                19.21359
-            ],
-            [
-                49.823822,
-                19.262697
-            ]
-        ],
-        "action_en": "1 sandwich + Banana."
-    },
-    {
-        "km": 40,
-        "lat": 49.828276,
-        "lon": 19.176234,
-        "time": "04:14",
-        "pace": "13:51",
-        "ele": "+577m",
-        "action": "Weź 2 kaps. SaltStick.",
-        "bounds": [
-            [
-                49.82388,
-                19.176234
-            ],
-            [
-                49.831375,
-                19.213817
-            ]
-        ],
-        "action_en": "Take 2 SaltStick caps."
-    },
-    {
-        "km": 45,
-        "lat": 49.805408,
-        "lon": 19.129303,
-        "time": "05:20",
-        "pace": "13:46",
-        "ele": "+213m",
-        "action": "KRYZYS NOCNY. Wypij Red Bull #1 + Glukoza 1WW.",
-        "bounds": [
-            [
-                49.805408,
-                19.127867
-            ],
-            [
-                49.828247,
-                19.17591
-            ]
-        ],
-        "action_en": "NIGHT CRISIS. Drink Red Bull #1 + Glucose 1WW."
-    },
-    {
-        "km": 50,
-        "lat": 49.775288,
-        "lon": 19.108276,
-        "time": "06:33",
-        "pace": "13:51",
-        "ele": "+267m",
-        "action": "Opróżnij 5. bidon Hyper-Mix.",
-        "bounds": [
-            [
-                49.774857,
-                19.108276
-            ],
-            [
-                49.805167,
-                19.131963
-            ]
-        ],
-        "action_en": "Empty 5th Hyper-Mix flask."
-    },
-    {
-        "km": 55,
-        "lat": 49.759398,
-        "lon": 19.057464,
-        "time": "07:31",
-        "pace": "13:39",
-        "ele": "+66m",
-        "action": "Weź 2 kaps. SaltStick.",
-        "bounds": [
-            [
-                49.759398,
-                19.057464
-            ],
-            [
-                49.776556,
-                19.108131
-            ]
-        ],
-        "action_en": "Take 2 SaltStick caps."
-    },
-    {
-        "km": 60,
-        "lat": 49.738409,
-        "lon": 19.00473,
-        "time": "09:28",
-        "pace": "14:28",
-        "ele": "+640m",
-        "action": "PRZEPAK (30 min). Zmiana butów, zupa, depozyt.",
-        "bounds": [
-            [
-                49.738308,
-                19.00473
-            ],
-            [
-                49.759361,
-                19.057283
-            ]
-        ],
-        "action_en": "DROP BAG (30 min). Change shoes, soup, drop bag."
-    },
-    {
-        "km": 65,
-        "lat": 49.706954,
-        "lon": 18.988097,
-        "time": "10:34",
-        "pace": "14:22",
-        "ele": "+174m",
-        "action": "Start na świeżym Hyper-Mixie.",
-        "bounds": [
-            [
-                49.706954,
-                18.988073
-            ],
-            [
-                49.738971,
-                19.00443
-            ]
-        ],
-        "action_en": "Start with fresh Hyper-Mix."
-    },
-    {
-        "km": 70,
-        "lat": 49.676524,
-        "lon": 18.94969,
-        "time": "11:44",
-        "pace": "14:20",
-        "ele": "+251m",
-        "action": "Żel + Banan + SaltStick.",
-        "bounds": [
-            [
-                49.674825,
-                18.94969
-            ],
-            [
-                49.706801,
-                18.987932
-            ]
-        ],
-        "action_en": "Gel + Banana + SaltStick."
-    },
-    {
-        "km": 75,
-        "lat": 49.711845,
-        "lon": 18.91931,
-        "time": "12:51",
-        "pace": "14:16",
-        "ele": "+100m",
-        "action": "1 kostka Dextro Energy.",
-        "bounds": [
-            [
-                49.676575,
-                18.915831
-            ],
-            [
-                49.711845,
-                18.949433
-            ]
-        ],
-        "action_en": "1 cube of Dextro Energy."
-    },
-    {
-        "km": 80,
-        "lat": 49.746019,
-        "lon": 18.935688,
-        "time": "14:11",
-        "pace": "14:23",
-        "ele": "+466m",
-        "action": "UPAŁ. Red Bull #2 + Max Sól.",
-        "bounds": [
-            [
-                49.712155,
-                18.916604
-            ],
-            [
-                49.746019,
-                18.935688
-            ]
-        ],
-        "action_en": "HEAT. Red Bull #2 + Max Salt."
-    },
-    {
-        "km": 85,
-        "lat": 49.739677,
-        "lon": 18.994522,
-        "time": "15:26",
-        "pace": "14:25",
-        "ele": "+360m",
-        "action": "Żel, koniec jedzenia stałego.",
-        "bounds": [
-            [
-                49.736711,
-                18.935909
-            ],
-            [
-                49.748139,
-                18.994522
-            ]
-        ],
-        "action_en": "Gel, end of solid food."
-    },
-    {
-        "km": 90,
-        "lat": 49.767413,
-        "lon": 19.029714,
-        "time": "16:26",
-        "pace": "14:17",
-        "ele": "+58m",
-        "action": "Opróżnij ostatni Hyper-Mix.",
-        "bounds": [
-            [
-                49.739824,
-                18.993553
-            ],
-            [
-                49.767413,
-                19.029714
-            ]
-        ],
-        "action_en": "Empty last Hyper-Mix."
-    },
-    {
-        "km": 95,
-        "lat": 49.792751,
-        "lon": 19.066255,
-        "time": "17:27",
-        "pace": "14:10",
-        "ele": "+77m",
-        "action": "FINISZ. Red Bull #3 + Glukoza 1WW.",
-        "bounds": [
-            [
-                49.767443,
-                19.029864
-            ],
-            [
-                49.792751,
-                19.066255
-            ]
-        ],
-        "action_en": "FINISH. Red Bull #3 + Glucose 1WW."
-    },
-    {
-        "km": 100,
-        "lat": 49.776164,
-        "lon": 19.105477,
-        "time": "18:46",
-        "pace": "14:15",
-        "ele": "+432m",
-        "action": "META.",
-        "bounds": [
-            [
-                49.776164,
-                19.06693
-            ],
-            [
-                49.795029,
-                19.106579
-            ]
-        ],
-        "action_en": "META."
-    }
+  {
+    "km": 5,
+    "lat": 49.777544,
+    "lon": 19.113625,
+    "time": "20:03",
+    "pace": "12:39",
+    "ele": "+500 m",
+    "action": "Wypij 1. bidon izotoniku, baton.",
+    "action_en": "Drink 1st isotonic flask, energy bar.",
+    "bounds": [[49.776947, 19.096194], [49.795845, 19.128895]]
+  },
+  {
+    "km": 10,
+    "lat": 49.784075,
+    "lon": 19.104631,
+    "time": "21:02",
+    "pace": "11:48",
+    "ele": "+176 m",
+    "action": "Weź kapsułki z solą / słone jedzenie.",
+    "action_en": "Take salt capsules / salty food.",
+    "bounds": [[49.777253, 19.095909], [49.795845, 19.113625]]
+  },
+  {
+    "km": 15,
+    "lat": 49.775386,
+    "lon": 19.105436,
+    "time": "22:05",
+    "pace": "12:40",
+    "ele": "+405 m",
+    "action": "Zjedz kanapkę.",
+    "action_en": "Eat a sandwich.",
+    "bounds": [[49.774707, 19.10206], [49.784075, 19.128324]]
+  },
+  {
+    "km": 20,
+    "lat": 49.77777,
+    "lon": 19.122489,
+    "time": "23:11",
+    "pace": "13:04",
+    "ele": "+482 m",
+    "action": "Opróżnij bidon.",
+    "action_en": "Empty flask.",
+    "bounds": [[49.77403, 19.086939], [49.77777, 19.122489]]
+  },
+  {
+    "km": 25,
+    "lat": 49.76596,
+    "lon": 19.108642,
+    "time": "00:12",
+    "pace": "12:11",
+    "ele": "+159 m",
+    "action": "Kontrola stóp. Zmiana skarpet. Baton.",
+    "action_en": "Check feet. Change socks. Energy bar.",
+    "bounds": [[49.760112, 19.102835], [49.780002, 19.129878]]
+  },
+  {
+    "km": 30,
+    "lat": 49.765973,
+    "lon": 19.13909,
+    "time": "01:18",
+    "pace": "13:21",
+    "ele": "+475 m",
+    "action": "Napój z kofeiną (kryzys nocny).",
+    "action_en": "Caffeinated beverage (night crisis).",
+    "bounds": [[49.76596, 19.108642], [49.780002, 19.140513]]
+  },
+  {
+    "km": 35,
+    "lat": 49.756541,
+    "lon": 19.12972,
+    "time": "02:21",
+    "pace": "12:24",
+    "ele": "+137 m",
+    "action": "Kapsułki z solą, żel.",
+    "action_en": "Salt capsules, energy gel.",
+    "bounds": [[49.753813, 19.118867], [49.765973, 19.143013]]
+  },
+  {
+    "km": 40,
+    "lat": 49.769759,
+    "lon": 19.142486,
+    "time": "03:28",
+    "pace": "13:30",
+    "ele": "+427 m",
+    "action": "Zjedz kanapkę.",
+    "action_en": "Eat a sandwich.",
+    "bounds": [[49.756541, 19.12972], [49.776784, 19.143013]]
+  },
+  {
+    "km": 45,
+    "lat": 49.767715,
+    "lon": 19.160125,
+    "time": "04:33",
+    "pace": "13:03",
+    "ele": "+247 m",
+    "action": "Opróżnij bidon.",
+    "action_en": "Empty flask.",
+    "bounds": [[49.763475, 19.142486], [49.769759, 19.182465]]
+  },
+  {
+    "km": 50,
+    "lat": 49.77438,
+    "lon": 19.139428,
+    "time": "05:37",
+    "pace": "12:42",
+    "ele": "+98 m",
+    "action": "Zmiana skarpet. Baton.",
+    "action_en": "Change socks. Energy bar.",
+    "bounds": [[49.766767, 19.127321], [49.783785, 19.160125]]
+  },
+  {
+    "km": 55,
+    "lat": 49.775302,
+    "lon": 19.140957,
+    "time": "06:44",
+    "pace": "13:30",
+    "ele": "+292 m",
+    "action": "Kofeina (zmęczenie poranne).",
+    "action_en": "Caffeine (morning fatigue).",
+    "bounds": [[49.77438, 19.138081], [49.785056, 19.161343]]
+  },
+  {
+    "km": 60,
+    "lat": 49.79874,
+    "lon": 19.131337,
+    "time": "07:52",
+    "pace": "13:31",
+    "ele": "+253 m",
+    "action": "Kapsułki z solą.",
+    "action_en": "Salt capsules.",
+    "bounds": [[49.773642, 19.127321], [49.79874, 19.140957]]
+  },
+  {
+    "km": 65,
+    "lat": 49.814493,
+    "lon": 19.113824,
+    "time": "09:00",
+    "pace": "13:30",
+    "ele": "+207 m",
+    "action": "Żel energetyczny.",
+    "action_en": "Energy gel.",
+    "bounds": [[49.79874, 19.113362], [49.821366, 19.131963]]
+  },
+  {
+    "km": 70,
+    "lat": 49.782609,
+    "lon": 19.12814,
+    "time": "10:13",
+    "pace": "14:43",
+    "ele": "+510 m",
+    "action": "Opróżnij bidon. Ostatnie podejście.",
+    "action_en": "Empty flask. Last ascent.",
+    "bounds": [[49.782609, 19.11375], [49.814493, 19.131963]]
+  },
+  {
+    "km": 74,
+    "lat": 49.795845,
+    "lon": 19.096194,
+    "time": "11:05",
+    "pace": "13:10",
+    "ele": "+49 m",
+    "action": "META TESTU.",
+    "action_en": "TEST FINISH.",
+    "bounds": [[49.782609, 19.096194], [49.795845, 19.12814]]
+  }
 ]'''
 
 html_template = f'''<!DOCTYPE html>
@@ -439,10 +204,10 @@ html_template = f'''<!DOCTYPE html>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest_75.json">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥾</text></svg>">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥾</text></svg>">
-    <title>100km Ultra-Trekking Tracker (Offline)</title>
+    <title>75km Ultra-Trekking Tracker (Offline)</title>
     
     <style>
         {leaflet_css}
@@ -655,7 +420,7 @@ html_template = f'''<!DOCTYPE html>
         <div class="p-3 md:p-6 pb-0 flex-shrink-0 bg-slate-900 z-20">
             <div class="flex justify-between items-center w-full">
                 <div>
-                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 100km Ultra-Trekking</h1>
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 75km Ultra-Trekking</h1>
                     <p class="text-[10px] md:text-xs text-slate-400 italic mb-0"><span class="lang-pl">Prawdziwe chodzenie zaczyna się po setce...</span><span class="lang-en">Real walking begins after a hundred...</span></p>
                 </div>
                 <!-- Show Map Button -->
@@ -669,8 +434,8 @@ html_template = f'''<!DOCTYPE html>
                 <button class="tab-btn px-3 md:px-4 py-1.5 md:py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-medium focus:outline-none transition-colors whitespace-nowrap" data-target="tab-taktyka"><span class="lang-pl">Taktyka</span><span class="lang-en">Tactics</span></button>
                 <button class="tab-btn px-3 md:px-4 py-1.5 md:py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-medium focus:outline-none transition-colors whitespace-nowrap" data-target="tab-inwentarz"><span class="lang-pl">Inwentarz</span><span class="lang-en">Inventory</span></button>
                 <button class="tab-btn px-3 md:px-4 py-1.5 md:py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-medium focus:outline-none transition-colors whitespace-nowrap" data-target="tab-harmonogram"><span class="lang-pl">Harmonogram</span><span class="lang-en">Schedule</span></button>
-                <button class="tab-btn px-3 md:px-4 py-1.5 md:py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-medium focus:outline-none transition-colors whitespace-nowrap" data-target="tab-testy"><span class="lang-pl">Testy</span><span class="lang-en">Tests</span></button>
-                <button class="tab-btn px-3 md:px-4 py-1.5 md:py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-medium focus:outline-none transition-colors whitespace-nowrap" data-target="tab-trening"><span class="lang-pl">Trening</span><span class="lang-en">Training</span></button>
+                
+                
             </div>
              
 
@@ -724,23 +489,10 @@ html_template = f'''<!DOCTYPE html>
 
                 <h2 class="text-base md:text-lg font-bold text-cyan-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">Parametry Wyzwania</span><span class="lang-en">Challenge Parameters</span></h2>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4">
-                    <div class="flex flex-col space-y-2 md:space-y-3">
-                        <div class="flex items-center space-x-2">
-                            <span class="bg-slate-800 text-slate-300 px-2 py-1 md:px-3 md:py-1.5 rounded border border-slate-700 shadow-sm w-full font-semibold text-xs md:text-sm">🗓️ <span class="lang-pl">10 lipca 2026</span><span class="lang-en">July 10, 2026</span></span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="bg-slate-800 text-slate-300 px-2 py-1 md:px-3 md:py-1.5 rounded border border-slate-700 shadow-sm w-full font-semibold text-xs md:text-sm">🏃‍♂️ 87 kg (75+12)</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-col space-y-2 md:space-y-3">
-                        <div class="flex items-center space-x-2">
-                            <span class="bg-slate-800 text-red-400 px-2 py-1 md:px-3 md:py-1.5 rounded border border-red-900/50 shadow-sm w-full font-semibold text-xs md:text-sm">❤️ Target: 125-140 bpm</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="bg-lime-900/30 text-lime-400 px-2 py-1 md:px-3 md:py-1.5 rounded border border-lime-700/50 shadow-sm w-full font-semibold text-xs md:text-sm">⏱️ <span class="lang-pl">Cel: &lt; 24h</span><span class="lang-en">Goal: &lt; 24h</span></span>
-                        </div>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-2 md:gap-4 flex-wrap">
+                    <span class="bg-slate-800 text-slate-300 px-2 py-1 md:px-3 md:py-1.5 rounded border border-slate-700 shadow-sm flex-1 text-center font-semibold text-xs md:text-sm whitespace-nowrap">🏃‍♂️ 87 kg (75+12)</span>
+                    <span class="bg-slate-800 text-red-400 px-2 py-1 md:px-3 md:py-1.5 rounded border border-red-900/50 shadow-sm flex-1 text-center font-semibold text-xs md:text-sm whitespace-nowrap">❤️ Target: 125-140 bpm</span>
+                    <span class="bg-lime-900/30 text-lime-400 px-2 py-1 md:px-3 md:py-1.5 rounded border border-lime-700/50 shadow-sm flex-1 text-center font-semibold text-xs md:text-sm whitespace-nowrap">⏱️ <span class="lang-pl">Cel: ~16-17h</span><span class="lang-en">Goal: ~16-17h</span></span>
                 </div>
 
             </div>
@@ -867,48 +619,64 @@ html_template = f'''<!DOCTYPE html>
         </div>
         <!-- Tab: Taktyka -->
         <div id="tab-taktyka" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
-            <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
-                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">ZASADY RUCHU I TAKTYKA 12 KG</span><span class="lang-en">MOVEMENT RULES & 12KG TACTICS</span></h2>
+<div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
+                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">3. TAKTYKA I ZASADY RUCHU</span><span class="lang-en">3. TACTICS & MOVEMENT</span></h2>
                 <ul class="space-y-4">
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Płasko (&lt; 8%):</strong> Tempo 12:30 - 13:30 min/km.</span><span class="lang-en">Flat (&lt; 8%):</strong> Pace 12:30 - 13:30 min/km.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Podejścia (8-15%):</strong> Tempo 15:00 - 18:00 min/km. Krótki krok, aktywna praca kijami.</span><span class="lang-en">Uphills (8-15%):</strong> Pace 15:00 - 18:00 min/km. Short steps, active poles.</span></div></li>
-                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Ściany (&gt; 15%):</strong> Tempo 22:00+ min/km. Przekroczenie HR 155 = natychmiastowe zwolnienie kroku.</span><span class="lang-en">Walls (&gt; 15%):</strong> Pace 22:00+ min/km. Exceeding HR 155 = slow down immediately.</span></div></li>
-                    <li class="flex items-start"><span class="text-red-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Zbiegi:</strong> Kategoryczny zakaz uderzeń piętą. Lądowanie na śródstopiu, amortyzacja kijkami przed sobą.</span><span class="lang-en">Downhills:</strong> Strict ban on heel strikes. Midfoot landing, pole absorption in front.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Płaskie i łagodne podejścia:</strong> Miarowy, stabilny marsz. Unikaj biegu.</span><span class="lang-en">Flat and gentle ascents:</strong> Maintain a steady, rhythmic walk. Avoid running.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Strome podejścia:</strong> Krótki krok, mocne wsparcie kijami. Tętno do 140 bpm. Zwalniasz, gdy rośnie.</span><span class="lang-en">Steep ascents:</strong> Take shorter steps, lean heavily on poles. HR limit: 140 bpm. Slow down if higher.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Zbiegi:</strong> Ląduj na śródstopiu/całej stopie. Kije absorbują 10-15% impaktu.</span><span class="lang-en">Downhills:</strong> Land on midfoot. Poles absorb 10-15% impact.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Nawadnianie i Żywienie:</strong> 1 bidon (500ml) na godzinę marszu. Cel: 60g węglowodanów na godzinę.</span><span class="lang-en">Hydration and Nutrition:</strong> 1 flask (500ml) per hour. Target: 60g carbs/hour.</span></div></li>
                 </ul>
             </div>
         </div>
 
         <!-- Tab: Inwentarz -->
         <div id="tab-inwentarz" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700 shadow-xl">
-                    <h3 class="text-lg font-bold text-cyan-400 mb-3 border-b border-slate-700 pb-2"><span class="lang-pl">Baza Płynna (Hyper-Mix 2:1)</span><span class="lang-en">Liquid Base (Hyper-Mix 2:1)</span></h3>
-                    <p class="text-sm text-slate-400 italic mb-3"><span class="lang-pl">Przygotuj 10 strunowych woreczków. 1 woreczek = 1 bidon 500-700ml.</span><span class="lang-en">Prepare 10 ziplock bags. 1 bag = 1 flask 500-700ml.</span></p>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-cyan-500 rounded-full mr-2 flex-shrink-0"></span><span><span class="lang-pl">40g Maltodekstryny + 20g Fruktozy + 1 saszetka Izotonika + ~500mg Cytrynianu Potasu.</span><span class="lang-en">40g Maltodextrin + 20g Fructose + 1 Isotonic sachet + ~500mg Potassium Citrate.</span></span></li>
-                        <li class="flex items-center text-amber-300 font-semibold mt-2"><span class="w-2 h-2 bg-amber-500 rounded-full mr-2 flex-shrink-0"></span><span><span class="lang-pl">Zasada: Wypijasz 1 bidon w ciągu godziny. Nie popijasz tego dodatkową wodą.</span><span class="lang-en">Rule: Drink 1 flask per hour. Do not chase with extra water.</span></span></li>
-                    </ul>
+<div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
+                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">2. INWENTARZ - EKWIPUNEK (Limit 12kg z wodą)</span><span class="lang-en">2. GEAR INVENTORY (12kg limit with water)</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Ubiór</span><span class="lang-en">Clothing</span></h3>
+                        <ul class="space-y-1">
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Kurtka wiatrówka/przeciwdeszczowa</span><span class="lang-en">Windproof/waterproof jacket</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Lekka warstwa termiczna (np. cienki polar na noc)</span><span class="lang-en">Lightweight thermal layer</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Zapasowe skarpetki - 2 pary w worku</span><span class="lang-en">Spare socks - 2 pairs in a ziplock bag</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Chusta wielofunkcyjna / Buff</span><span class="lang-en">Multifunctional headwear / Buff</span></div></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Apteczka Minimalistyczna</span><span class="lang-en">Minimalist First Aid Kit</span></h3>
+                        <ul class="space-y-1">
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Folia NRC / Koc ratunkowy</span><span class="lang-en">Emergency blanket</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Wazelina do stóp</span><span class="lang-en">Petroleum jelly for feet</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Tabletki przeciwbólowe (luzem)</span><span class="lang-en">Painkillers</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Plastry z opatrunkiem i na pęcherze</span><span class="lang-en">Band-aids and blister plasters</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Opaska elastyczna</span><span class="lang-en">Elastic bandage</span></div></li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700 shadow-xl">
-                    <h3 class="text-lg font-bold text-red-400 mb-3 border-b border-slate-700 pb-2"><span class="lang-pl">Suplementacja i Rescue</span><span class="lang-en">Supplementation & Rescue</span></h3>
-                    <ul class="space-y-3 text-sm">
-                        <li><strong class="text-white">SaltStick Caps:</strong> <span class="lang-pl">30 kaps. (2 co 1.5h - 2h)</span><span class="lang-en">30 caps. (2 every 1.5h - 2h)</span></li>
-                        <li><strong class="text-white">Dextro Energy:</strong> <span class="lang-pl">24 kostki. (Ssane w marszu co 2h)</span><span class="lang-en">24 cubes. (Suck while walking every 2h)</span></li>
-                        <li><strong class="text-white">Red Bull 250ml:</strong> <span class="lang-pl">3 puszki (Na wskazane kryzysy)</span><span class="lang-en">3 cans (For indicated crises)</span></li>
-                        <li class="bg-red-900/30 p-2 rounded border border-red-800"><strong class="text-red-400"><span class="lang-pl">Rescue Protocol (Odcięcie):</span><span class="lang-en">Rescue Protocol (Bonking):</span></strong> <span class="lang-pl">1 saszetka Płynnej Glukozy 1WW pod język + popić min. 150ml wody.</span><span class="lang-en">1 sachet Liquid Glucose under tongue + drink min. 150ml water.</span></li>
-                    </ul>
-                </div>
-                
-                <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700 shadow-xl md:col-span-2">
-                    <h3 class="text-lg font-bold text-orange-400 mb-3 border-b border-slate-700 pb-2"><span class="lang-pl">Jedzenie Stałe</span><span class="lang-en">Solid Food</span></h3>
-                    <p class="text-sm text-slate-400 italic mb-3"><span class="lang-pl">Ciała stałe jesz i popijasz czystą wodą</span><span class="lang-en">Eat solids and chase with clean water</span> (Target: 60g Carbs/h).</p>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="bg-slate-700 px-3 py-1 rounded-full text-sm shadow">🥪 <span class="lang-pl">6-8 Kanapek (szynka/ser/masło orzechowe)</span><span class="lang-en">6-8 Sandwiches (ham/cheese/pb)</span></span>
-                        <span class="bg-slate-700 px-3 py-1 rounded-full text-sm shadow">🍫 <span class="lang-pl">8-10 Batonów owsianych</span><span class="lang-en">8-10 Oat bars</span></span>
-                        <span class="bg-slate-700 px-3 py-1 rounded-full text-sm shadow">🍯 <span class="lang-pl">10 Żeli energetycznych</span><span class="lang-en">10 Energy gels</span></span>
-                        <span class="bg-slate-700 px-3 py-1 rounded-full text-sm shadow">🍌 <span class="lang-pl">5 Bananów</span><span class="lang-en">5 Bananas</span></span>
-                        <span class="bg-slate-700 px-3 py-1 rounded-full text-sm shadow">🍎 <span class="lang-pl">2 Jabłka</span><span class="lang-en">2 Apples</span></span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Sprzęt i Elektronika</span><span class="lang-en">Gear & Electronics</span></h3>
+                        <ul class="space-y-1">
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Kije trekkingowe</span><span class="lang-en">Trekking poles</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Czołówka główna + zapasowa (lub baterie)</span><span class="lang-en">Main headlamp + spare/batteries</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Powerbank 10000mAh + kabel</span><span class="lang-en">Powerbank 10000mAh + short cable</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Smartfon</span><span class="lang-en">Smartphone</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Zegarek GPS (Garmin)</span><span class="lang-en">GPS Watch</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Softflaski / Bukłak na max 2 litry</span><span class="lang-en">Hydration bladder or soft flasks for max 2 liters</span></div></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Jedzenie i Picie</span><span class="lang-en">Food & Hydration</span></h3>
+                        <ul class="space-y-1">
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Hyper-Mix: ok. 14 porcji w woreczkach</span><span class="lang-en">Carb powder mix - approx. 14 servings</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Żele energetyczne i batony</span><span class="lang-en">Energy gels and bars</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">4-5 spłaszczonych kanapek w folii</span><span class="lang-en">4-5 flattened sandwiches in foil</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Kapsułki z solą (SaltStick) lub słone przekąski</span><span class="lang-en">Salt capsules or salty snacks</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Napoje z kofeiną w puszkach (np. Red Bull)</span><span class="lang-en">Caffeinated drinks</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Filtr do wody / Tabletki uzdatniające</span><span class="lang-en">Water filtration system / Purification tablets</span></div></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -916,116 +684,60 @@ html_template = f'''<!DOCTYPE html>
 
         <!-- Tab: Harmonogram -->
         <div id="tab-harmonogram" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
+            <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
+                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">1. HARMONOGRAM LOGISTYCZNY DNIA</span><span class="lang-en">1. LOGISTICS SCHEDULE</span></h2>
+                <ul class="space-y-4">
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">06:00</strong> - <span class="lang-pl">Pobudka, nawodnienie i lekkie śniadanie.</span><span class="lang-en">Wake up, hydration, and light breakfast.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">07:00 - 15:00</strong> - <span class="lang-pl">Praca. Skupienie na ciągłym nawadnianiu.</span><span class="lang-en">Work day. Focus on continuous hydration.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">15:00 - 16:30</strong> - <span class="lang-pl">Drzemka / odpoczynek.</span><span class="lang-en">Short nap / rest.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">17:00</strong> - <span class="lang-pl">Obiad (węglowodany, mało błonnika).</span><span class="lang-en">Dinner - high carb, low fiber.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">18:00</strong> - <span class="lang-pl">Kontrola ekwipunku i dojazd na start.</span><span class="lang-en">Final gear audit and travel.</span></div></li>
+                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">19:00 START TESTU</strong> - <span class="lang-pl">Wejście w tryb marszu.</span><span class="lang-en">Enter walking mode.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">~03:30 (Dzień 2)</strong> - <span class="lang-pl">Kryzys nocny ("Godzina wilka"). Użycie kofeiny.</span><span class="lang-en">Night crisis / "The Witching Hour". Caffeine shot.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">~05:00 (Dzień 2)</strong> - <span class="lang-pl">Wschód słońca.</span><span class="lang-en">Sunrise.</span></div></li>
+                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">~11:10 (Dzień 2) META TESTU</strong> - <span class="lang-pl">Czas łączny ~16h 10m.</span><span class="lang-en">Expected Finish (~16h 10m).</span></div></li>
+                </ul>
+            </div>
+            
             <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl">
-                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">HARMONOGRAM OGÓLNY I POSTOJE</span><span class="lang-en">GENERAL SCHEDULE & STOPS</span></h2>
-                <p class="text-sm text-slate-400 italic mb-6"><span class="lang-pl">Wszystkie dłuższe postoje zaplanowane są na wypłaszczeniach/przełęczach po zakończeniu zejść, aby uniknąć wychłodzenia szczytowego i blokady mięśni na zbiegu.</span><span class="lang-en">All longer stops are planned on flats/passes after descents, to avoid peak chilling and muscle blockages on downhills.</span></p>
+                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">2. HARMONOGRAM OGÓLNY I POSTOJE</span><span class="lang-en">2. GENERAL SCHEDULE & STOPS</span></h2>
+                <p class="text-sm text-slate-400 italic mb-6"><span class="lang-pl">Wyrypa w pełnej autonomii. Brak przepaku i ciepłych posiłków. Przerwy zredukowane do absolutnego minimum wymaganego do utrzymania stóp w sprawności pod obciążeniem 12 kg.</span><span class="lang-en">Full autonomy. No drop bags or warm meals. Breaks reduced to the absolute minimum required to keep feet functional under a 12kg load.</span></p>
                 
                 <div class="relative border-l-2 border-slate-600 ml-3 pl-6 space-y-6">
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-slate-500 w-4 h-4 rounded-full mt-1.5"></span>
-                        <h4 class="font-bold text-white text-lg">0 - 25 km</h4>
-                        <p class="text-sm"><span class="lang-pl">Marsz ciągły.</span><span class="lang-en">Continuous march.</span></p>
+                        <h4 class="font-bold text-white text-lg">0 - 25 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Marsz ciągły</span><span class="lang-en">Continuous march</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Wejście w noc. Adaptacja do ciężaru. Skupienie na miarowym tętnie i rygorystycznym opróżnianiu bidonów (1/h).</span><span class="lang-en">Entering the night. Adapting to the load. Focus on steady heart rate and strict flask emptying (1/h).</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-amber-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
                         <h4 class="font-bold text-amber-400 text-lg">25 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Przerwa 5 min</span><span class="lang-en">5 min break</span></span></h4>
-                        <p class="text-sm"><span class="lang-pl">Przełęcz. Zmiana skarpet na suche (kluczowe dla ochrony stopy przed 12kg naciskiem).</span><span class="lang-en">Mountain pass. Change socks to dry ones (crucial to protect feet against 12kg pressure).</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Krytyczna konserwacja stóp.</strong> Ściągnięcie butów, osuszenie, nałożenie wazeliny, zmiana skarpet na suche. Zjedzenie stałego pokarmu (baton/kabanos).</span><span class="lang-en"><strong>Critical foot maintenance.</strong> Take off shoes, dry feet, apply vaseline, change to dry socks. Eat solid food (energy bar/salty snack).</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-slate-500 w-4 h-4 rounded-full mt-1.5"></span>
-                        <h4 class="font-bold text-white text-lg">25 - 50 km</h4>
-                        <p class="text-sm"><span class="lang-pl">Nocny marsz, chłodno.</span><span class="lang-en">Night march, chilly.</span></p>
+                        <h4 class="font-bold text-white text-lg">25 - 50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Nocny marsz</span><span class="lang-en">Night march</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Faza największego kryzysu senności ("Godzina Wilka"). Konieczność przyjęcia kofeiny (ok. 30-35 km). Na koniec tego etapu następuje wschód słońca.</span><span class="lang-en">The deepest sleep crisis phase ("Witching Hour"). Caffeine intake required (around 30-35 km). Sunrise occurs at the end of this stage.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-amber-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
                         <h4 class="font-bold text-amber-400 text-lg">50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Przerwa 5 min</span><span class="lang-en">5 min break</span></span></h4>
-                        <p class="text-sm"><span class="lang-pl">Przygotowanie mentalne i sprzętowe sprzętu pod przepak.</span><span class="lang-en">Mental and gear prep for the drop bag point.</span></p>
-                    </div>
-                    
-                    <div class="relative">
-                        <span class="absolute -left-[34px] bg-slate-900 border-2 border-lime-500 w-5 h-5 rounded-full mt-1 flex items-center justify-center shadow-[0_0_12px_rgba(132,204,22,0.6)]"><span class="bg-lime-500 w-2 h-2 rounded-full"></span></span>
-                        <h4 class="font-bold text-lime-400 text-xl">60 km - <span class="lang-pl">PRZEPAK</span><span class="lang-en">DROP BAG</span> <span class="text-sm text-lime-400 font-normal ml-2 bg-lime-900/30 px-2 py-0.5 rounded border border-lime-700"><span class="lang-pl">Przerwa 30 min</span><span class="lang-en">30 min break</span></span></h4>
-                        <p class="text-sm"><span class="lang-pl">Obowiązkowa zmiana butów, zjedzenie ciepłego posiłku (zupa), pobranie 50% depozytu (Hyper-mix, suple, batony).</span><span class="lang-en">Mandatory shoe change, eat warm meal (soup), take 50% of deposit (Hyper-mix, supplements, bars).</span></p>
-                    </div>
-                    
-                    <div class="relative">
-                        <span class="absolute -left-8 bg-slate-800 border-2 border-amber-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
-                        <h4 class="font-bold text-amber-400 text-lg">75 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Przerwa 5 min</span><span class="lang-en">5 min break</span></span></h4>
-                        <p class="text-sm"><span class="lang-pl">Dolina. Kontrola otarć, chłodzenie karku wodą przed najgorszym upałem.</span><span class="lang-en">Valley. Chafing check, cool neck with water before the worst heat.</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Druga konserwacja stóp.</strong> Przewietrzenie stóp, inspekcja otarć, ponowna aplikacja wazeliny (ew. zmiana na 2. parę zapasowych skarpet). Zjedzenie kanapki.</span><span class="lang-en"><strong>Second foot maintenance.</strong> Air out feet, inspect for chafing, reapply vaseline (change to 2nd spare pair of socks if carried). Eat a sandwich.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-red-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
-                        <h4 class="font-bold text-red-400 text-lg">75 - 100 km</h4>
-                        <p class="text-sm"><span class="lang-pl">Marsz na czas. Zatrzymanie tylko w przypadku odcięcia.</span><span class="lang-en">Time trial march. Stop only in case of a complete bonk.</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab: Testy -->
-        <div id="tab-testy" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700 shadow-xl">
-                    <h3 class="text-lg font-bold text-blue-400 mb-2 border-b border-slate-700 pb-2">Test A: 70 km (Balast 12 kg)</h3>
-                    <p class="text-sm text-slate-400 italic mb-4"><span class="lang-pl">Test sprzętowy i trawienny na długim dystansie.</span><span class="lang-en">Gear and digestion test over long distance.</span></p>
-                    <ol class="list-decimal pl-5 space-y-2 text-sm marker:text-blue-500 font-medium">
-                        <li><strong class="text-white">0 - 30 km:</strong> <span class="lang-pl">Test pełnego reżimu suplementacji (Sól co 1.5h, Hyper-Mix co 1h).</span><span class="lang-en">Full supplementation regime test (Salt every 1.5h, Hyper-Mix every 1h).</span></li>
-                        <li><strong class="text-white">30 km:</strong> <span class="lang-pl">Ściągasz buty i sprawdzasz stopy. Jeśli są odciski lub ostre pieczenie, konfiguracja sprzętowa do zmiany.</span><span class="lang-en">Take off shoes and check feet. If blisters or burning, change gear setup.</span></li>
-                        <li><strong class="text-white">50 km:</strong> <span class="lang-pl">Test wymuszonego zjedzenia kanapki popitej Red Bullem. Sprawdzasz, czy żołądek nie buntuje się po 12h.</span><span class="lang-en">Forced eating of a sandwich washed down with Red Bull. Check if stomach rebels after 12h.</span></li>
-                        <li class="text-lime-400 mt-3 p-2 bg-slate-900 border border-slate-700 rounded"><strong class="text-lime-400"><span class="lang-pl">Cel:</span><span class="lang-en">Goal:</span></strong> <span class="lang-pl">Ukończenie w granicach 16.5 - 17.5h.</span><span class="lang-en">Finish around 16.5 - 17.5h.</span></li>
-                    </ol>
-                </div>
-                
-                <div class="bg-slate-800/50 p-5 rounded-lg border border-slate-700 shadow-xl">
-                    <h3 class="text-lg font-bold text-purple-400 mb-2 border-b border-slate-700 pb-2">Test B: 42 km (Balast 10-12 kg)</h3>
-                    <p class="text-sm text-slate-400 italic mb-4"><span class="lang-pl">Test dynamiki zbiegów i procedur w ruchu.</span><span class="lang-en">Downhill dynamics and moving procedures test.</span></p>
-                    <ol class="list-decimal pl-5 space-y-2 text-sm marker:text-purple-500 font-medium">
-                        <li><strong class="text-white">0 - 20 km:</strong> <span class="lang-pl">Skupienie na brutalnie mocnej pracy ramion na podejściach. Kije mają przejmować 20% masy.</span><span class="lang-en">Focus on brutally strong arm work on uphills. Poles should take 20% of the mass.</span></li>
-                        <li><strong class="text-white">20 - 30 km:</strong> <span class="lang-pl">Procedury w ruchu. Wyciąganie batona, jedzenie i chowanie śmieci bez zatrzymywania marszu.</span><span class="lang-en">Procedures on the move. Pulling out a bar, eating and stowing trash without stopping.</span></li>
-                        <li><strong class="text-white">30 km:</strong> <span class="lang-pl">Uruchomienie procedury Rescue (Red Bull + Glukoza) i narzucenie ostrego tempa, aby sprawdzić obciążenie prawego kolana na zmęczeniu.</span><span class="lang-en">Activate Rescue protocol (Red Bull + Glucose) and push a hard pace to check right knee stress under fatigue.</span></li>
-                        <li class="text-lime-400 mt-3 p-2 bg-slate-900 border border-slate-700 rounded"><strong class="text-lime-400"><span class="lang-pl">Cel:</span><span class="lang-en">Goal:</span></strong> <span class="lang-pl">Ukończenie &lt; 9.5h.</span><span class="lang-en">Finish &lt; 9.5h.</span></li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab: Trening -->
-        <div id="tab-trening" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
-            <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl">
-                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">PROGRAM CORE &amp; MTB (W Tygodniu)</span><span class="lang-en">CORE &amp; MTB PROGRAM (Weekly)</span></h2>
-                <p class="text-sm text-slate-400 italic mb-6"><span class="lang-pl">12kg plecak wymaga wzmocnienia gorsetu i ścięgien, rower nie załatwi tu wszystkiego.</span><span class="lang-en">12kg backpack requires core and tendon strengthening, bike won't fix everything.</span></p>
-                
-                <div class="space-y-4">
-                    <div class="bg-slate-900 p-4 rounded border border-slate-700 flex items-start shadow">
-                        <div class="text-3xl mr-4">🚵‍♂️</div>
-                        <div>
-                            <h4 class="font-bold text-white text-lg"><span class="lang-pl">Rower MTB (1x tydz. 45-60 min)</span><span class="lang-en">MTB Bike (1x week 45-60 min)</span></h4>
-                            <p class="text-sm text-slate-400 mt-1"><span class="lang-pl">Trening "siłowy". Sztywne podjazdy, niskie RPM (50-60), żeby wzmocnić czworogłowe pod ciężar na zbiegach.</span><span class="lang-en">"Strength" training. Steep climbs, low RPM (50-60), to strengthen quads for downhill weight bearing.</span></p>
-                        </div>
+                        <h4 class="font-bold text-red-400 text-lg">50 - 74 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Faza końcowa</span><span class="lang-en">Final phase</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Marsz w świetle dnia na narastającym długu mięśniowym. Żołądek może odrzucać ciała stałe – przejście całkowicie na żele i Hyper-Mix. Kofeina w razie potrzeby.</span><span class="lang-en">Daylight march on accumulating muscle fatigue. Stomach may reject solid food – transition entirely to gels and Hyper-Mix. Caffeine as needed.</span></p>
                     </div>
                     
-                    <div class="bg-slate-900 p-4 rounded border border-slate-700 flex items-start shadow">
-                        <div class="text-3xl mr-4">🚴‍♀️</div>
-                        <div>
-                            <h4 class="font-bold text-white text-lg"><span class="lang-pl">Rowerek domowy (1x tydz. 60 min)</span><span class="lang-en">Stationary bike (1x week 60 min)</span></h4>
-                            <p class="text-sm text-slate-400 mt-1"><span class="lang-pl">Regeneracja tlenowa, HR 120-130.</span><span class="lang-en">Aerobic recovery, HR 120-130.</span></p>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-slate-900 p-4 rounded border border-slate-700 flex items-start shadow">
-                        <div class="text-3xl mr-4">🧘‍♂️</div>
-                        <div class="w-full">
-                            <h4 class="font-bold text-white text-lg mb-3"><span class="lang-pl">Core w domu (3x tydz. po 10 min)</span><span class="lang-en">Core at home (3x week 10 min)</span></h4>
-                            <ul class="space-y-2 text-sm bg-slate-800 p-3 rounded">
-                                <li class="flex justify-between items-center"><span class="font-semibold text-slate-300"><span class="lang-pl">Plank (Deska)</span><span class="lang-en">Plank</span></span><span class="text-cyan-400 font-mono bg-slate-900 px-2 py-1 rounded"><span class="lang-pl">3 x 60s (plecy)</span><span class="lang-en">3 x 60s (back)</span></span></li>
-                                <li class="flex justify-between items-center border-t border-slate-700 pt-2"><span class="font-semibold text-slate-300"><span class="lang-pl">Wspięcia na palce boso</span><span class="lang-en">Barefoot calf raises</span></span><span class="text-cyan-400 font-mono bg-slate-900 px-2 py-1 rounded"><span class="lang-pl">3 x 20 (lewe śródstopie)</span><span class="lang-en">3 x 20 (left midfoot)</span></span></li>
-                                <li class="flex justify-between items-center border-t border-slate-700 pt-2"><span class="font-semibold text-slate-300"><span class="lang-pl">Przysiady na jednej nodze (bułgarskie)</span><span class="lang-en">Single-leg squats (Bulgarian)</span></span><span class="text-cyan-400 font-mono bg-slate-900 px-2 py-1 rounded"><span class="lang-pl">3 x 10 / nogę (prawe kolano)</span><span class="lang-en">3 x 10 / leg (right knee)</span></span></li>
-                            </ul>
-                        </div>
+                    <div class="relative">
+                        <span class="absolute -left-[34px] bg-slate-900 border-2 border-lime-500 w-5 h-5 rounded-full mt-1 flex items-center justify-center shadow-[0_0_12px_rgba(132,204,22,0.6)]"><span class="bg-lime-500 w-2 h-2 rounded-full"></span></span>
+                        <h4 class="font-bold text-lime-400 text-xl">74 km <span class="text-sm text-lime-400 font-normal ml-2 bg-lime-900/30 px-2 py-0.5 rounded border border-lime-700"><span class="lang-pl">META</span><span class="lang-en">FINISH</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Zatrzymanie stopera. Koniec testu autonomii. Nawodnienie i odpoczynek.</span><span class="lang-en">Stop the timer. End of the autonomy test. Hydrate and rest.</span></p>
                     </div>
                 </div>
             </div>
@@ -2943,7 +2655,7 @@ html_template = f'''<!DOCTYPE html>
         // Service Worker registration for PWA installation
         if ('serviceWorker' in navigator) {{
             window.addEventListener('load', () => {{
-                navigator.serviceWorker.register('./sw.js').then(registration => {{
+                navigator.serviceWorker.register('./sw_75.js').then(registration => {{
                     console.log('SW registered: ', registration);
                 }}).catch(registrationError => {{
                     console.log('SW registration failed: ', registrationError);
@@ -2967,12 +2679,12 @@ html_template = f'''<!DOCTYPE html>
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(html_template)
 
-print('Writing Ultra100_standalone.html...')
-with open('Ultra100_standalone.html', 'w', encoding='utf-8') as f:
+print('Writing Ultra75_standalone.html...')
+with open('Ultra75_standalone.html', 'w', encoding='utf-8') as f:
     f.write(html_template)
 
 manifest_data = {
-    "name": "Wyrypa 100km",
+    "name": "Wyrypa 75km",
     "short_name": "Wyrypa 100k",
     "start_url": "./index.html",
     "display": "standalone",
@@ -2995,17 +2707,17 @@ manifest_data = {
     ]
 }
 
-with open('manifest.json', 'w', encoding='utf-8') as f:
+with open('manifest_75.json', 'w', encoding='utf-8') as f:
     json.dump(manifest_data, f, indent=4)
 
 sw_content = f'''const CACHE_NAME = '{app_version}';
 const ASSETS = [
     './',
     './index.html',
-    './manifest.json',
+    './manifest_75.json',
     './icon-192.svg',
     './icon-512.svg',
-    './wyrypa-100km.gpx',
+    './wyrypa75km.gpx',
     'https://cdn.tailwindcss.com',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
@@ -3061,8 +2773,8 @@ self.addEventListener('activate', event => {{
 }});
 '''
 
-print('Writing sw.js...')
-with open('sw.js', 'w', encoding='utf-8') as f:
+print('Writing sw_75.js...')
+with open('sw_75.js', 'w', encoding='utf-8') as f:
     f.write(sw_content)
 
-print('Successfully generated Ultra100_standalone.html, manifest.json, and sw.js.')
+print('Successfully generated Ultra75_standalone.html, manifest_75.json, and sw_75.js.')

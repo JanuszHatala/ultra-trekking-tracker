@@ -1,11 +1,11 @@
-const CACHE_NAME = 'ultra-trekking-v1779878103';
+const CACHE_NAME = 'ultra-trekking-v1779878104';
 const ASSETS = [
     './',
     './index.html',
-    './manifest.json',
+    './manifest_75.json',
     './icon-192.svg',
     './icon-512.svg',
-    './wyrypa-100km.gpx',
+    './wyrypa75km.gpx',
     'https://cdn.tailwindcss.com',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
