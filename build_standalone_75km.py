@@ -32,21 +32,21 @@ checkpoints_json = '''[
     "km": 5,
     "lat": 49.777544,
     "lon": 19.113625,
-    "time": "20:03",
-    "pace": "12:39",
-    "ele": "+500 m",
-    "action": "Wypij 1. bidon izotoniku, baton.",
-    "action_en": "Drink 1st isotonic flask, energy bar.",
+    "time": "21:01",
+    "pace": "24:16",
+    "ele": "+500 m / -128 m",
+    "action": "Opróżnij 1. bidon, baton.",
+    "action_en": "Empty 1st flask, energy bar.",
     "bounds": [[49.776947, 19.096194], [49.795845, 19.128895]]
   },
   {
     "km": 10,
     "lat": 49.784075,
     "lon": 19.104631,
-    "time": "21:02",
-    "pace": "11:48",
-    "ele": "+176 m",
-    "action": "Weź kapsułki z solą / słone jedzenie.",
+    "time": "22:16",
+    "pace": "14:52",
+    "ele": "+176 m / -426 m",
+    "action": "Kapsułki z solą / słone.",
     "action_en": "Take salt capsules / salty food.",
     "bounds": [[49.777253, 19.095909], [49.795845, 19.113625]]
   },
@@ -54,9 +54,9 @@ checkpoints_json = '''[
     "km": 15,
     "lat": 49.775386,
     "lon": 19.105436,
-    "time": "22:05",
-    "pace": "12:40",
-    "ele": "+405 m",
+    "time": "00:03",
+    "pace": "21:28",
+    "ele": "+405 m / -289 m",
     "action": "Zjedz kanapkę.",
     "action_en": "Eat a sandwich.",
     "bounds": [[49.774707, 19.10206], [49.784075, 19.128324]]
@@ -65,9 +65,9 @@ checkpoints_json = '''[
     "km": 20,
     "lat": 49.77777,
     "lon": 19.122489,
-    "time": "23:11",
-    "pace": "13:04",
-    "ele": "+482 m",
+    "time": "02:00",
+    "pace": "23:24",
+    "ele": "+482 m / -298 m",
     "action": "Opróżnij bidon.",
     "action_en": "Empty flask.",
     "bounds": [[49.77403, 19.086939], [49.77777, 19.122489]]
@@ -76,86 +76,86 @@ checkpoints_json = '''[
     "km": 25,
     "lat": 49.76596,
     "lon": 19.108642,
-    "time": "00:12",
-    "pace": "12:11",
-    "ele": "+159 m",
-    "action": "Kontrola stóp. Zmiana skarpet. Baton.",
-    "action_en": "Check feet. Change socks. Energy bar.",
+    "time": "03:16",
+    "pace": "15:15",
+    "ele": "+159 m / -504 m",
+    "action": "POSTÓJ 5 MIN (Stopy).",
+    "action_en": "BREAK 5 MIN (Feet).",
     "bounds": [[49.760112, 19.102835], [49.780002, 19.129878]]
   },
   {
     "km": 30,
     "lat": 49.765973,
     "lon": 19.13909,
-    "time": "01:18",
-    "pace": "13:21",
-    "ele": "+475 m",
-    "action": "Napój z kofeiną (kryzys nocny).",
-    "action_en": "Caffeinated beverage (night crisis).",
+    "time": "05:17",
+    "pace": "24:14",
+    "ele": "+475 m / -186 m",
+    "action": "Opróżnij bidon, baton.",
+    "action_en": "Empty flask, energy bar.",
     "bounds": [[49.76596, 19.108642], [49.780002, 19.140513]]
   },
   {
     "km": 35,
     "lat": 49.756541,
     "lon": 19.12972,
-    "time": "02:21",
-    "pace": "12:24",
-    "ele": "+137 m",
-    "action": "Kapsułki z solą, żel.",
-    "action_en": "Salt capsules, energy gel.",
+    "time": "06:31",
+    "pace": "14:45",
+    "ele": "+137 m / -364 m",
+    "action": "Sól, żel.",
+    "action_en": "Salt, energy gel.",
     "bounds": [[49.753813, 19.118867], [49.765973, 19.143013]]
   },
   {
     "km": 40,
     "lat": 49.769759,
     "lon": 19.142486,
-    "time": "03:28",
-    "pace": "13:30",
-    "ele": "+427 m",
-    "action": "Zjedz kanapkę.",
-    "action_en": "Eat a sandwich.",
+    "time": "08:31",
+    "pace": "23:58",
+    "ele": "+427 m / -83 m",
+    "action": "Napój z kofeiną.",
+    "action_en": "Caffeinated beverage.",
     "bounds": [[49.756541, 19.12972], [49.776784, 19.143013]]
   },
   {
     "km": 45,
     "lat": 49.767715,
     "lon": 19.160125,
-    "time": "04:33",
-    "pace": "13:03",
-    "ele": "+247 m",
-    "action": "Opróżnij bidon.",
-    "action_en": "Empty flask.",
+    "time": "10:04",
+    "pace": "18:36",
+    "ele": "+247 m / -229 m",
+    "action": "Kanapka. Opróżnij bidon.",
+    "action_en": "Eat sandwich. Empty flask.",
     "bounds": [[49.763475, 19.142486], [49.769759, 19.182465]]
   },
   {
     "km": 50,
     "lat": 49.77438,
     "lon": 19.139428,
-    "time": "05:37",
-    "pace": "12:42",
-    "ele": "+98 m",
-    "action": "Zmiana skarpet. Baton.",
-    "action_en": "Change socks. Energy bar.",
+    "time": "11:28",
+    "pace": "16:43",
+    "ele": "+98 m / -256 m",
+    "action": "POSTÓJ 10 MIN.",
+    "action_en": "BREAK 10 MIN.",
     "bounds": [[49.766767, 19.127321], [49.783785, 19.160125]]
   },
   {
     "km": 55,
     "lat": 49.775302,
     "lon": 19.140957,
-    "time": "06:44",
-    "pace": "13:30",
-    "ele": "+292 m",
-    "action": "Kofeina (zmęczenie poranne).",
-    "action_en": "Caffeine (morning fatigue).",
+    "time": "13:03",
+    "pace": "19:08",
+    "ele": "+292 m / -366 m",
+    "action": "Kofeina (zmęczenie).",
+    "action_en": "Caffeine (fatigue).",
     "bounds": [[49.77438, 19.138081], [49.785056, 19.161343]]
   },
   {
     "km": 60,
     "lat": 49.79874,
     "lon": 19.131337,
-    "time": "07:52",
-    "pace": "13:31",
-    "ele": "+253 m",
+    "time": "14:39",
+    "pace": "19:01",
+    "ele": "+253 m / -240 m",
     "action": "Kapsułki z solą.",
     "action_en": "Salt capsules.",
     "bounds": [[49.773642, 19.127321], [49.79874, 19.140957]]
@@ -164,9 +164,9 @@ checkpoints_json = '''[
     "km": 65,
     "lat": 49.814493,
     "lon": 19.113824,
-    "time": "09:00",
-    "pace": "13:30",
-    "ele": "+207 m",
+    "time": "16:03",
+    "pace": "16:51",
+    "ele": "+207 m / -410 m",
     "action": "Żel energetyczny.",
     "action_en": "Energy gel.",
     "bounds": [[49.79874, 19.113362], [49.821366, 19.131963]]
@@ -175,9 +175,9 @@ checkpoints_json = '''[
     "km": 70,
     "lat": 49.782609,
     "lon": 19.12814,
-    "time": "10:13",
-    "pace": "14:43",
-    "ele": "+510 m",
+    "time": "18:15",
+    "pace": "26:27",
+    "ele": "+510 m / -177 m",
     "action": "Opróżnij bidon. Ostatnie podejście.",
     "action_en": "Empty flask. Last ascent.",
     "bounds": [[49.782609, 19.11375], [49.814493, 19.131963]]
@@ -186,9 +186,9 @@ checkpoints_json = '''[
     "km": 74,
     "lat": 49.795845,
     "lon": 19.096194,
-    "time": "11:05",
-    "pace": "13:10",
-    "ele": "+49 m",
+    "time": "19:03",
+    "pace": "12:04",
+    "ele": "+49 m / -461 m",
     "action": "META TESTU.",
     "action_en": "TEST FINISH.",
     "bounds": [[49.782609, 19.096194], [49.795845, 19.12814]]
@@ -492,7 +492,7 @@ html_template = f'''<!DOCTYPE html>
                 <div class="flex flex-col sm:flex-row gap-2 md:gap-4 flex-wrap">
                     <span class="bg-slate-800 text-slate-300 px-2 py-1 md:px-3 md:py-1.5 rounded border border-slate-700 shadow-sm flex-1 text-center font-semibold text-xs md:text-sm whitespace-nowrap">🏃‍♂️ 87 kg (75+12)</span>
                     <span class="bg-slate-800 text-red-400 px-2 py-1 md:px-3 md:py-1.5 rounded border border-red-900/50 shadow-sm flex-1 text-center font-semibold text-xs md:text-sm whitespace-nowrap">❤️ Target: 125-140 bpm</span>
-                    <span class="bg-lime-900/30 text-lime-400 px-2 py-1 md:px-3 md:py-1.5 rounded border border-lime-700/50 shadow-sm flex-1 text-center font-semibold text-xs md:text-sm whitespace-nowrap">⏱️ <span class="lang-pl">Cel: ~16-17h</span><span class="lang-en">Goal: ~16-17h</span></span>
+                    <span class="bg-lime-900/30 text-lime-400 px-2 py-1 md:px-3 md:py-1.5 rounded border border-lime-700/50 shadow-sm flex-1 text-center font-semibold text-xs md:text-sm whitespace-nowrap">⏱️ <span class="lang-pl">Cel: ~17.5-18h</span><span class="lang-en">Goal: ~17.5-18h</span></span>
                 </div>
 
             </div>
@@ -623,9 +623,9 @@ html_template = f'''<!DOCTYPE html>
                 <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">3. TAKTYKA I ZASADY RUCHU</span><span class="lang-en">3. TACTICS & MOVEMENT</span></h2>
                 <ul class="space-y-4">
                     <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Płaskie i łagodne podejścia:</strong> Miarowy, stabilny marsz. Unikaj biegu.</span><span class="lang-en">Flat and gentle ascents:</strong> Maintain a steady, rhythmic walk. Avoid running.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Strome podejścia:</strong> Krótki krok, mocne wsparcie kijami. Tętno do 140 bpm. Zwalniasz, gdy rośnie.</span><span class="lang-en">Steep ascents:</strong> Take shorter steps, lean heavily on poles. HR limit: 140 bpm. Slow down if higher.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Zbiegi:</strong> Ląduj na śródstopiu/całej stopie. Kije absorbują 10-15% impaktu.</span><span class="lang-en">Downhills:</strong> Land on midfoot. Poles absorb 10-15% impact.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Nawadnianie i Żywienie:</strong> 1 bidon (500ml) na godzinę marszu. Cel: 60g węglowodanów na godzinę.</span><span class="lang-en">Hydration and Nutrition:</strong> 1 flask (500ml) per hour. Target: 60g carbs/hour.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Strome podejścia:</strong> Krótki krok, mocne wsparcie kijami. Tętno do 140 bpm.</span><span class="lang-en">Steep ascents:</strong> Shorter steps, lean heavily on poles. HR limit: 140 bpm.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Zbiegi:</strong> Szybki marsz, ale bez uderzeń piętą. Ląduj na śródstopiu. Kije absorbują impakt.</span><span class="lang-en">Downhills:</strong> Fast walk, no heel strikes. Land on midfoot. Poles absorb impact.</span></div></li>
+                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Nawadnianie i Żywienie:</strong> 1 bidon (500ml) na godzinę marszu. Cel: 60-80g węgli na godzinę.</span><span class="lang-en">Hydration and Nutrition:</strong> 1 flask (500ml) per hour. Target: 60-80g carbs/hour.</span></div></li>
                 </ul>
             </div>
         </div>
@@ -674,7 +674,7 @@ html_template = f'''<!DOCTYPE html>
                             <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Żele energetyczne i batony</span><span class="lang-en">Energy gels and bars</span></div></li>
                             <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">4-5 spłaszczonych kanapek w folii</span><span class="lang-en">4-5 flattened sandwiches in foil</span></div></li>
                             <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Kapsułki z solą (SaltStick) lub słone przekąski</span><span class="lang-en">Salt capsules or salty snacks</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Napoje z kofeiną w puszkach (np. Red Bull)</span><span class="lang-en">Caffeinated drinks</span></div></li>
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Napoje z kofeiną</span><span class="lang-en">Caffeinated drinks</span></div></li>
                             <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Filtr do wody / Tabletki uzdatniające</span><span class="lang-en">Water filtration system / Purification tablets</span></div></li>
                         </ul>
                     </div>
@@ -695,7 +695,7 @@ html_template = f'''<!DOCTYPE html>
                     <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">19:00 START TESTU</strong> - <span class="lang-pl">Wejście w tryb marszu.</span><span class="lang-en">Enter walking mode.</span></div></li>
                     <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">~03:30 (Dzień 2)</strong> - <span class="lang-pl">Kryzys nocny ("Godzina wilka"). Użycie kofeiny.</span><span class="lang-en">Night crisis / "The Witching Hour". Caffeine shot.</span></div></li>
                     <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">~05:00 (Dzień 2)</strong> - <span class="lang-pl">Wschód słońca.</span><span class="lang-en">Sunrise.</span></div></li>
-                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">~11:10 (Dzień 2) META TESTU</strong> - <span class="lang-pl">Czas łączny ~16h 10m.</span><span class="lang-en">Expected Finish (~16h 10m).</span></div></li>
+                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">~12:30 (Dzień 2) META TESTU</strong> - <span class="lang-pl">Czas łączny ok. 17.5h.</span><span class="lang-en">Expected Finish (approx. 17.5h).</span></div></li>
                 </ul>
             </div>
             
@@ -719,25 +719,25 @@ html_template = f'''<!DOCTYPE html>
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-slate-500 w-4 h-4 rounded-full mt-1.5"></span>
                         <h4 class="font-bold text-white text-lg">25 - 50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Nocny marsz</span><span class="lang-en">Night march</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Faza największego kryzysu senności ("Godzina Wilka"). Konieczność przyjęcia kofeiny (ok. 30-35 km). Na koniec tego etapu następuje wschód słońca.</span><span class="lang-en">The deepest sleep crisis phase ("Witching Hour"). Caffeine intake required (around 30-35 km). Sunrise occurs at the end of this stage.</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Faza największego kryzysu senności. Konieczność przyjęcia kofeiny (ok. 40-45 km). Na koniec tego etapu wschodzi słońce.</span><span class="lang-en">The deepest sleep crisis phase. Caffeine intake required (around 40-45 km). Sunrise occurs at the end of this stage.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-amber-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
-                        <h4 class="font-bold text-amber-400 text-lg">50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Przerwa 5 min</span><span class="lang-en">5 min break</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Druga konserwacja stóp.</strong> Przewietrzenie stóp, inspekcja otarć, ponowna aplikacja wazeliny (ew. zmiana na 2. parę zapasowych skarpet). Zjedzenie kanapki.</span><span class="lang-en"><strong>Second foot maintenance.</strong> Air out feet, inspect for chafing, reapply vaseline (change to 2nd spare pair of socks if carried). Eat a sandwich.</span></p>
+                        <h4 class="font-bold text-amber-400 text-lg">50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Przerwa 10 min</span><span class="lang-en">10 min break</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Druga konserwacja stóp.</strong> Inspekcja otarć, wazelina, zmiana skarpet (jeśli masz drugą zapasową parę). Zjedzenie kanapki, rozłożenie sił na ostatnie 24km.</span><span class="lang-en"><strong>Second foot maintenance.</strong> Inspect for chafing, apply vaseline, change socks. Eat a sandwich, pace yourself for the last 24km.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-red-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
                         <h4 class="font-bold text-red-400 text-lg">50 - 74 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Faza końcowa</span><span class="lang-en">Final phase</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Marsz w świetle dnia na narastającym długu mięśniowym. Żołądek może odrzucać ciała stałe – przejście całkowicie na żele i Hyper-Mix. Kofeina w razie potrzeby.</span><span class="lang-en">Daylight march on accumulating muscle fatigue. Stomach may reject solid food – transition entirely to gels and Hyper-Mix. Caffeine as needed.</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Marsz w świetle dnia. Żołądek może odrzucać ciała stałe – przejście na żele i Hyper-Mix.</span><span class="lang-en">Daylight march. Stomach may reject solid food – transition to gels and Hyper-Mix.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-[34px] bg-slate-900 border-2 border-lime-500 w-5 h-5 rounded-full mt-1 flex items-center justify-center shadow-[0_0_12px_rgba(132,204,22,0.6)]"><span class="bg-lime-500 w-2 h-2 rounded-full"></span></span>
                         <h4 class="font-bold text-lime-400 text-xl">74 km <span class="text-sm text-lime-400 font-normal ml-2 bg-lime-900/30 px-2 py-0.5 rounded border border-lime-700"><span class="lang-pl">META</span><span class="lang-en">FINISH</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Zatrzymanie stopera. Koniec testu autonomii. Nawodnienie i odpoczynek.</span><span class="lang-en">Stop the timer. End of the autonomy test. Hydrate and rest.</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Zatrzymanie stopera. Odpoczynek.</span><span class="lang-en">Stop the timer. Rest.</span></p>
                     </div>
                 </div>
             </div>
