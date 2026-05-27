@@ -1500,29 +1500,6 @@ html_template = f'''<!DOCTYPE html>
             }}
 
 
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderMiniCharts();
@@ -1538,29 +1515,6 @@ html_template = f'''<!DOCTYPE html>
             highlightedSectionIndex = null;
             document.querySelectorAll('tbody tr').forEach(row => row.classList.remove('table-row-highlight'));
 
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderOverviewElevationChart();
@@ -1623,29 +1577,6 @@ html_template = f'''<!DOCTYPE html>
                 }} else if (targetId === 'tab-overview') {{
                     setTimeout(() => {{
             
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                             renderOverviewElevationChart();
@@ -1709,29 +1640,6 @@ html_template = f'''<!DOCTYPE html>
             document.body.style.cursor = '';
             map.invalidateSize();
 
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderOverviewElevationChart();
@@ -1765,29 +1673,6 @@ html_template = f'''<!DOCTYPE html>
                 }}
             }}
 
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderOverviewElevationChart();
@@ -1802,7 +1687,7 @@ html_template = f'''<!DOCTYPE html>
         let cumulativeEle = 0;
         
         checkpoints.forEach(cp => {{
-            const eleMatch = cp.ele.match(/\\+?(\\d+)m/);
+            const eleMatch = cp.ele.match(/\\+?\\s*(\\d+)\\s*m/);
             const eleValue = eleMatch ? parseInt(eleMatch[1]) : 0;
             cumulativeEle += eleValue;
             cp.cumulative_ele = `+${{cumulativeEle}}m`;
@@ -1859,29 +1744,6 @@ html_template = f'''<!DOCTYPE html>
             
             highlightedSectionIndex = index;
 
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderOverviewElevationChart();
@@ -2025,6 +1887,8 @@ html_template = f'''<!DOCTYPE html>
             }});
             
 
+
+
             if (checkpoints.length > 0) {{
                 const lastCp = checkpoints[checkpoints.length - 1];
                 const currentMins = startMins + lastCp.elapsed_minutes;
@@ -2037,7 +1901,7 @@ html_template = f'''<!DOCTYPE html>
                 const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
 
                 const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
+                summaryTr.className = 'bg-slate-900 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
                 summaryTr.innerHTML = `
                     <td colspan="4" class="p-2 md:p-3 text-right">
                         <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
@@ -2048,7 +1912,6 @@ html_template = f'''<!DOCTYPE html>
                 `;
                 tableBody.appendChild(summaryTr);
             }}
-
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderMiniCharts();
             }}
@@ -2436,29 +2299,6 @@ html_template = f'''<!DOCTYPE html>
                 // Interpolate Y elevation at gpsCurrentKm
                 let gpsEle = minEle;
     
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                     let closestPrev = gpxElevationData[0];
@@ -2621,29 +2461,6 @@ html_template = f'''<!DOCTYPE html>
 
         window.addEventListener('resize', () => {{
 
-            if (checkpoints.length > 0) {{
-                const lastCp = checkpoints[checkpoints.length - 1];
-                const currentMins = startMins + lastCp.elapsed_minutes;
-                const outHour = Math.floor((currentMins % (24 * 60)) / 60);
-                const outMin = currentMins % 60;
-                const arrivalTime = `${{outHour.toString().padStart(2, '0')}}:${{outMin.toString().padStart(2, '0')}}`;
-                
-                const totalHours = Math.floor(lastCp.elapsed_minutes / 60);
-                const totalMins = lastCp.elapsed_minutes % 60;
-                const totalElapsed = `${{totalHours}}h ${{totalMins}}m`;
-
-                const summaryTr = document.createElement('tr');
-                summaryTr.className = 'bg-slate-900/80 font-bold text-lime-400 text-[11px] md:text-base border-t-2 border-lime-500/50';
-                summaryTr.innerHTML = `
-                    <td colspan="4" class="p-2 md:p-3 text-right">
-                        <span class="lang-pl">SZACOWANY CZAS PRZEJŚCIA:</span><span class="lang-en">EST. TOTAL TIME:</span> <span class="text-white">${{totalElapsed}}</span>
-                    </td>
-                    <td colspan="3" class="p-2 md:p-3 text-left border-l border-slate-700/50">
-                        <span class="lang-pl">CZAS NA MECIE:</span><span class="lang-en">ARRIVAL TIME:</span> <span class="text-white">${{arrivalTime}}</span>
-                    </td>
-                `;
-                tableBody.appendChild(summaryTr);
-            }}
 
             if (gpxElevationData && gpxElevationData.length > 0) {{
                 renderOverviewElevationChart();
@@ -2676,8 +2493,6 @@ html_template = f'''<!DOCTYPE html>
 </html>'''
 
 
-with open('index.html', 'w', encoding='utf-8') as f:
-    f.write(html_template)
 
 print('Writing Ultra75_standalone.html...')
 with open('Ultra75_standalone.html', 'w', encoding='utf-8') as f:
