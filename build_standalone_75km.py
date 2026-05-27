@@ -500,14 +500,20 @@ html_template = f'''<!DOCTYPE html>
             <!-- GPS Status Card -->
             <div id="gps-status-card" class="hidden bg-slate-800/50 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl mb-3 md:mb-4">
                 <div class="flex justify-between items-center mb-2 border-b border-slate-700 pb-1 md:pb-2">
-                    <h2 class="text-base md:text-lg font-bold text-lime-400 flex items-center gap-1.5">
+                    <h2 class="text-base md:text-lg font-bold text-cyan-400 flex items-center gap-1.5">
                         <span>📍</span>
                         <span class="lang-pl">Moja Pozycja</span>
                         <span class="lang-en">My Position</span>
                     </h2>
-                    <span id="gps-accuracy-badge" class="text-[10px] md:text-xs font-bold px-2 py-0.5 rounded bg-slate-900 text-slate-400">
-                        GPS: --
-                    </span>
+                    <div class="flex items-center gap-2">
+                        <span id="gps-accuracy-badge" class="text-[10px] md:text-xs font-bold px-2 py-0.5 rounded bg-slate-900 text-slate-400">
+                            GPS: --
+                        </span>
+                        <button id="btn-reset-gps" class="text-[10px] md:text-xs font-bold px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-900 border border-slate-700 hover:border-cyan-500/50 text-slate-400 hover:text-cyan-400 transition-all cursor-pointer">
+                            <span class="lang-pl">Resetuj</span>
+                            <span class="lang-en">Reset</span>
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- Active Content -->
@@ -1354,6 +1360,32 @@ html_template = f'''<!DOCTYPE html>
                     }}
                 }} catch(e) {{}}
                 btnDownload.addEventListener('click', downloadOfflineTiles);
+            }}
+
+            const btnResetGps = document.getElementById('btn-reset-gps');
+            if (btnResetGps) {{
+                btnResetGps.addEventListener('click', () => {{
+                    if (isTracking) {{
+                        toggleTracking();
+                    }} else {{
+                        if (gpsMarker) {{
+                            map.removeLayer(gpsMarker);
+                            gpsMarker = null;
+                        }}
+                        if (gpsAccuracyCircle) {{
+                            map.removeLayer(gpsAccuracyCircle);
+                            gpsAccuracyCircle = null;
+                        }}
+                        gpsCurrentKm = null;
+                        gpsCurrentAccuracy = null;
+                        renderOverviewElevationChart();
+                        const card = document.getElementById('gps-status-card');
+                        if (card) card.classList.add('hidden');
+                        
+                        const isPl = document.documentElement.getAttribute('lang') === 'pl';
+                        showToast(isPl ? "Lokalizacja została zresetowana" : "Location tracking has been reset");
+                    }}
+                }});
             }}
         }});
         // ---------------------------------------------
