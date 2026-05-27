@@ -1,4 +1,6 @@
 {
+    "id": "./Ultra100_standalone.html",
+    "scope": "./Ultra100_standalone.html",
     "name": "Wyrypa 100km",
     "short_name": "Wyrypa 100k",
     "start_url": "./Ultra100_standalone.html",

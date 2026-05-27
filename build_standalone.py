@@ -2767,7 +2767,7 @@ html_template = f'''<!DOCTYPE html>
         // Service Worker registration for PWA installation
         if ('serviceWorker' in navigator) {{
             window.addEventListener('load', () => {{
-                navigator.serviceWorker.register('./sw.js').then(registration => {{
+                navigator.serviceWorker.register('./sw.js', {{ scope: './Ultra100_standalone.html' }}).then(registration => {{
                     console.log('SW registered: ', registration);
                 }}).catch(registrationError => {{
                     console.log('SW registration failed: ', registrationError);
@@ -2793,6 +2793,8 @@ with open('Ultra100_standalone.html', 'w', encoding='utf-8') as f:
     f.write(html_template)
 
 manifest_data = {
+    "id": "./Ultra100_standalone.html",
+    "scope": "./Ultra100_standalone.html",
     "name": "Wyrypa 100km",
     "short_name": "Wyrypa 100k",
     "start_url": "./Ultra100_standalone.html",

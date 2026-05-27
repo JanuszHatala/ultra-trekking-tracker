@@ -20510,7 +20510,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
         // Service Worker registration for PWA installation
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then(registration => {
+                navigator.serviceWorker.register('./sw.js', { scope: './Ultra100_standalone.html' }).then(registration => {
                     console.log('SW registered: ', registration);
                 }).catch(registrationError => {
                     console.log('SW registration failed: ', registrationError);
