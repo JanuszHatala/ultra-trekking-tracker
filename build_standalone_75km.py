@@ -794,6 +794,7 @@ html_template = f'''<!DOCTYPE html>
         let gpsCurrentKm = null;
         let gpsCurrentAccuracy = null;
         let gpsLastMatchedIndex = null;
+        let gpsHasLocated = false;
         try {{
             const savedIdx = localStorage.getItem('gps_last_matched_index');
             if (savedIdx !== null) {{
@@ -1053,15 +1054,7 @@ html_template = f'''<!DOCTYPE html>
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
                     const accuracy = pos.coords.accuracy;
-                    
-                    let dotColor = '#3b82f6';
-                    if (accuracy > 100) {{
-                        dotColor = '#ef4444';
-                    }} else if (accuracy > 50) {{
-                        dotColor = '#f97316';
-                    }}
-                    
-                    let minDistanceMetres = Infinity;
+                       let minDistanceMetres = Infinity;
                     let closestTrackPt = null;
                     let closestIdx = -1;
                     const gpsLatLng = L.latLng(lat, lon);
@@ -1069,10 +1062,12 @@ html_template = f'''<!DOCTYPE html>
                     if (gpxTrackPoints && gpxTrackPoints.length > 0) {{
                         let searchStart = 0;
                         let searchEnd = gpxTrackPoints.length - 1;
+                        let usingRestricted = false;
                         
-                        if (gpsLastMatchedIndex !== null) {{
+                        if (gpsHasLocated && gpsLastMatchedIndex !== null && isTracking) {{
                             searchStart = Math.max(0, gpsLastMatchedIndex - 150);
                             searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 600);
+                            usingRestricted = true;
                         }}
                         
                         for (let i = searchStart; i <= searchEnd; i++) {{
@@ -1084,6 +1079,42 @@ html_template = f'''<!DOCTYPE html>
                             }}
                         }}
                         
+                        if (usingRestricted && minDistanceMetres > 200) {{
+                            let globalMinDistance = Infinity;
+                            let globalClosestPt = null;
+                            let globalClosestIdx = -1;
+                            for (let i = 0; i < gpxTrackPoints.length; i++) {{
+                                const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
+                                if (d < globalMinDistance) {{
+                                    globalMinDistance = d;
+                                    globalClosestPt = gpxTrackPoints[i];
+                                    globalClosestIdx = i;
+                                }}
+                            }}
+                            
+                            if (globalMinDistance <= 200) {{
+                                minDistanceMetres = globalMinDistance;
+                                closestTrackPt = globalClosestPt;
+                                closestIdx = globalClosestIdx;
+                            }} else {{
+                                if (gpsLastMatchedIndex !== null) {{
+                                    minDistanceMetres = gpsLatLng.distanceTo(gpxTrackPoints[gpsLastMatchedIndex].latlng);
+                                    closestTrackPt = gpxTrackPoints[gpsLastMatchedIndex];
+                                    closestIdx = gpsLastMatchedIndex;
+                                }} else {{
+                                    minDistanceMetres = globalMinDistance;
+                                    closestTrackPt = globalClosestPt;
+                                    closestIdx = globalClosestIdx;
+                                }}
+                            }}
+                        }} else if (!usingRestricted && minDistanceMetres > 200) {{
+                            if (gpsLastMatchedIndex !== null) {{
+                                minDistanceMetres = gpsLatLng.distanceTo(gpxTrackPoints[gpsLastMatchedIndex].latlng);
+                                closestTrackPt = gpxTrackPoints[gpsLastMatchedIndex];
+                                closestIdx = gpsLastMatchedIndex;
+                            }}
+                        }}
+                        
                         if (closestIdx !== -1) {{
                             gpsLastMatchedIndex = closestIdx;
                             try {{
@@ -1091,6 +1122,8 @@ html_template = f'''<!DOCTYPE html>
                             }} catch(e) {{}}
                         }}
                     }}
+                    
+                    gpsHasLocated = true;
                     
                     const isOffRoute = minDistanceMetres > 200;
                     const borderCol = isOffRoute ? '#fbbf24' : '#ffffff';
@@ -1202,6 +1235,7 @@ html_template = f'''<!DOCTYPE html>
             }}
             
             gpsLastMatchedIndex = closestIdx;
+            gpsHasLocated = true;
             try {{
                 localStorage.setItem('gps_last_matched_index', gpsLastMatchedIndex);
             }} catch (e) {{}}
@@ -1211,25 +1245,41 @@ html_template = f'''<!DOCTYPE html>
                 ? `GPS zsynchronizowany z punktem KM ${{cpKm.toFixed(1)}}` 
                 : `GPS snapped to checkpoint KM ${{cpKm.toFixed(1)}}`);
             
+            gpsCurrentKm = gpxTrackPoints[closestIdx].km;
+            
+            let lat = 49.762544;
+            let lon = 19.086507;
+            let accuracy = 10;
+            let minDistanceMetres = 0;
+            
             if (gpsMarker) {{
                 const currentLatLng = gpsMarker.getLatLng();
-                let searchStart = Math.max(0, gpsLastMatchedIndex - 150);
-                let searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 600);
+                lat = currentLatLng.lat;
+                lon = currentLatLng.lng;
+                accuracy = gpsCurrentAccuracy || 10;
                 
-                let minDistanceMetres = Infinity;
-                let closestTrackPt = gpxTrackPoints[searchStart];
-                for (let i = searchStart; i <= searchEnd; i++) {{
-                    const d = currentLatLng.distanceTo(gpxTrackPoints[i].latlng);
-                    if (d < minDistanceMetres) {{
-                        minDistanceMetres = d;
-                        closestTrackPt = gpxTrackPoints[i];
+                minDistanceMetres = currentLatLng.distanceTo(gpxTrackPoints[closestIdx].latlng);
+                
+                if (minDistanceMetres <= 200) {{
+                    let searchStart = Math.max(0, gpsLastMatchedIndex - 150);
+                    let searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 600);
+                    
+                    let minD = Infinity;
+                    let closestTrackPt = gpxTrackPoints[searchStart];
+                    for (let i = searchStart; i <= searchEnd; i++) {{
+                        const d = currentLatLng.distanceTo(gpxTrackPoints[i].latlng);
+                        if (d < minD) {{
+                            minD = d;
+                            closestTrackPt = gpxTrackPoints[i];
+                        }}
                     }}
+                    gpsCurrentKm = closestTrackPt.km;
+                    minDistanceMetres = minD;
                 }}
-                
-                gpsCurrentKm = closestTrackPt.km;
-                renderOverviewElevationChart();
-                updateGpsStatusPanel(currentLatLng.lat, currentLatLng.lng, gpsCurrentAccuracy || 10, minDistanceMetres);
             }}
+            
+            renderOverviewElevationChart();
+            updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
         }}
 
         function toggleTracking() {{
@@ -1417,6 +1467,7 @@ html_template = f'''<!DOCTYPE html>
             if (btnResetGps) {{
                 btnResetGps.addEventListener('click', () => {{
                     gpsLastMatchedIndex = null;
+                    gpsHasLocated = false;
                     try {{
                         localStorage.removeItem('gps_last_matched_index');
                     }} catch(e) {{}}
