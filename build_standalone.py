@@ -1194,7 +1194,7 @@ html_template = f'''<!DOCTYPE html>
             }} catch (e) {{}}
         }}
 
-        function updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres) {{
+        function updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, currentKm) {{
             const card = document.getElementById('gps-status-card');
             const activeZone = document.getElementById('gps-card-active');
             const msgZone = document.getElementById('gps-card-message');
@@ -1228,21 +1228,6 @@ html_template = f'''<!DOCTYPE html>
                 warnPoorSignal.classList.remove('hidden');
             }} else {{
                 warnPoorSignal.classList.add('hidden');
-            }}
-            
-            let currentKm = 0;
-            const gpsLatLng = L.latLng(lat, lon);
-            if (gpxTrackPoints && gpxTrackPoints.length > 0) {{
-                let closestPt = gpxTrackPoints[0];
-                let minDist = gpsLatLng.distanceTo(closestPt.latlng);
-                for (let i = 1; i < gpxTrackPoints.length; i++) {{
-                    const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
-                    if (d < minDist) {{
-                        minDist = d;
-                        closestPt = gpxTrackPoints[i];
-                    }}
-                }}
-                currentKm = closestPt.km;
             }}
             
             const kmText = document.getElementById('gps-progress-km');
@@ -1466,7 +1451,7 @@ html_template = f'''<!DOCTYPE html>
                     gpsCurrentAccuracy = accuracy;
                     renderOverviewElevationChart();
                     
-                    updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres);
+                    updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
                     
                     if (onSuccess) onSuccess();
                 }},
