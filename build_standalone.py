@@ -1421,6 +1421,11 @@ html_template = f'''<!DOCTYPE html>
             const isOffRoute = minDistanceMetres > 200;
             const borderCol = isOffRoute ? '#fbbf24' : '#ffffff';
             
+            if (gpsMarker && !(gpsMarker instanceof L.CircleMarker)) {{
+                map.removeLayer(gpsMarker);
+                gpsMarker = null;
+            }}
+            
             if (!gpsMarker) {{
                 gpsMarker = L.circleMarker(gpsLatLng, {{
                     radius: 8,
@@ -1573,21 +1578,34 @@ html_template = f'''<!DOCTYPE html>
             let dotColor = '#84cc16'; // lime accent color for 100km app
             const borderCol = '#ffffff';
             
+            if (gpsMarker && (gpsMarker instanceof L.CircleMarker)) {{
+                map.removeLayer(gpsMarker);
+                gpsMarker = null;
+            }}
+
+            const pinIcon = L.divIcon({{
+                html: `
+                    <div style="filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.45));">
+                        <svg class="w-8 h-8 text-red-500 animate-bounce" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                `,
+                className: '',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32]
+            }});
+
             if (!gpsMarker) {{
-                gpsMarker = L.circleMarker(gpsLatLng, {{
-                    radius: 8,
-                    fillColor: dotColor,
-                    fillOpacity: 1,
-                    color: borderCol,
-                    weight: 2,
-                    zIndexOffset: 1000
+                gpsMarker = L.marker(gpsLatLng, {{
+                    icon: pinIcon,
+                    zIndexOffset: 2000
                 }}).addTo(map);
             }} else {{
                 gpsMarker.setLatLng(gpsLatLng);
-                gpsMarker.setStyle({{
-                    fillColor: dotColor,
-                    color: borderCol
-                }});
+                if (typeof gpsMarker.setIcon === 'function') {{
+                    gpsMarker.setIcon(pinIcon);
+                }}
             }}
             
             if (gpsAccuracyCircle) {{
