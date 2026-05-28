@@ -1393,22 +1393,6 @@ html_template = f'''<!DOCTYPE html>
                                 minDistanceMetres = globalMinDistance;
                                 closestTrackPt = globalClosestPt;
                                 closestIdx = globalClosestIdx;
-                            }} else {{
-                                if (gpsLastMatchedIndex !== null) {{
-                                    minDistanceMetres = gpsLatLng.distanceTo(gpxTrackPoints[gpsLastMatchedIndex].latlng);
-                                    closestTrackPt = gpxTrackPoints[gpsLastMatchedIndex];
-                                    closestIdx = gpsLastMatchedIndex;
-                                }} else {{
-                                    minDistanceMetres = globalMinDistance;
-                                    closestTrackPt = globalClosestPt;
-                                    closestIdx = globalClosestIdx;
-                                }}
-                            }}
-                        }} else if (!usingRestricted && minDistanceMetres > 200) {{
-                            if (gpsLastMatchedIndex !== null) {{
-                                minDistanceMetres = gpsLatLng.distanceTo(gpxTrackPoints[gpsLastMatchedIndex].latlng);
-                                closestTrackPt = gpxTrackPoints[gpsLastMatchedIndex];
-                                closestIdx = gpsLastMatchedIndex;
                             }}
                         }}
                         
