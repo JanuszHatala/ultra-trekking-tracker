@@ -2344,10 +2344,6 @@ html_template = f'''<!DOCTYPE html>
                     map.invalidateSize();
                     const paddingVal = (mapContainer && mapContainer.offsetHeight < 400) ? [15, 15] : [40, 40];
                     map.fitBounds(highlightedPolyline.getBounds(), {{ padding: paddingVal, animate: true, duration: 1 }});
-                    const marker = markers[index];
-                    if (marker) {{
-                        setTimeout(() => marker.openPopup(), 600);
-                    }}
                 }}
             }}
         }}
