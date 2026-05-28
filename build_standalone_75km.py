@@ -801,6 +801,8 @@ html_template = f'''<!DOCTYPE html>
         let gpsHasLocated = false;
         let gpsLastMinDistanceMetres = 0;
         let gpsLastUpdateTime = 0;
+        let gpsLastRawPosition = null;
+        let gpsSnapBackTimeout = null;
         try {{
             const savedIdx = localStorage.getItem('gps_last_matched_index');
             if (savedIdx !== null) {{
@@ -1059,6 +1061,11 @@ html_template = f'''<!DOCTYPE html>
         }}
 
         function handleGpsPosition(pos) {{
+            gpsLastRawPosition = pos;
+            if (gpsSnapBackTimeout) {{
+                clearTimeout(gpsSnapBackTimeout);
+                gpsSnapBackTimeout = null;
+            }}
             const lat = pos.coords.latitude;
             const lon = pos.coords.longitude;
             const accuracy = pos.coords.accuracy;
@@ -1319,6 +1326,21 @@ html_template = f'''<!DOCTYPE html>
             gpsLastMinDistanceMetres = minDistanceMetres;
             renderOverviewElevationChart();
             updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
+
+            // Recalculate back to actual location after interval
+            if (gpsSnapBackTimeout) {{
+                clearTimeout(gpsSnapBackTimeout);
+                gpsSnapBackTimeout = null;
+            }}
+            if (isTracking && gpsLastRawPosition) {{
+                const intervalVal = parseInt(document.getElementById('gps-poll-interval').value);
+                gpsSnapBackTimeout = setTimeout(() => {{
+                    if (isTracking && gpsLastRawPosition) {{
+                        handleGpsPosition(gpsLastRawPosition);
+                    }}
+                    gpsSnapBackTimeout = null;
+                }}, intervalVal);
+            }}
         }}
 
         function toggleTracking() {{
@@ -1354,6 +1376,10 @@ html_template = f'''<!DOCTYPE html>
                 
             }} else {{
                 isTracking = false;
+                if (gpsSnapBackTimeout) {{
+                    clearTimeout(gpsSnapBackTimeout);
+                    gpsSnapBackTimeout = null;
+                }}
                 if (btn) {{
                     btn.classList.remove('leaflet-control-gps-active');
                     btn.querySelector('a').title = isPl ? "Śledź moją pozycję (GPS)" : "Track my position (GPS)";
