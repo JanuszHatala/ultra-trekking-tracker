@@ -1325,7 +1325,7 @@ html_template = f'''<!DOCTYPE html>
                 gpsAccuracyCircle = null;
             }}
             
-            if (gpsMarker) {{
+            if (gpsMarker && typeof gpsMarker.bringToFront === 'function') {{
                 gpsMarker.bringToFront();
             }}
             
