@@ -906,7 +906,7 @@ html_template = f'''<!DOCTYPE html>
             }} catch (e) {{}}
         }}
 
-        function updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres) {{
+        function updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, currentKm) {{
             const card = document.getElementById('gps-status-card');
             const activeZone = document.getElementById('gps-card-active');
             const msgZone = document.getElementById('gps-card-message');
@@ -942,25 +942,10 @@ html_template = f'''<!DOCTYPE html>
                 warnPoorSignal.classList.add('hidden');
             }}
             
-            let currentKm = 0;
-            const gpsLatLng = L.latLng(lat, lon);
-            if (gpxTrackPoints && gpxTrackPoints.length > 0) {{
-                let closestPt = gpxTrackPoints[0];
-                let minDist = gpsLatLng.distanceTo(closestPt.latlng);
-                for (let i = 1; i < gpxTrackPoints.length; i++) {{
-                    const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
-                    if (d < minDist) {{
-                        minDist = d;
-                        closestPt = gpxTrackPoints[i];
-                    }}
-                }}
-                currentKm = closestPt.km;
-            }}
-            
             const kmText = document.getElementById('gps-progress-km');
-            kmText.innerHTML = `${{currentKm.toFixed(1)}} / 100 km`;
+            kmText.innerHTML = `${{currentKm.toFixed(1)}} / 75 km`;
             
-            const pct = Math.min(Math.max((currentKm / 100) * 100, 0), 100);
+            const pct = Math.min(Math.max((currentKm / 75) * 100, 0), 100);
             document.getElementById('gps-progress-pct').innerHTML = `${{Math.round(pct)}}%`;
             document.getElementById('gps-progress-fill').style.width = `${{pct}}%`;
             
@@ -1178,7 +1163,7 @@ html_template = f'''<!DOCTYPE html>
                     gpsCurrentAccuracy = accuracy;
                     renderOverviewElevationChart();
                     
-                    updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres);
+                    updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
                     
                     if (onSuccess) onSuccess();
                 }},
