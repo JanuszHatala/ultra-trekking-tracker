@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ultra-trekking-v1779985808';
+const CACHE_NAME = 'ultra-trekking-v1779986298';
 const ASSETS = [
     './',
     './index.html',

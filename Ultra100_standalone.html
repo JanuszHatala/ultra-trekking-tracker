@@ -19492,6 +19492,12 @@ Check your Browserslist config to be sure that your targets are set up correctly
                         intervalSelect.value = savedInterval;
                     }
                 } catch(e) {}
+                
+                const intervalVal = parseInt(intervalSelect.value);
+                if (intervalVal !== 0) {
+                    toggleTracking();
+                }
+                
                 intervalSelect.addEventListener('change', () => {
                     try {
                         localStorage.setItem('ultra_gps_interval', intervalSelect.value);
