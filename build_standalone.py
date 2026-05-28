@@ -1615,6 +1615,27 @@ html_template = f'''<!DOCTYPE html>
             renderOverviewElevationChart();
             updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
 
+            // Centering the map on the pinned checkpoint and opening its popup
+            let checkpointIndex = checkpoints.findIndex(cp => cp.km === cpKm);
+            if (checkpointIndex !== -1) {{
+                const marker = markers[checkpointIndex];
+                if (marker) {{
+                    map.setView(marker.getLatLng(), Math.max(map.getZoom(), 13), {{ animate: true }});
+                    setTimeout(() => {{
+                        if (marker) marker.openPopup();
+                    }}, 400);
+                }}
+                highlightSection(checkpointIndex);
+                highlightRow(checkpointIndex);
+                
+                // If map is visible on mobile, scroll it into view
+                const mapContainer = document.getElementById('map-container');
+                const isMapVisible = mapContainer && !mapContainer.classList.contains('hidden') && mapContainer.style.display !== 'none';
+                if (window.innerWidth < 768 && isMapVisible) {{
+                    mapContainer.scrollIntoView({{ behavior: 'smooth' }});
+                }}
+            }}
+
             // Recalculate back to actual location after interval
             if (gpsSnapBackTimeout) {{
                 clearTimeout(gpsSnapBackTimeout);
