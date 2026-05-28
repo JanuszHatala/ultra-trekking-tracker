@@ -1633,15 +1633,12 @@ html_template = f'''<!DOCTYPE html>
             renderOverviewElevationChart();
             updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
 
-            // Centering the map on the pinned checkpoint and opening its popup
+            // Centering the map on the pinned checkpoint
             let checkpointIndex = checkpoints.findIndex(cp => cp.km === cpKm);
             if (checkpointIndex !== -1) {{
                 const marker = markers[checkpointIndex];
                 if (marker) {{
                     map.setView(marker.getLatLng(), Math.max(map.getZoom(), 13), {{ animate: true }});
-                    setTimeout(() => {{
-                        if (marker) marker.openPopup();
-                    }}, 400);
                 }}
                 
                 // If map is visible on mobile, scroll it into view
