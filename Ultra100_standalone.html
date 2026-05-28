@@ -18824,6 +18824,13 @@ Check your Browserslist config to be sure that your targets are set up correctly
         let gpsHintShown = false;
         let gpsCurrentKm = null;
         let gpsCurrentAccuracy = null;
+        let gpsLastMatchedIndex = null;
+        try {
+            const savedIdx = localStorage.getItem('gps_last_matched_index');
+            if (savedIdx !== null) {
+                gpsLastMatchedIndex = parseInt(savedIdx, 10);
+            }
+        } catch (e) {}
 
         const map = L.map('map').setView([49.762544, 19.086507], 11);
 
@@ -19102,17 +19109,48 @@ Check your Browserslist config to be sure that your targets are set up correctly
                     
                     let minDistanceMetres = Infinity;
                     let closestTrackPt = null;
+                    let closestIdx = -1;
                     const gpsLatLng = L.latLng(lat, lon);
                     
                     if (gpxTrackPoints && gpxTrackPoints.length > 0) {
-                        closestTrackPt = gpxTrackPoints[0];
-                        minDistanceMetres = gpsLatLng.distanceTo(closestTrackPt.latlng);
-                        for (let i = 1; i < gpxTrackPoints.length; i++) {
+                        let searchStart = 0;
+                        let searchEnd = gpxTrackPoints.length - 1;
+                        let usingWindow = false;
+                        
+                        if (gpsLastMatchedIndex !== null) {
+                            searchStart = Math.max(0, gpsLastMatchedIndex - 100);
+                            searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 400);
+                            usingWindow = true;
+                        }
+                        
+                        for (let i = searchStart; i <= searchEnd; i++) {
                             const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
                             if (d < minDistanceMetres) {
                                 minDistanceMetres = d;
                                 closestTrackPt = gpxTrackPoints[i];
+                                closestIdx = i;
                             }
+                        }
+                        
+                        if (usingWindow && minDistanceMetres > 150) {
+                            minDistanceMetres = Infinity;
+                            closestTrackPt = null;
+                            closestIdx = -1;
+                            for (let i = 0; i < gpxTrackPoints.length; i++) {
+                                const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
+                                if (d < minDistanceMetres) {
+                                    minDistanceMetres = d;
+                                    closestTrackPt = gpxTrackPoints[i];
+                                    closestIdx = i;
+                                }
+                            }
+                        }
+                        
+                        if (closestIdx !== -1) {
+                            gpsLastMatchedIndex = closestIdx;
+                            try {
+                                localStorage.setItem('gps_last_matched_index', gpsLastMatchedIndex);
+                            } catch(e) {}
                         }
                     }
                     
@@ -19210,6 +19248,50 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
             );
+        }
+
+        function snapGpsToCheckpoint(cpKm) {
+            if (!gpxTrackPoints || gpxTrackPoints.length === 0) return;
+            
+            let closestIdx = 0;
+            let minDiff = Math.abs(gpxTrackPoints[0].km - cpKm);
+            for (let i = 1; i < gpxTrackPoints.length; i++) {
+                const diff = Math.abs(gpxTrackPoints[i].km - cpKm);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIdx = i;
+                }
+            }
+            
+            gpsLastMatchedIndex = closestIdx;
+            try {
+                localStorage.setItem('gps_last_matched_index', gpsLastMatchedIndex);
+            } catch (e) {}
+            
+            const isPl = document.documentElement.getAttribute('lang') === 'pl';
+            showToast(isPl 
+                ? `GPS zsynchronizowany z punktem KM ${cpKm.toFixed(1)}` 
+                : `GPS snapped to checkpoint KM ${cpKm.toFixed(1)}`);
+            
+            if (gpsMarker) {
+                const currentLatLng = gpsMarker.getLatLng();
+                let searchStart = Math.max(0, gpsLastMatchedIndex - 100);
+                let searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 400);
+                
+                let minDistanceMetres = Infinity;
+                let closestTrackPt = gpxTrackPoints[searchStart];
+                for (let i = searchStart; i <= searchEnd; i++) {
+                    const d = currentLatLng.distanceTo(gpxTrackPoints[i].latlng);
+                    if (d < minDistanceMetres) {
+                        minDistanceMetres = d;
+                        closestTrackPt = gpxTrackPoints[i];
+                    }
+                }
+                
+                gpsCurrentKm = closestTrackPt.km;
+                renderOverviewElevationChart();
+                updateGpsStatusPanel(currentLatLng.lat, currentLatLng.lng, gpsCurrentAccuracy || 10, minDistanceMetres);
+            }
         }
 
         function toggleTracking() {
@@ -19396,6 +19478,11 @@ Check your Browserslist config to be sure that your targets are set up correctly
             const btnResetGps = document.getElementById('btn-reset-gps');
             if (btnResetGps) {
                 btnResetGps.addEventListener('click', () => {
+                    gpsLastMatchedIndex = null;
+                    try {
+                        localStorage.removeItem('gps_last_matched_index');
+                    } catch(e) {}
+                    
                     if (isTracking) {
                         toggleTracking();
                     } else {
@@ -19893,7 +19980,12 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 }
 
                 tr.innerHTML = `
-                    <td class="p-2 md:p-3 text-cyan-400 font-bold">${cp.km}</td>
+                    <td class="p-2 md:p-3 text-cyan-400 font-bold">
+                        <div class="flex items-center gap-1.5">
+                            <span>${cp.km}</span>
+                            <button class="btn-snap-gps p-1 hover:bg-slate-700/80 rounded text-slate-500 hover:text-lime-400 transition-colors text-[10px] md:text-xs cursor-pointer" title="Snap GPS search here" data-km="${cp.km}">📍</button>
+                        </div>
+                    </td>
                     <td class="p-2 md:p-3 leading-tight">
                         <div class="text-slate-200 font-bold">${dynamicTime}</div>
                         <div class="text-[10px] text-slate-500 font-bold">${cp.section_duration}</div>
@@ -19917,6 +20009,14 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 `;
 
                 tableBody.appendChild(tr);
+
+                const snapBtn = tr.querySelector('.btn-snap-gps');
+                if (snapBtn) {
+                    snapBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        snapGpsToCheckpoint(cp.km);
+                    });
+                }
 
                 const iconHtml = `<div class="w-6 h-6 bg-slate-900 rounded-full border-2 border-lime-500 text-lime-400 flex items-center justify-center font-bold text-[10px] shadow-lg">${cp.km}</div>`;
                 const customIcon = L.divIcon({
