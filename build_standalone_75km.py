@@ -1101,11 +1101,9 @@ html_template = f'''<!DOCTYPE html>
                                 }}
                             }}
                             
-                            if (globalMinDistance <= 200) {{
-                                minDistanceMetres = globalMinDistance;
-                                closestTrackPt = globalClosestPt;
-                                closestIdx = globalClosestIdx;
-                            }}
+                            minDistanceMetres = globalMinDistance;
+                            closestTrackPt = globalClosestPt;
+                            closestIdx = globalClosestIdx;
                         }}
                         
                         if (closestIdx !== -1) {{
