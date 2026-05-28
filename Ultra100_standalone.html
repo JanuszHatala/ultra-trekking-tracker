@@ -19326,9 +19326,8 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 }
                 
                 showToast(isPl ? "Uruchamianie śledzenia GPS..." : "Starting GPS tracking...");
-                locateMe(function() {
-                    gpsTrackingInterval = setInterval(locateMe, intervalVal);
-                });
+                locateMe();
+                gpsTrackingInterval = setInterval(locateMe, intervalVal);
                 
             } else {
                 isTracking = false;

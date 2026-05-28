@@ -1295,9 +1295,8 @@ html_template = f'''<!DOCTYPE html>
                 }}
                 
                 showToast(isPl ? "Uruchamianie śledzenia GPS..." : "Starting GPS tracking...");
-                locateMe(function() {{
-                    gpsTrackingInterval = setInterval(locateMe, intervalVal);
-                }});
+                locateMe();
+                gpsTrackingInterval = setInterval(locateMe, intervalVal);
                 
             }} else {{
                 isTracking = false;
