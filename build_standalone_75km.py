@@ -35,8 +35,8 @@ checkpoints_json = '''[
     "time": "20:20",
     "pace": "16:00",
     "ele": "+500 m",
-    "action": "Wypij 1. bidon izotoniku, baton.",
-    "action_en": "Drink 1st isotonic flask, energy bar.",
+    "action": "Mały łyk wody, baton.",
+    "action_en": "Sip of water, energy bar.",
     "bounds": [[49.776947, 19.096194], [49.795845, 19.128895]]
   },
   {
@@ -46,8 +46,8 @@ checkpoints_json = '''[
     "time": "21:28",
     "pace": "13:36",
     "ele": "+176 m",
-    "action": "Kapsułki z solą / słone jedzenie.",
-    "action_en": "Take salt capsules / salty food.",
+    "action": "Szczypta soli (lub Litorsal) / kabanos.",
+    "action_en": "Pinch of salt / kabanos.",
     "bounds": [[49.777253, 19.095909], [49.795845, 19.113625]]
   },
   {
@@ -57,8 +57,8 @@ checkpoints_json = '''[
     "time": "22:43",
     "pace": "15:00",
     "ele": "+405 m",
-    "action": "Zjedz kanapkę.",
-    "action_en": "Eat a sandwich.",
+    "action": "Zjedz kanapkę. Pij ostrożnie.",
+    "action_en": "Eat a sandwich. Drink carefully.",
     "bounds": [[49.774707, 19.10206], [49.784075, 19.128324]]
   },
   {
@@ -68,8 +68,8 @@ checkpoints_json = '''[
     "time": "00:01",
     "pace": "15:36",
     "ele": "+482 m",
-    "action": "Opróżnij bidon.",
-    "action_en": "Empty flask.",
+    "action": "Powinieneś zużyć 1 flaska.",
+    "action_en": "You should have emptied 1 flask.",
     "bounds": [[49.77403, 19.086939], [49.77777, 19.122489]]
   },
   {
@@ -79,8 +79,8 @@ checkpoints_json = '''[
     "time": "01:13",
     "pace": "14:24",
     "ele": "+159 m",
-    "action": "POSTÓJ 5 MIN (Stopy). Zmiana skarpet.",
-    "action_en": "BREAK 5 MIN (Feet). Change socks.",
+    "action": "POSTÓJ 5 MIN. Skarpety. Kabanos.",
+    "action_en": "BREAK 5 MIN. Socks. Kabanos.",
     "bounds": [[49.760112, 19.102835], [49.780002, 19.129878]]
   },
   {
@@ -90,8 +90,8 @@ checkpoints_json = '''[
     "time": "02:33",
     "pace": "16:00",
     "ele": "+475 m",
-    "action": "Opróżnij bidon, baton.",
-    "action_en": "Empty flask, energy bar.",
+    "action": "Żel energetyczny.",
+    "action_en": "Energy gel.",
     "bounds": [[49.76596, 19.108642], [49.780002, 19.140513]]
   },
   {
@@ -101,8 +101,8 @@ checkpoints_json = '''[
     "time": "03:41",
     "pace": "13:36",
     "ele": "+137 m",
-    "action": "Kapsułki z solą, żel.",
-    "action_en": "Salt capsules, energy gel.",
+    "action": "Zjedz kanapkę.",
+    "action_en": "Eat a sandwich.",
     "bounds": [[49.753813, 19.118867], [49.765973, 19.143013]]
   },
   {
@@ -112,8 +112,8 @@ checkpoints_json = '''[
     "time": "05:03",
     "pace": "16:24",
     "ele": "+427 m",
-    "action": "Napój z kofeiną (kryzys nocny).",
-    "action_en": "Caffeinated beverage (night crisis).",
+    "action": "Red Bull zgnieciony, śmieć do plecaka.",
+    "action_en": "Red Bull crushed, trash in pack.",
     "bounds": [[49.756541, 19.12972], [49.776784, 19.143013]]
   },
   {
@@ -123,8 +123,8 @@ checkpoints_json = '''[
     "time": "06:15",
     "pace": "14:24",
     "ele": "+247 m",
-    "action": "Zjedz kanapkę. Opróżnij bidon.",
-    "action_en": "Eat sandwich. Empty flask.",
+    "action": "Baton energetyczny.",
+    "action_en": "Energy bar.",
     "bounds": [[49.763475, 19.142486], [49.769759, 19.182465]]
   },
   {
@@ -134,8 +134,8 @@ checkpoints_json = '''[
     "time": "07:33",
     "pace": "15:36",
     "ele": "+98 m",
-    "action": "POSTÓJ 10 MIN. Zmiana skarpet.",
-    "action_en": "BREAK 10 MIN. Change socks.",
+    "action": "POSTÓJ 10 MIN. Przepakuj wodę.",
+    "action_en": "BREAK 10 MIN. Repack water.",
     "bounds": [[49.766767, 19.127321], [49.783785, 19.160125]]
   },
   {
@@ -145,8 +145,8 @@ checkpoints_json = '''[
     "time": "08:48",
     "pace": "15:00",
     "ele": "+292 m",
-    "action": "Kofeina (zmęczenie poranne).",
-    "action_en": "Caffeine (morning fatigue).",
+    "action": "Słona przekąska / szczypta soli.",
+    "action_en": "Salty snack / pinch of salt.",
     "bounds": [[49.77438, 19.138081], [49.785056, 19.161343]]
   },
   {
@@ -156,8 +156,8 @@ checkpoints_json = '''[
     "time": "10:02",
     "pace": "14:48",
     "ele": "+253 m",
-    "action": "Kapsułki z solą.",
-    "action_en": "Salt capsules.",
+    "action": "Przejdź wyłącznie na żele.",
+    "action_en": "Switch completely to gels.",
     "bounds": [[49.773642, 19.127321], [49.79874, 19.140957]]
   },
   {
@@ -167,8 +167,8 @@ checkpoints_json = '''[
     "time": "11:13",
     "pace": "14:12",
     "ele": "+207 m",
-    "action": "Żel energetyczny. Koniec jedzenia stałego.",
-    "action_en": "Energy gel. End of solid food.",
+    "action": "Red Bull przed finiszem.",
+    "action_en": "Red Bull before finish.",
     "bounds": [[49.79874, 19.113362], [49.821366, 19.131963]]
   },
   {
@@ -178,8 +178,8 @@ checkpoints_json = '''[
     "time": "12:38",
     "pace": "17:00",
     "ele": "+510 m",
-    "action": "Opróżnij bidon. Ostatnie strome podejście.",
-    "action_en": "Empty flask. Last steep ascent.",
+    "action": "Powolne tempo pod ścianę.",
+    "action_en": "Slow pace up the wall.",
     "bounds": [[49.782609, 19.11375], [49.814493, 19.131963]]
   },
   {
@@ -189,8 +189,8 @@ checkpoints_json = '''[
     "time": "13:30",
     "pace": "13:00",
     "ele": "+49 m",
-    "action": "META TESTU.",
-    "action_en": "TEST FINISH.",
+    "action": "META TESTU. Wyrzuć śmieci.",
+    "action_en": "TEST FINISH. Dispose of trash.",
     "bounds": [[49.782609, 19.096194], [49.795845, 19.12814]]
   }
 ]'''
