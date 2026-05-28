@@ -628,65 +628,425 @@ html_template = f'''<!DOCTYPE html>
             </div>
         </div>
         <!-- Tab: Taktyka -->
+        <!-- Tab: Taktyka -->
         <div id="tab-taktyka" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
-<div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
-                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">3. TAKTYKA I ZASADY RUCHU</span><span class="lang-en">3. TACTICS & MOVEMENT</span></h2>
-                <ul class="space-y-4">
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Płaskie i łagodne podejścia:</strong> Miarowy, stabilny marsz. Unikaj biegu.</span><span class="lang-en">Flat and gentle ascents:</strong> Maintain a steady, rhythmic walk. Avoid running.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Strome podejścia:</strong> Krótki krok, mocne wsparcie kijami. Tętno do 140 bpm.</span><span class="lang-en">Steep ascents:</strong> Shorter steps, lean heavily on poles. HR limit: 140 bpm.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Zbiegi:</strong> Szybki marsz, ale bez uderzeń piętą. Ląduj na śródstopiu. Kije absorbują impakt.</span><span class="lang-en">Downhills:</strong> Fast walk, no heel strikes. Land on midfoot. Poles absorb impact.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><span class="lang-pl"><strong class="text-white">Nawadnianie i Żywienie:</strong> 1 bidon (500ml) na godzinę marszu. Cel: 60-80g węgli na godzinę.</span><span class="lang-en">Hydration and Nutrition:</strong> 1 flask (500ml) per hour. Target: 60-80g carbs/hour.</span></div></li>
-                </ul>
+            <!-- Part 1: ZARZĄDZANIE PALIWEM I WODĄ -->
+            <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-6">
+                <h2 class="text-base md:text-lg font-bold text-cyan-400 mb-4 border-b border-slate-700 pb-2 flex items-center">
+                    <span class="mr-2">⚡</span>
+                    <span class="lang-pl">3. ZARZĄDZANIE PALIWEM I WODĄ</span>
+                    <span class="lang-en">3. FUEL & WATER LOGISTICS</span>
+                </h2>
+                
+                <!-- Intro Warning Banner -->
+                <div class="bg-cyan-950/40 border border-cyan-800/60 rounded-lg p-4 mb-6 flex items-start gap-3">
+                    <span class="text-cyan-400 text-lg mt-0.5">⚠️</span>
+                    <div class="text-xs md:text-sm text-slate-300">
+                        <p class="lang-pl">Jako że nie masz opcji dotankowania na trasie, woda staje się Twoim głównym ładunkiem i "wąskim gardłem". Przy 18,5h spędzonych na trasie, klasyczne 500ml/h wymagałoby 9,25L wody (ponad 9 kg na samych plecach!). <strong>Musimy to zredukować do minimum.</strong></p>
+                        <p class="lang-en font-normal">Since there is no option to resupply on the route, water becomes your main load and "bottleneck". For 18.5 hours on the route, the classic 500ml/h would require 9.25L of water (over 9 kg on your back!). <strong>We must reduce this to a minimum.</strong></p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Column A: Fluids -->
+                    <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-700/60">
+                        <h3 class="text-sm md:text-base font-bold text-cyan-400 mb-3 border-b border-slate-800 pb-1">
+                            <span class="lang-pl">A. Strategia Płynów (Zapas na starcie: 7.5L)</span>
+                            <span class="lang-en">A. Fluid Strategy (Start Supply: 7.5L)</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 italic mb-4">
+                            <span class="lang-pl">Będziesz szedł przez noc (chłodniej), więc pocenie będzie zredukowane. Celujemy w rygorystyczne 400 ml płynów na godzinę.</span>
+                            <span class="lang-en">You will walk through the night (cooler), so sweating will be reduced. We target a strict 400 ml of fluids per hour.</span>
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-cyan-400 mr-2 mt-0.5">💧</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Bukłak (2.5L)</span><span class="lang-en">Water Bladder (2.5L)</span></strong>
+                                    <p class="text-xs text-slate-300 mt-0.5">
+                                        <span class="lang-pl">Czysta woda do popijania jedzenia/żeli i płukania ust. Tempo: ok. 135 ml/h.</span>
+                                        <span class="lang-en">Pure water only to wash down food/gels and rinse mouth. Pace: approx. 135 ml/h.</span>
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-cyan-400 mr-2 mt-0.5">🧪</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Flaski (4 x 500ml = 2.0L)</span><span class="lang-en">Soft Flasks (4 x 500ml = 2.0L)</span></strong>
+                                    <p class="text-xs text-slate-300 mt-0.5">
+                                        <span class="lang-pl">Z przodu, rozrobione z Hyper-Mix. Jeden flask na średnio 4.5 godziny marszu.</span>
+                                        <span class="lang-en">In front, mixed with Hyper-Mix. One flask lasts approx. 4.5 hours of march.</span>
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-cyan-400 mr-2 mt-0.5">🎒</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Dwie Butelki (2 x 1.5L = 3.0L)</span><span class="lang-en">Two PET Bottles (2 x 1.5L = 3.0L)</span></strong>
+                                    <p class="text-xs text-slate-300 mt-0.5">
+                                        <span class="lang-pl">W plecaku, gotowy Hyper-Mix do przelania na postoju 50 km. Puste butelki należy zgnieść.</span>
+                                        <span class="lang-en">In the backpack, mixed Hyper-Mix to decant during 50 km break. Crush empty bottles.</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- Golden Rule Box -->
+                        <div class="mt-4 bg-cyan-900/20 border border-cyan-800/40 rounded p-3 text-xs">
+                            <strong class="text-cyan-400 flex items-center mb-1">
+                                <span class="mr-1">☝️</span>
+                                <span class="lang-pl">ZŁOTA ZASADA:</span>
+                                <span class="lang-en">GOLDEN RULE:</span>
+                            </strong>
+                            <p class="lang-pl">Jeden mały łyk wody z bukłaka + jeden mały łyk miksu z flaska co 15 minut.</p>
+                            <p class="lang-en">One small sip of water from the bladder + one small sip of mix from the flask every 15 minutes.</p>
+                        </div>
+                    </div>
+
+                    <!-- Column B: Nutrition -->
+                    <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-700/60">
+                        <h3 class="text-sm md:text-base font-bold text-cyan-400 mb-3 border-b border-slate-800 pb-1">
+                            <span class="lang-pl">B. Strategia Jedzenia (Cel: ~60g Węgli/h)</span>
+                            <span class="lang-en">B. Nutrition Strategy (Target: ~60g Carbs/h)</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 italic mb-4">
+                            <span class="lang-pl">Przez 18,5h potrzebujesz ok. 1100g węglowodanów z płynów (Hyper-Mix) i jedzenia stałego.</span>
+                            <span class="lang-en">For 18.5h you need approx. 1100g of carbohydrates from fluids (Hyper-Mix) and solid food.</span>
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-amber-500 mr-2 mt-0.5">⚡</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Żele energetyczne (10 szt.)</span><span class="lang-en">Energy Gels (10 pcs)</span></strong>
+                                    <span class="text-xs text-slate-300 block">
+                                        <span class="lang-pl">Szybki cukier. Stosować głównie od 50 km, gdy żołądek zmęczy się trawieniem.</span>
+                                        <span class="lang-en">Quick sugar. Use mainly from 50 km onwards, when the stomach gets tired of digesting.</span>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-amber-500 mr-2 mt-0.5">🍫</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Batony energetyczne (5 szt.)</span><span class="lang-en">Energy Bars (5 pcs)</span></strong>
+                                    <span class="text-xs text-slate-300 block">
+                                        <span class="lang-pl">Traktuj jak małe posiłki. Zjedz ok. 5, 25, 45, 55 km.</span>
+                                        <span class="lang-en">Treat as small meals. Eat at approx. 5, 25, 45, 55 km.</span>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-amber-500 mr-2 mt-0.5">🥪</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Kanapki (4 szt. płaskie)</span><span class="lang-en">Sandwiches (4 flat pcs)</span></strong>
+                                    <span class="text-xs text-slate-300 block">
+                                        <span class="lang-pl">Bułka mleczna z szynką/serem, lekko solona. Zjedz na 15, 35, 50 km.</span>
+                                        <span class="lang-en">Milk roll with ham/cheese, lightly salted. Eat at 15, 35, 50 km.</span>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-amber-500 mr-2 mt-0.5">🥨</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Słone Przekąski & Sód</span><span class="lang-en">Salty Snacks & Sodium</span></strong>
+                                    <span class="text-xs text-slate-300 block">
+                                        <span class="lang-pl">Kabanosy, krakersy, orzeszki. Krytyczne dla zatrzymania wody. Dodatkowo sól luzem lub elektrolity (np. Litorsal).</span>
+                                        <span class="lang-en">Kabanos, crackers, peanuts. Critical for water retention. Extra bulk salt or electrolytes (e.g. Litorsal).</span>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-amber-500 mr-2 mt-0.5">🥫</span>
+                                <div>
+                                    <strong class="text-white"><span class="lang-pl">Kofeina / Rescue (2x Red Bull)</span><span class="lang-en">Caffeine / Rescue (2x Red Bull)</span></strong>
+                                    <span class="text-xs text-slate-300 block">
+                                        <span class="lang-pl">Tylko na kryzys nocny (ok. 30-40km) i przed najtrudniejszą, ostatnią ścianą. Puszki zgniatać.</span>
+                                        <span class="lang-en">Only for night crisis (approx. 30-40km) and before the hardest, final wall. Crush cans.</span>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 2: TAKTYKA I ZASADY RUCHU -->
+            <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl">
+                <h2 class="text-base md:text-lg font-bold text-cyan-400 mb-4 border-b border-slate-700 pb-2 flex items-center">
+                    <span class="mr-2">🏃</span>
+                    <span class="lang-pl">6. TAKTYKA I ZASADY RUCHU</span>
+                    <span class="lang-en">6. MOVEMENT TACTICS</span>
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- Rule 1 -->
+                    <div class="flex items-start gap-3 bg-slate-900/30 p-3 rounded border border-slate-800">
+                        <span class="text-emerald-500 mt-1">▶</span>
+                        <div>
+                            <strong class="text-white text-sm block">
+                                <span class="lang-pl">Płaskie i łagodne podejścia</span>
+                                <span class="lang-en">Flat and gentle ascents</span>
+                            </strong>
+                            <p class="text-xs md:text-sm text-slate-300 mt-1">
+                                <span class="lang-pl">Miarowy, stabilny marsz. Ręce luźno, kije pomagają trzymać rytm 4.4 km/h. Unikaj niepotrzebnego forsowania.</span>
+                                <span class="lang-en">Maintain a steady, rhythmic walk. Keep arms loose, poles help keep the 4.4 km/h rhythm.</span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Rule 2 -->
+                    <div class="flex items-start gap-3 bg-slate-900/30 p-3 rounded border border-slate-800">
+                        <span class="text-emerald-500 mt-1">▶</span>
+                        <div>
+                            <strong class="text-white text-sm block">
+                                <span class="lang-pl">Strome podejścia</span>
+                                <span class="lang-en">Steep ascents</span>
+                            </strong>
+                            <p class="text-xs md:text-sm text-slate-300 mt-1">
+                                <span class="lang-pl">Krótki krok, kije przejmują ciężar. Limit tętna do 140 uderzeń na minutę. Zwalniaj, gdy rośnie. Na ścianach akceptujesz spadek prędkości do ~3.5 km/h.</span>
+                                <span class="lang-en">Shorter steps, poles take the weight. HR limit: 140 bpm. Slow down if it rises. Accept pace drops to ~3.5 km/h on steep walls.</span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Rule 3 -->
+                    <div class="flex items-start gap-3 bg-slate-900/30 p-3 rounded border border-slate-800">
+                        <span class="text-emerald-500 mt-1">▶</span>
+                        <div>
+                            <strong class="text-white text-sm block">
+                                <span class="lang-pl">Zbiegi</span>
+                                <span class="lang-en">Downhills</span>
+                            </strong>
+                            <p class="text-xs md:text-sm text-slate-300 mt-1">
+                                <span class="lang-pl">Płynnie i szybko (ok. 4.3 km/h). Ląduj na śródstopiu. Kije absorbują 10-15% impaktu, aby uchronić kolana pod plecakiem – <strong>szczególnie w pierwszej połowie nocy, gdy niesiesz maksymalny zapas 7.5 kg płynów</strong>.</span>
+                                <span class="lang-en font-normal">Smooth and fast (~4.3 km/h). Land on midfoot. Poles absorb 10-15% of impact to protect knees – <strong>especially critical in the first half of the night with max 7.5kg fluid load</strong>.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Tab: Inwentarz -->
         <div id="tab-inwentarz" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
-<div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
-                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">2. INWENTARZ - EKWIPUNEK (Limit 12kg z wodą)</span><span class="lang-en">2. GEAR INVENTORY (12kg limit with water)</span></h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Ubiór</span><span class="lang-en">Clothing</span></h3>
-                        <ul class="space-y-1">
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Kurtka wiatrówka/przeciwdeszczowa</span><span class="lang-en">Windproof/waterproof jacket</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Lekka warstwa termiczna (np. cienki polar na noc)</span><span class="lang-en">Lightweight thermal layer</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Zapasowe skarpetki - 2 pary w worku</span><span class="lang-en">Spare socks - 2 pairs in a ziplock bag</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Chusta wielofunkcyjna / Buff</span><span class="lang-en">Multifunctional headwear / Buff</span></div></li>
+            <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
+                <h2 class="text-base md:text-lg font-bold text-cyan-400 mb-2 md:mb-4 border-b border-slate-700 pb-1 md:pb-2 flex justify-between items-center">
+                    <span>
+                        <span class="lang-pl">5. INWENTARZ SPRZĘTOWY (Limit 12kg z wodą)</span>
+                        <span class="lang-en">5. GEAR INVENTORY (12kg limit with water)</span>
+                    </span>
+                    <span class="text-xs text-slate-400 font-normal">
+                        <span class="lang-pl">Zaznacz spakowane przedmioty</span>
+                        <span class="lang-en">Check packed items</span>
+                    </span>
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Column 1: Food & Hydration -->
+                    <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-700/60">
+                        <h3 class="text-sm font-bold text-cyan-400 mb-3 border-b border-slate-800 pb-1 flex items-center">
+                            <span class="mr-2">🥪</span>
+                            <span class="lang-pl">Paliwo i Woda - Lista do spakowania</span>
+                            <span class="lang-en">Fuel & Hydration Checklist</span>
+                        </h3>
+                        <ul class="space-y-2">
+                            <!-- Fuel Items -->
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-0" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-0" class="cursor-pointer select-none">
+                                    <span class="lang-pl">Bukłak 2.5L napełniony czystą wodą</span>
+                                    <span class="lang-en">Bladder 2.5L filled with pure water</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-1" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-1" class="cursor-pointer select-none">
+                                    <span class="lang-pl">4x Softflask 500ml z gotowym Hyper-Mixem (2.0L na szelkach)</span>
+                                    <span class="lang-en">4x Soft flask 500ml with Hyper-Mix (2.0L on harness)</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-2" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-2" class="cursor-pointer select-none">
+                                    <span class="lang-pl">2x Butelka PET 1.5L z gotowym Hyper-Mixem (3.0L w plecaku)</span>
+                                    <span class="lang-en">2x PET bottle 1.5L with Hyper-Mix (3.0L in pack)</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-3" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-3" class="cursor-pointer select-none">
+                                    <span class="lang-pl">10x Żel energetyczny</span>
+                                    <span class="lang-en">10x Energy gel</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-4" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-4" class="cursor-pointer select-none">
+                                    <span class="lang-pl">5x Baton energetyczny</span>
+                                    <span class="lang-en">5x Energy bar</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-5" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-5" class="cursor-pointer select-none">
+                                    <span class="lang-pl">4x Kanapka (płaska, zgnieciona, w folii aluminiowej)</span>
+                                    <span class="lang-en">4x Sandwich (flat, crushed, in foil)</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-6" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-6" class="cursor-pointer select-none">
+                                    <span class="lang-pl">2x Opakowanie kabanosów</span>
+                                    <span class="lang-en">2x Packs of kabanos sausages</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-7" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-7" class="cursor-pointer select-none">
+                                    <span class="lang-pl">Słone krakersy lub orzeszki (sód)</span>
+                                    <span class="lang-en">Salty crackers or peanuts (sodium)</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-8" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-8" class="cursor-pointer select-none">
+                                    <span class="lang-pl">Woreczek ze zwykłą solą kuchenną lub elektrolity (np. Litorsal)</span>
+                                    <span class="lang-en">Ziplock with table salt or electrolytes (e.g. Litorsal)</span>
+                                </label>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <input type="checkbox" id="inv-chk-fuel-9" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                <label for="inv-chk-fuel-9" class="cursor-pointer select-none">
+                                    <span class="lang-pl">2x Puszka Red Bull 250ml</span>
+                                    <span class="lang-en">2x Red Bull cans 250ml</span>
+                                </label>
+                            </li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Apteczka Minimalistyczna</span><span class="lang-en">Minimalist First Aid Kit</span></h3>
-                        <ul class="space-y-1">
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Folia NRC / Koc ratunkowy</span><span class="lang-en">Emergency blanket</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Wazelina do stóp</span><span class="lang-en">Petroleum jelly for feet</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Tabletki przeciwbólowe (luzem)</span><span class="lang-en">Painkillers</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Plastry z opatrunkiem i na pęcherze</span><span class="lang-en">Band-aids and blister plasters</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Opaska elastyczna</span><span class="lang-en">Elastic bandage</span></div></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Sprzęt i Elektronika</span><span class="lang-en">Gear & Electronics</span></h3>
-                        <ul class="space-y-1">
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Kije trekkingowe</span><span class="lang-en">Trekking poles</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Czołówka główna + zapasowa (lub baterie)</span><span class="lang-en">Main headlamp + spare/batteries</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Powerbank 10000mAh + kabel</span><span class="lang-en">Powerbank 10000mAh + short cable</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Smartfon</span><span class="lang-en">Smartphone</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Zegarek GPS (Garmin)</span><span class="lang-en">GPS Watch</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Softflaski / Bukłak na max 2 litry</span><span class="lang-en">Hydration bladder or soft flasks for max 2 liters</span></div></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-cyan-400 mb-2"><span class="lang-pl">Jedzenie i Picie</span><span class="lang-en">Food & Hydration</span></h3>
-                        <ul class="space-y-1">
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Hyper-Mix: ok. 14 porcji w woreczkach</span><span class="lang-en">Carb powder mix - approx. 14 servings</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Żele energetyczne i batony</span><span class="lang-en">Energy gels and bars</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">4-5 spłaszczonych kanapek w folii</span><span class="lang-en">4-5 flattened sandwiches in foil</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Kapsułki z solą (SaltStick) lub słone przekąski</span><span class="lang-en">Salt capsules or salty snacks</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Napoje z kofeiną</span><span class="lang-en">Caffeinated drinks</span></div></li>
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-0.5">▶</span><div><span class="lang-pl">Filtr do wody / Tabletki uzdatniające</span><span class="lang-en">Water filtration system / Purification tablets</span></div></li>
-                        </ul>
+
+                    <!-- Column 2: Clothing, Gear & First Aid -->
+                    <div class="space-y-6">
+                        <!-- Ubiór -->
+                        <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-700/60">
+                            <h3 class="text-sm font-bold text-cyan-400 mb-3 border-b border-slate-800 pb-1 flex items-center">
+                                <span class="mr-2">👕</span>
+                                <span class="lang-pl">Ubiór</span>
+                                <span class="lang-en">Clothing</span>
+                            </h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-wear-0" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-wear-0" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Kurtka wiatrówka/przeciwdeszczowa</span>
+                                        <span class="lang-en">Windproof/waterproof jacket</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-wear-1" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-wear-1" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Lekka warstwa termiczna</span>
+                                        <span class="lang-en">Light thermal layer</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-wear-2" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-wear-2" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Zapasowe skarpetki - 2 pary szczelnie zapakowane</span>
+                                        <span class="lang-en">Spare socks - 2 pairs in ziplock</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-wear-3" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-wear-3" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Buff</span>
+                                        <span class="lang-en">Buff</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Sprzęt & Elektronika -->
+                        <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-700/60">
+                            <h3 class="text-sm font-bold text-cyan-400 mb-3 border-b border-slate-800 pb-1 flex items-center">
+                                <span class="mr-2">🔌</span>
+                                <span class="lang-pl">Sprzęt i Elektronika</span>
+                                <span class="lang-en">Gear & Electronics</span>
+                            </h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-gear-0" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-gear-0" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Kije trekkingowe</span>
+                                        <span class="lang-en">Trekking poles</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-gear-1" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-gear-1" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Czołówka główna + zapasowa</span>
+                                        <span class="lang-en">Main headlamp + spare</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-gear-2" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-gear-2" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Powerbank 10000mAh + kabel</span>
+                                        <span class="lang-en">Powerbank 10k mAh + short cable</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-gear-3" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-gear-3" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Smartfon & Zegarek GPS</span>
+                                        <span class="lang-en">Smartphone & GPS Watch</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Apteczka Minimalistyczna -->
+                        <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-700/60">
+                            <h3 class="text-sm font-bold text-cyan-400 mb-3 border-b border-slate-800 pb-1 flex items-center">
+                                <span class="mr-2">🩹</span>
+                                <span class="lang-pl">Apteczka Minimalistyczna</span>
+                                <span class="lang-en">Minimalist First Aid Kit</span>
+                            </h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-med-0" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-med-0" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Folia NRC</span>
+                                        <span class="lang-en">Emergency blanket (NRC)</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-med-1" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-med-1" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Wazelina do stóp</span>
+                                        <span class="lang-en">Petroleum jelly for feet</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-med-2" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-med-2" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Tabletki przeciwbólowe (bez blistrów)</span>
+                                        <span class="lang-en">Painkillers (without blisters)</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-med-3" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-med-3" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Plastry z opatrunkiem i na pęcherze</span>
+                                        <span class="lang-en">Band-aids and blister plasters</span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <input type="checkbox" id="inv-chk-med-4" class="w-4 h-4 rounded text-cyan-600 bg-slate-800 border-slate-700 focus:ring-cyan-500 focus:ring-offset-slate-900 focus:ring-2 mt-0.5 cursor-pointer">
+                                    <label for="inv-chk-med-4" class="cursor-pointer select-none">
+                                        <span class="lang-pl">Opaska elastyczna</span>
+                                        <span class="lang-en">Elastic bandage</span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -695,59 +1055,59 @@ html_template = f'''<!DOCTYPE html>
         <!-- Tab: Harmonogram -->
         <div id="tab-harmonogram" class="tab-content hidden p-3 md:p-6 pt-2 flex-1 overflow-y-auto text-xs md:text-sm text-slate-300">
             <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl mb-4">
-                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">1. HARMONOGRAM LOGISTYCZNY DNIA</span><span class="lang-en">1. LOGISTICS SCHEDULE</span></h2>
+                <h2 class="text-base md:text-lg font-bold text-cyan-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">1. HARMONOGRAM LOGISTYCZNY DNIA</span><span class="lang-en">1. LOGISTICS SCHEDULE</span></h2>
                 <ul class="space-y-4">
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">06:00</strong> - <span class="lang-pl">Pobudka, nawodnienie i lekkie śniadanie.</span><span class="lang-en">Wake up, hydration, and light breakfast.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">07:00 - 15:00</strong> - <span class="lang-pl">Dzień pracy. Ciągłe nawadnianie organizmu.</span><span class="lang-en">Work day. Continuous hydration.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">15:00 - 16:30</strong> - <span class="lang-pl">Drzemka / odpoczynek.</span><span class="lang-en">Short nap / rest.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">17:00</strong> - <span class="lang-pl">Obiad (węglowodany, mało błonnika).</span><span class="lang-en">Dinner - high carb, low fiber.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">18:00</strong> - <span class="lang-pl">Kontrola ekwipunku, dojazd na start.</span><span class="lang-en">Gear audit and travel.</span></div></li>
-                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">19:00 START TESTU</strong> - <span class="lang-pl">Wejście w tryb marszu.</span><span class="lang-en">Enter walking mode.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">~03:45 (Dzień 2)</strong> - <span class="lang-pl">Kryzys nocny ("Godzina wilka") w okolicach 35. kilometra. Czas na kofeinę.</span><span class="lang-en">Night crisis around 35th km. Caffeine shot.</span></div></li>
-                    <li class="flex items-start"><span class="text-emerald-500 mr-3 mt-1">▶</span><div><strong class="text-white">~05:00 (Dzień 2)</strong> - <span class="lang-pl">Wschód słońca. Ocieplenie.</span><span class="lang-en">Sunrise.</span></div></li>
-                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">~13:30 (Dzień 2) META TESTU</strong> - <span class="lang-pl">Czas łączny ~18h 30m.</span><span class="lang-en">Expected Finish (~18h 30m).</span></div></li>
+                    <li class="flex items-start"><span class="text-cyan-500 mr-3 mt-1">▶</span><div><strong class="text-white">06:00</strong> - <span class="lang-pl">Pobudka, rygorystyczne nawodnienie wstępne i lekkie śniadanie.</span><span class="lang-en">Wake up, pre-hydration, light breakfast.</span></div></li>
+                    <li class="flex items-start"><span class="text-cyan-500 mr-3 mt-1">▶</span><div><strong class="text-white">07:00 - 15:00</strong> - <span class="lang-pl">Dzień pracy. Ciągłe nawadnianie organizmu – to klucz, by wystartować z pełnym bakiem.</span><span class="lang-en">Work day. Continuous hydration – key to start with a full tank.</span></div></li>
+                    <li class="flex items-start"><span class="text-cyan-500 mr-3 mt-1">▶</span><div><strong class="text-white">15:00 - 16:30</strong> - <span class="lang-pl">Drzemka / odpoczynek.</span><span class="lang-en">Short nap / rest.</span></div></li>
+                    <li class="flex items-start"><span class="text-cyan-500 mr-3 mt-1">▶</span><div><strong class="text-white">17:00</strong> - <span class="lang-pl">Obiad (węglowodany, mało błonnika).</span><span class="lang-en">Dinner - high carb, low fiber.</span></div></li>
+                    <li class="flex items-start"><span class="text-cyan-500 mr-3 mt-1">▶</span><div><strong class="text-white">18:00</strong> - <span class="lang-pl">Kontrola ekwipunku, dojazd na start.</span><span class="lang-en">Gear audit and travel.</span></div></li>
+                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">19:00 START TESTU</strong> - <span class="lang-pl">START TESTU.</span><span class="lang-en">CHALLENGE START.</span></div></li>
+                    <li class="flex items-start"><span class="text-cyan-500 mr-3 mt-1">▶</span><div><strong class="text-white">~03:45 (Dzień 2)</strong> - <span class="lang-pl">Kryzys nocny ("Godzina wilka") w okolicach 35. kilometra. Czas na kofeinę.</span><span class="lang-en">Night crisis ("Hour of the wolf") around the 35th km. Time for caffeine.</span></div></li>
+                    <li class="flex items-start"><span class="text-cyan-500 mr-3 mt-1">▶</span><div><strong class="text-white">~05:00 (Dzień 2)</strong> - <span class="lang-pl">Wschód słońca. Ocieplenie.</span><span class="lang-en">Sunrise. Warming up.</span></div></li>
+                    <li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">▶</span><div><strong class="text-amber-400">~13:30 (Dzień 2) META TESTU</strong> - <span class="lang-pl">Planowana Meta testu (czas łączny ~18h 30m).</span><span class="lang-en">Expected Finish (total time ~18h 30m).</span></div></li>
                 </ul>
             </div>
             
             <div class="bg-slate-800/50 p-6 rounded-lg border border-slate-700 shadow-xl">
-                <h2 class="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">2. HARMONOGRAM OGÓLNY I POSTOJE</span><span class="lang-en">2. GENERAL SCHEDULE & STOPS</span></h2>
-                <p class="text-sm text-slate-400 italic mb-6"><span class="lang-pl">Wyrypa w pełnej autonomii. Brak przepaku i ciepłych posiłków. Przerwy zredukowane do minimum potrzebnego na regenerację stóp z 12 kg balastem.</span><span class="lang-en">Full autonomy. No drop bags or warm meals. Breaks reduced to the minimum needed for foot recovery under a 12kg load.</span></p>
+                <h2 class="text-base md:text-lg font-bold text-cyan-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2"><span class="lang-pl">2. HARMONOGRAM OGÓLNY I POSTOJE</span><span class="lang-en">2. GENERAL SCHEDULE & STOPS</span></h2>
+                <p class="text-sm text-slate-400 italic mb-6"><span class="lang-pl">Wyrypa w absolutnej, surowej autonomii. Przerwy zredukowane do minimum potrzebnego na regenerację stóp z 12 kg balastem.</span><span class="lang-en">Raw autonomy. Breaks reduced to the minimum needed for foot recovery under a 12kg load.</span></p>
                 
                 <div class="relative border-l-2 border-slate-600 ml-3 pl-6 space-y-6">
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-slate-500 w-4 h-4 rounded-full mt-1.5"></span>
                         <h4 class="font-bold text-white text-lg">0 - 25 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Marsz ciągły</span><span class="lang-en">Continuous march</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Wejście w noc. Rygorystyczne nawadnianie (1 bidon/h). Zbiegi z prędkością 4.3 - 4.4 km/h, bez forsowania kolan.</span><span class="lang-en">Entering the night. Strict hydration (1 flask/h). Downhills at 4.3 - 4.4 km/h, without forcing knees.</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Wejście w noc. Adaptacja do najcięższego plecaka (pełna woda na starcie). Zbiegi ostrożnie, z prędkością ok. 4.3 - 4.4 km/h, bez forsowania kolan. Rygorystyczne picie: równe 400 ml na godzinę.</span><span class="lang-en font-normal">Entering the night. Adapting to the heaviest backpack (full water). Downhills cautiously at 4.3 - 4.4 km/h, saving knees. Strict drinking: exactly 400 ml per hour.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-amber-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
-                        <h4 class="font-bold text-amber-400 text-lg">25 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Przerwa 5 min (Zegarek ok. 01:13)</span><span class="lang-en">5 min break (Watch approx. 01:13)</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Konserwacja stóp.</strong> Ściągnięcie butów, osuszenie, nałożenie wazeliny, zmiana skarpet na suche. Zjedzenie stałego pokarmu.</span><span class="lang-en"><strong>Foot maintenance.</strong> Take off shoes, dry feet, apply vaseline, change to dry socks. Eat solid food.</span></p>
+                        <h4 class="font-bold text-amber-400 text-lg">25 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Postój (Zegarek ok. 01:13)</span><span class="lang-en">Break (Watch approx. 01:13)</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Czas trwania: 5 minut.</strong> Krytyczna konserwacja stóp. Ściągnięcie butów, osuszenie, nałożenie wazeliny, zmiana skarpet na suche. Zjedzenie solidnej porcji stałego pokarmu.</span><span class="lang-en font-normal"><strong>Duration: 5 minutes.</strong> Critical foot maintenance. Take off shoes, dry feet, apply vaseline, change to dry socks. Eat a solid portion of food.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-slate-500 w-4 h-4 rounded-full mt-1.5"></span>
                         <h4 class="font-bold text-white text-lg">25 - 50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Nocny marsz</span><span class="lang-en">Night march</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Obejmuje najtrudniejszą fazę senności w okolicach 35-40 km. Wymagany strzał z kofeiny i utrzymanie tempa na zbiegach.</span><span class="lang-en">Includes the toughest sleep phase around 35-40 km. Caffeine shot required and maintaining pace on downhills.</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Faza obejmuje najtrudniejszą fazę senności ("Godzina Wilka") w okolicach 35-40 km. Wymagany strzał z kofeiny i bezwzględne trzymanie reżimu popijania z flasków (łatwo zasnąć i przestać pić).</span><span class="lang-en font-normal">Includes the toughest sleep phase ("Witching Hour") around 35-40 km. Caffeine shot required and strict adherence to flask sipping regimen.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-amber-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
-                        <h4 class="font-bold text-amber-400 text-lg">50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Przerwa 10 min (Zegarek ok. 07:33)</span><span class="lang-en">10 min break (Watch approx. 07:33)</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Druga konserwacja stóp.</strong> Przewietrzenie, inspekcja otarć, ponowna wazelina. Zjedzenie solidnego posiłku po wschodzie słońca.</span><span class="lang-en"><strong>Second foot maintenance.</strong> Air out, inspect for chafing, reapply vaseline. Eat a solid meal after sunrise.</span></p>
+                        <h4 class="font-bold text-amber-400 text-lg">50 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Postój (Zegarek ok. 07:33)</span><span class="lang-en">Break (Watch approx. 07:33)</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl"><strong>Czas trwania: 10 minut.</strong> Druga konserwacja stóp. Przewietrzenie, inspekcja otarć, ponowna wazelina. Przelanie gotowego miksu z butelek 1.5L do mniejszych flasków. Zjedzenie ostatniego stałego posiłku.</span><span class="lang-en font-normal"><strong>Duration: 10 minutes.</strong> Second foot maintenance. Air out, inspect for chafing, reapply vaseline. Decant mix from 1.5L bottles to flasks. Eat the last solid meal.</span></p>
                     </div>
                     
                     <div class="relative">
                         <span class="absolute -left-8 bg-slate-800 border-2 border-red-500 w-4 h-4 rounded-full mt-1.5 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
                         <h4 class="font-bold text-red-400 text-lg">50 - 74 km <span class="text-sm text-slate-400 font-normal ml-2 bg-slate-800 px-2 py-0.5 rounded border border-slate-600"><span class="lang-pl">Faza końcowa</span><span class="lang-en">Final phase</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Dług mięśniowy przekracza 3000m UP. Przejście z pokarmów stałych na żele i Hyper-Mix w celu odciążenia żołądka.</span><span class="lang-en">Muscle debt exceeds 3000m UP. Transition from solid foods to gels and Hyper-Mix to relieve the stomach.</span></p>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Marsz w świetle dnia. Dług mięśniowy przekracza 3000m UP. Żołądek może strajkować – przejście całkowicie na żele i resztki Hyper-Mixu.</span><span class="lang-en font-normal">Daylight march. Muscle debt exceeds 3000m UP. Stomach may strike – transition entirely to gels and remaining Hyper-Mix.</span></p>
                     </div>
                     
                     <div class="relative">
-                        <span class="absolute -left-[34px] bg-slate-900 border-2 border-lime-500 w-5 h-5 rounded-full mt-1 flex items-center justify-center shadow-[0_0_12px_rgba(132,204,22,0.6)]"><span class="bg-lime-500 w-2 h-2 rounded-full"></span></span>
-                        <h4 class="font-bold text-lime-400 text-xl">74 km <span class="text-sm text-lime-400 font-normal ml-2 bg-lime-900/30 px-2 py-0.5 rounded border border-lime-700"><span class="lang-pl">META</span><span class="lang-en">FINISH</span></span></h4>
-                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">Zatrzymanie stopera. Odpoczynek.</span><span class="lang-en">Stop the timer. Rest.</span></p>
+                        <span class="absolute -left-[34px] bg-slate-900 border-2 border-cyan-500 w-5 h-5 rounded-full mt-1 flex items-center justify-center shadow-[0_0_12px_rgba(6,182,212,0.6)]"><span class="bg-cyan-500 w-2 h-2 rounded-full"></span></span>
+                        <h4 class="font-bold text-cyan-400 text-xl">74 km <span class="text-sm text-cyan-400 font-normal ml-2 bg-cyan-900/30 px-2 py-0.5 rounded border border-cyan-700"><span class="lang-pl">META</span><span class="lang-en">FINISH</span></span></h4>
+                        <p class="text-sm text-slate-300 mt-1"><span class="lang-pl">META TESTU. Wyrzuć śmieci. Odpoczynek.</span><span class="lang-en">TEST FINISH. Dispose of trash. Rest.</span></p>
                     </div>
                 </div>
             </div>
@@ -1613,6 +1973,23 @@ html_template = f'''<!DOCTYPE html>
                     }}
                 }});
             }}
+
+            // Persist checkboxes in Inventory tab
+            const inventoryCheckboxes = document.querySelectorAll('#tab-inwentarz input[type="checkbox"]');
+            inventoryCheckboxes.forEach(chk => {{
+                const storageKey = `ultra75_chk_${{chk.id}}`;
+                try {{
+                    const savedVal = localStorage.getItem(storageKey);
+                    if (savedVal !== null) {{
+                        chk.checked = (savedVal === 'true');
+                    }}
+                }} catch(e) {{}}
+                chk.addEventListener('change', () => {{
+                    try {{
+                        localStorage.setItem(storageKey, chk.checked);
+                    }} catch(e) {{}}
+                }});
+            }});
         }});
         // ---------------------------------------------
 
