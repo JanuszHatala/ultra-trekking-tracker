@@ -1372,12 +1372,10 @@ html_template = f'''<!DOCTYPE html>
                     if (gpxTrackPoints && gpxTrackPoints.length > 0) {{
                         let searchStart = 0;
                         let searchEnd = gpxTrackPoints.length - 1;
-                        let usingWindow = false;
                         
                         if (gpsLastMatchedIndex !== null) {{
-                            searchStart = Math.max(0, gpsLastMatchedIndex - 100);
-                            searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 400);
-                            usingWindow = true;
+                            searchStart = Math.max(0, gpsLastMatchedIndex - 150);
+                            searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 600);
                         }}
                         
                         for (let i = searchStart; i <= searchEnd; i++) {{
@@ -1386,20 +1384,6 @@ html_template = f'''<!DOCTYPE html>
                                 minDistanceMetres = d;
                                 closestTrackPt = gpxTrackPoints[i];
                                 closestIdx = i;
-                            }}
-                        }}
-                        
-                        if (usingWindow && minDistanceMetres > 150) {{
-                            minDistanceMetres = Infinity;
-                            closestTrackPt = null;
-                            closestIdx = -1;
-                            for (let i = 0; i < gpxTrackPoints.length; i++) {{
-                                const d = gpsLatLng.distanceTo(gpxTrackPoints[i].latlng);
-                                if (d < minDistanceMetres) {{
-                                    minDistanceMetres = d;
-                                    closestTrackPt = gpxTrackPoints[i];
-                                    closestIdx = i;
-                                }}
                             }}
                         }}
                         
@@ -1532,8 +1516,8 @@ html_template = f'''<!DOCTYPE html>
             
             if (gpsMarker) {{
                 const currentLatLng = gpsMarker.getLatLng();
-                let searchStart = Math.max(0, gpsLastMatchedIndex - 100);
-                let searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 400);
+                let searchStart = Math.max(0, gpsLastMatchedIndex - 150);
+                let searchEnd = Math.min(gpxTrackPoints.length - 1, gpsLastMatchedIndex + 600);
                 
                 let minDistanceMetres = Infinity;
                 let closestTrackPt = gpxTrackPoints[searchStart];
