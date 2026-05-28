@@ -795,6 +795,7 @@ html_template = f'''<!DOCTYPE html>
         let gpsCurrentAccuracy = null;
         let gpsLastMatchedIndex = null;
         let gpsHasLocated = false;
+        let gpsLastMinDistanceMetres = 0;
         try {{
             const savedIdx = localStorage.getItem('gps_last_matched_index');
             if (savedIdx !== null) {{
@@ -1202,6 +1203,7 @@ html_template = f'''<!DOCTYPE html>
                     
                     gpsCurrentKm = closestTrackPt ? closestTrackPt.km : 0;
                     gpsCurrentAccuracy = accuracy;
+                    gpsLastMinDistanceMetres = minDistanceMetres;
                     renderOverviewElevationChart();
                     
                     updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
@@ -1286,6 +1288,7 @@ html_template = f'''<!DOCTYPE html>
                 }}
             }}
             
+            gpsLastMinDistanceMetres = minDistanceMetres;
             renderOverviewElevationChart();
             updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
         }}
@@ -1886,6 +1889,11 @@ html_template = f'''<!DOCTYPE html>
         timeInput.addEventListener('change', () => {{
             try {{ localStorage.setItem('ultra_start_time', timeInput.value); }} catch(e) {{}}
             renderApp();
+            if (gpsCurrentKm !== null) {{
+                const lat = gpsMarker ? gpsMarker.getLatLng().lat : 49.762544;
+                const lon = gpsMarker ? gpsMarker.getLatLng().lng : 19.086507;
+                updateGpsStatusPanel(lat, lon, gpsCurrentAccuracy || 10, gpsLastMinDistanceMetres || 0, gpsCurrentKm);
+            }}
         }});
 
         let highlightedPolyline = null;

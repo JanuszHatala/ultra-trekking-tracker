@@ -16734,6 +16734,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
         let gpsCurrentAccuracy = null;
         let gpsLastMatchedIndex = null;
         let gpsHasLocated = false;
+        let gpsLastMinDistanceMetres = 0;
         try {
             const savedIdx = localStorage.getItem('gps_last_matched_index');
             if (savedIdx !== null) {
@@ -17141,6 +17142,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
                     
                     gpsCurrentKm = closestTrackPt ? closestTrackPt.km : 0;
                     gpsCurrentAccuracy = accuracy;
+                    gpsLastMinDistanceMetres = minDistanceMetres;
                     renderOverviewElevationChart();
                     
                     updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
@@ -17225,6 +17227,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 }
             }
             
+            gpsLastMinDistanceMetres = minDistanceMetres;
             renderOverviewElevationChart();
             updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
         }
@@ -17825,6 +17828,11 @@ Check your Browserslist config to be sure that your targets are set up correctly
         timeInput.addEventListener('change', () => {
             try { localStorage.setItem('ultra_start_time', timeInput.value); } catch(e) {}
             renderApp();
+            if (gpsCurrentKm !== null) {
+                const lat = gpsMarker ? gpsMarker.getLatLng().lat : 49.762544;
+                const lon = gpsMarker ? gpsMarker.getLatLng().lng : 19.086507;
+                updateGpsStatusPanel(lat, lon, gpsCurrentAccuracy || 10, gpsLastMinDistanceMetres || 0, gpsCurrentKm);
+            }
         });
 
         let highlightedPolyline = null;
