@@ -1195,7 +1195,15 @@ html_template = f'''<!DOCTYPE html>
                     }} else if (err.code === 3) {{
                         errStr = lang === 'pl' ? "⚠️ Przekroczono limit czasu oczekiwania. Spróbuj na zewnątrz." : "⚠️ GPS request timed out. Try again outdoors.";
                     }} else {{
-         function snapGpsToCheckpoint(cpKm) {{
+                        errStr = lang === 'pl' ? "⚠️ Błąd lokalizacji: " + err.message : "⚠️ Geolocation error: " + err.message;
+                    }}
+                    showGpsErrorCard(errStr);
+                }},
+                {{ enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }}
+            );
+        }}
+
+        function snapGpsToCheckpoint(cpKm) {{
             if (!gpxTrackPoints || gpxTrackPoints.length === 0) return;
             
             let closestIdx = 0;
