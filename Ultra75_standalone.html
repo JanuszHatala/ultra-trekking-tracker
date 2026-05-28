@@ -17044,22 +17044,6 @@ Check your Browserslist config to be sure that your targets are set up correctly
                                 minDistanceMetres = globalMinDistance;
                                 closestTrackPt = globalClosestPt;
                                 closestIdx = globalClosestIdx;
-                            } else {
-                                if (gpsLastMatchedIndex !== null) {
-                                    minDistanceMetres = gpsLatLng.distanceTo(gpxTrackPoints[gpsLastMatchedIndex].latlng);
-                                    closestTrackPt = gpxTrackPoints[gpsLastMatchedIndex];
-                                    closestIdx = gpsLastMatchedIndex;
-                                } else {
-                                    minDistanceMetres = globalMinDistance;
-                                    closestTrackPt = globalClosestPt;
-                                    closestIdx = globalClosestIdx;
-                                }
-                            }
-                        } else if (!usingRestricted && minDistanceMetres > 200) {
-                            if (gpsLastMatchedIndex !== null) {
-                                minDistanceMetres = gpsLatLng.distanceTo(gpxTrackPoints[gpsLastMatchedIndex].latlng);
-                                closestTrackPt = gpxTrackPoints[gpsLastMatchedIndex];
-                                closestIdx = gpsLastMatchedIndex;
                             }
                         }
                         
