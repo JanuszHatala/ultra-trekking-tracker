@@ -1029,7 +1029,6 @@ html_template = f'''<!DOCTYPE html>
             const etaMs = now.getTime() + remainingPlanMins * 60000;
             const etaDate = new Date(etaMs);
             const etaStr = `${{etaDate.getHours().toString().padStart(2, '0')}}:${{etaDate.getMinutes().toString().padStart(2, '0')}}`;
-            const etaStr = `${{etaDate.getHours().toString().padStart(2, '0')}}:${{etaDate.getMinutes().toString().padStart(2, '0')}}`;
             document.getElementById('gps-finish-eta').innerHTML = etaStr;
         }}
 
@@ -1462,6 +1461,12 @@ html_template = f'''<!DOCTYPE html>
                         intervalSelect.value = savedInterval;
                     }}
                 }} catch(e) {{}}
+                
+                const intervalVal = parseInt(intervalSelect.value);
+                if (intervalVal !== 0) {{
+                    toggleTracking();
+                }}
+                
                 intervalSelect.addEventListener('change', () => {{
                     try {{
                         localStorage.setItem('ultra_gps_interval', intervalSelect.value);

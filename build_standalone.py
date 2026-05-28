@@ -1749,6 +1749,12 @@ html_template = f'''<!DOCTYPE html>
                         intervalSelect.value = savedInterval;
                     }}
                 }} catch(e) {{}}
+                
+                const intervalVal = parseInt(intervalSelect.value);
+                if (intervalVal !== 0) {{
+                    toggleTracking();
+                }}
+                
                 intervalSelect.addEventListener('change', () => {{
                     try {{
                         localStorage.setItem('ultra_gps_interval', intervalSelect.value);
