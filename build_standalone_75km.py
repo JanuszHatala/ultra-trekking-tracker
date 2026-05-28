@@ -1214,7 +1214,7 @@ html_template = f'''<!DOCTYPE html>
             const now = Date.now();
             const intervalVal = parseInt(document.getElementById('gps-poll-interval').value);
             
-            if (now - gpsLastUpdateTime < intervalVal) {{
+            if (gpsLastRawPosition !== null && (now - gpsLastUpdateTime < intervalVal)) {{
                 return;
             }}
             gpsLastUpdateTime = now;
@@ -1355,8 +1355,6 @@ html_template = f'''<!DOCTYPE html>
                         if (marker) marker.openPopup();
                     }}, 400);
                 }}
-                highlightSection(checkpointIndex);
-                highlightRow(checkpointIndex);
                 
                 // If map is visible on mobile, scroll it into view
                 const mapContainer = document.getElementById('map-container');
