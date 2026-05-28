@@ -16740,6 +16740,8 @@ Check your Browserslist config to be sure that your targets are set up correctly
         let gpsHasLocated = false;
         let gpsLastMinDistanceMetres = 0;
         let gpsLastUpdateTime = 0;
+        let gpsLastRawPosition = null;
+        let gpsSnapBackTimeout = null;
         try {
             const savedIdx = localStorage.getItem('gps_last_matched_index');
             if (savedIdx !== null) {
@@ -16998,6 +17000,11 @@ Check your Browserslist config to be sure that your targets are set up correctly
         }
 
         function handleGpsPosition(pos) {
+            gpsLastRawPosition = pos;
+            if (gpsSnapBackTimeout) {
+                clearTimeout(gpsSnapBackTimeout);
+                gpsSnapBackTimeout = null;
+            }
             const lat = pos.coords.latitude;
             const lon = pos.coords.longitude;
             const accuracy = pos.coords.accuracy;
@@ -17258,6 +17265,21 @@ Check your Browserslist config to be sure that your targets are set up correctly
             gpsLastMinDistanceMetres = minDistanceMetres;
             renderOverviewElevationChart();
             updateGpsStatusPanel(lat, lon, accuracy, minDistanceMetres, gpsCurrentKm);
+
+            // Recalculate back to actual location after interval
+            if (gpsSnapBackTimeout) {
+                clearTimeout(gpsSnapBackTimeout);
+                gpsSnapBackTimeout = null;
+            }
+            if (isTracking && gpsLastRawPosition) {
+                const intervalVal = parseInt(document.getElementById('gps-poll-interval').value);
+                gpsSnapBackTimeout = setTimeout(() => {
+                    if (isTracking && gpsLastRawPosition) {
+                        handleGpsPosition(gpsLastRawPosition);
+                    }
+                    gpsSnapBackTimeout = null;
+                }, intervalVal);
+            }
         }
 
         function toggleTracking() {
@@ -17293,6 +17315,10 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 
             } else {
                 isTracking = false;
+                if (gpsSnapBackTimeout) {
+                    clearTimeout(gpsSnapBackTimeout);
+                    gpsSnapBackTimeout = null;
+                }
                 if (btn) {
                     btn.classList.remove('leaflet-control-gps-active');
                     btn.querySelector('a').title = isPl ? "Śledź moją pozycję (GPS)" : "Track my position (GPS)";
