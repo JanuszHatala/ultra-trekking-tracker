@@ -1054,7 +1054,15 @@ html_template = f'''<!DOCTYPE html>
                     const lat = pos.coords.latitude;
                     const lon = pos.coords.longitude;
                     const accuracy = pos.coords.accuracy;
-                       let minDistanceMetres = Infinity;
+                    
+                    let dotColor = '#3b82f6';
+                    if (accuracy > 100) {{
+                        dotColor = '#ef4444';
+                    }} else if (accuracy > 50) {{
+                        dotColor = '#f97316';
+                    }}
+                    
+                    let minDistanceMetres = Infinity;
                     let closestTrackPt = null;
                     let closestIdx = -1;
                     const gpsLatLng = L.latLng(lat, lon);
