@@ -384,6 +384,9 @@ html_template = f'''<!DOCTYPE html>
             box-shadow: 0 0 12px #ef4444 !important;
             animation: gps-btn-glow 1.5s infinite alternate ease-in-out !important;
         }}
+        .leaflet-control-gps-active a {{
+            background-color: transparent !important;
+        }}
         .leaflet-control-gps-active svg {{
             stroke: #ffffff !important;
         }}
