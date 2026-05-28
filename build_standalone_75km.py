@@ -387,7 +387,8 @@ html_template = f'''<!DOCTYPE html>
         .leaflet-control-gps-active svg {{
             stroke: #ffffff !important;
         }}
-        .leaflet-control-gps-active svg circle {{
+        .leaflet-control-gps-active svg circle,
+        .leaflet-control-gps-active svg polygon {{
             fill: #ffffff !important;
         }}
         @keyframes gps-btn-glow {{
@@ -1043,6 +1044,17 @@ html_template = f'''<!DOCTYPE html>
             msgZone.innerHTML = msg;
         }}
 
+        function updateTrackMeButtonVisibility() {{
+            const btn = document.getElementById('btn-track-me');
+            if (!btn) return;
+            const intervalVal = parseInt(document.getElementById('gps-poll-interval').value);
+            if (intervalVal === 0) {{
+                btn.classList.add('hidden');
+            }} else {{
+                btn.classList.remove('hidden');
+            }}
+        }}
+
         function handleGpsPosition(pos) {{
             const lat = pos.coords.latitude;
             const lon = pos.coords.longitude;
@@ -1462,10 +1474,7 @@ html_template = f'''<!DOCTYPE html>
                     }}
                 }} catch(e) {{}}
                 
-                const intervalVal = parseInt(intervalSelect.value);
-                if (intervalVal !== 0) {{
-                    toggleTracking();
-                }}
+                updateTrackMeButtonVisibility();
                 
                 intervalSelect.addEventListener('change', () => {{
                     try {{
@@ -1474,6 +1483,8 @@ html_template = f'''<!DOCTYPE html>
                     
                     const isPl = document.documentElement.getAttribute('lang') === 'pl';
                     const intervalVal = parseInt(intervalSelect.value);
+                    
+                    updateTrackMeButtonVisibility();
                     
                     if (isTracking) {{
                         if (intervalVal === 0) {{
@@ -1612,10 +1623,7 @@ html_template = f'''<!DOCTYPE html>
                 const isPl = document.documentElement.getAttribute('lang') === 'pl';
                 container.innerHTML = `<a href="#" title="${{isPl ? 'Śledź moją pozycję (GPS)' : 'Track my position (GPS)'}}" style="display: flex; align-items: center; justify-content: center;" class="hover:bg-slate-50 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#475569" stroke-width="2.5" style="width: 16px; height: 16px;">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 12L8 21M12 12L16 21M9.5 16h5M12 12V7" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5a4.5 4.5 0 016 0" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 3a8.5 8.5 0 0112 0" />
-                        <circle cx="12" cy="7" r="1.5" fill="#475569" />
+                        <polygon points="3 11 22 2 13 21 11 13 3 11" fill="none" />
                     </svg>
                 </a>`;
                 container.onclick = function(e){{
