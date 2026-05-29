@@ -424,7 +424,7 @@ html_template = f'''<!DOCTYPE html>
         <div class="p-3 md:p-6 pb-0 flex-shrink-0 bg-slate-900 z-20">
             <div class="flex justify-between items-center w-full">
                 <div>
-                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 75km Ultra-Trekking <span style="font-size: 0.5em; color: white;">v1.4</span></h1>
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 75km Ultra-Trekking <span style="font-size: 0.5em; color: white;">v1.5</span></h1>
                     <p class="text-[10px] md:text-xs text-slate-400 italic mb-0"><span class="lang-pl">Prawdziwe chodzenie zaczyna się po setce...</span><span class="lang-en">Real walking begins after a hundred...</span></p>
                 </div>
                 <!-- Show Map Button -->
@@ -3373,11 +3373,7 @@ const ASSETS = [
     './manifest.json',
     './icon-192.svg',
     './icon-512.svg',
-    './wyrypa75km.gpx',
-    'https://cdn.tailwindcss.com',
-    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js'
+    './wyrypa75km.gpx'
 ];
 
 self.addEventListener('install', event => {{
