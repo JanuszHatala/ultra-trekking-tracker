@@ -1762,9 +1762,18 @@ html_template = f'''<!DOCTYPE html>
                             const lon = pt.latlng.lng;
                             const centerTile = latLonToTile(lat, lon, zoom);
                             
-                            // Download center tile and its 8 neighbors for a small buffer
-                            for (let dx = -1; dx <= 1; dx++) {{
-                                for (let dy = -1; dy <= 1; dy++) {{
+                            // Determine buffer size depending on zoom level (wider corridors on detailed zooms)
+                            let buf = 1;
+                            if (zoom === 14 || zoom === 15) {{
+                                buf = 2; // 5x5 grid
+                            }} else if (zoom === 16) {{
+                                buf = 3; // 7x7 grid
+                            }} else if (zoom === 17) {{
+                                buf = 4; // 9x9 grid
+                            }}
+                            
+                            for (let dx = -buf; dx <= buf; dx++) {{
+                                for (let dy = -buf; dy <= buf; dy++) {{
                                     const x = centerTile.x + dx;
                                     const y = centerTile.y + dy;
                                     const tileKey = `${{zoom}}_${{x}}_${{y}}`;
@@ -1843,7 +1852,7 @@ html_template = f'''<!DOCTYPE html>
                                 failed++;
                                 console.warn(`Failed to fetch tile after 3 attempts: ${{url}}`);
                             }}
-                            await new Promise(resolve => setTimeout(resolve, 150));
+                            await new Promise(resolve => setTimeout(resolve, 100));
                         }} else {{
                             succeeded++;
                         }}
