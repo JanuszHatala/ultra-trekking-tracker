@@ -1807,19 +1807,47 @@ html_template = f'''<!DOCTYPE html>
                 
                 const total = urls.length;
                 const cache = await caches.open('ultra-tiles-v1');
+                let succeeded = 0;
+                let failed = 0;
                 
                 for (let i = 0; i < total; i++) {{
                     const url = urls[i];
                     try {{
                         const cachedRes = await cache.match(url);
                         if (!cachedRes) {{
-                            const res = await fetch(url, {{ mode: 'cors' }});
-                            if (res.ok) {{
+                            let attempts = 0;
+                            let resOk = false;
+                            let res = null;
+                            while (attempts < 3 && !resOk) {{
+                                try {{
+                                    res = await fetch(url, {{ mode: 'cors' }});
+                                    if (res.ok) {{
+                                        resOk = true;
+                                    }} else if (res.status === 429) {{
+                                        attempts++;
+                                        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+                                    }} else {{
+                                        attempts++;
+                                        await new Promise(resolve => setTimeout(resolve, 300));
+                                    }}
+                                }} catch (err) {{
+                                    attempts++;
+                                    await new Promise(resolve => setTimeout(resolve, 300));
+                                }}
+                            }}
+                            if (resOk && res) {{
                                 await cache.put(url, res);
+                                succeeded++;
+                            }} else {{
+                                failed++;
+                                console.warn(`Failed to fetch tile after 3 attempts: ${{url}}`);
                             }}
                             await new Promise(resolve => setTimeout(resolve, 150));
+                        }} else {{
+                            succeeded++;
                         }}
                     }} catch (e) {{
+                        failed++;
                         console.warn("Failed to fetch tile: " + url, e);
                     }}
                     
@@ -1827,10 +1855,18 @@ html_template = f'''<!DOCTYPE html>
                     progress.innerHTML = `${{pct}}%`;
                 }}
                 
-                localStorage.setItem('ultra_map_downloaded', '1');
-                updateMapButtonsState();
                 progress.classList.add('hidden');
-                showToast(isPl ? "Pobieranie mapy zakończone sukcesem!" : "Map download completed successfully!");
+                
+                if (failed === 0) {{
+                    localStorage.setItem('ultra_map_downloaded', '1');
+                    updateMapButtonsState();
+                    showToast(isPl ? "Pobieranie zakończone sukcesem! Pobrano wszystkie kafle." : "Download completed successfully! All tiles downloaded.");
+                }} else {{
+                    btn.disabled = false;
+                    btn.classList.remove('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                    btn.classList.add('bg-slate-700', 'text-slate-300', 'hover:text-white');
+                    showToast(isPl ? `Pobrano ${{succeeded}} z ${{total}} kafli (${{failed}} nieudanych). Kliknij Pobierz ponownie, by spróbować dociągnąć brakujące.` : `Downloaded ${{succeeded}} of ${{total}} tiles (${{failed}} failed). Click Download again to retry.`);
+                }}
                 
             }} catch (err) {{
                 console.error("Offline map cache download failed", err);
@@ -1850,6 +1886,9 @@ html_template = f'''<!DOCTYPE html>
                 const downloaded = localStorage.getItem('ultra_map_downloaded');
                 if (downloaded === '1') {{
                     btnDownload.innerHTML = `<span class="lang-pl">✓ Mapa offline gotowa</span><span class="lang-en">✓ Offline map ready</span>`;
+                    btnDownload.disabled = true;
+                    btnDownload.classList.add('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                    btnDownload.classList.remove('bg-slate-700', 'text-slate-300', 'hover:text-white');
                     if (btnDelete) btnDelete.classList.remove('hidden');
                 }} else {{
                     btnDownload.innerHTML = `<span class="lang-pl">📥 Pobierz mapę offline</span><span class="lang-en">📥 Download offline map</span>`;
