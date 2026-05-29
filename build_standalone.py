@@ -659,7 +659,7 @@ html_template = f'''<!DOCTYPE html>
         <div class="p-3 md:p-6 pb-0 flex-shrink-0 bg-slate-900 z-20">
             <div class="flex justify-between items-center w-full">
                 <div>
-                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 100km Ultra-Trekking <span style="font-size: 0.5em; color: white;">v1.2</span></h1>
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 100km Ultra-Trekking <span style="font-size: 0.5em; color: white;">v1.3</span></h1>
                     <p class="text-[10px] md:text-xs text-slate-400 italic mb-0"><span class="lang-pl">Prawdziwe chodzenie zaczyna się po setce...</span><span class="lang-en">Real walking begins after a hundred...</span></p>
                 </div>
                 <!-- Show Map Button -->
@@ -3315,6 +3315,17 @@ self.addEventListener('fetch', event => {{
                             cache.put(normalizedUrl, responseClone);
                         }}
                         return fetchResponse;
+                    }}).catch(() => {{
+                        // Offline fallback: return a diagnostic SVG tile
+                        const urlObj = new URL(normalizedUrl);
+                        const parts = urlObj.pathname.split('/');
+                        const zxy = parts.slice(1).join('/');
+                        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" style="background:rgba(239, 68, 68, 0.5); border: 1px solid red;">
+                            <text x="10" y="128" fill="black" font-family="sans-serif" font-size="16" font-weight="bold">${{zxy}}</text>
+                        </svg>`;
+                        return new Response(svg, {{
+                            headers: {{ 'Content-Type': 'image/svg+xml', 'Access-Control-Allow-Origin': '*' }}
+                        }});
                     }});
                 }});
             }})

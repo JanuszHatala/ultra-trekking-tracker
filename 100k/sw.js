@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ultra-trekking-v1780055582';
+const CACHE_NAME = 'ultra-trekking-v1780056499';
 const ASSETS = [
     './',
     './index.html',
@@ -36,6 +36,17 @@ self.addEventListener('fetch', event => {
                             cache.put(normalizedUrl, responseClone);
                         }
                         return fetchResponse;
+                    }).catch(() => {
+                        // Offline fallback: return a diagnostic SVG tile
+                        const urlObj = new URL(normalizedUrl);
+                        const parts = urlObj.pathname.split('/');
+                        const zxy = parts.slice(1).join('/');
+                        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" style="background:rgba(239, 68, 68, 0.5); border: 1px solid red;">
+                            <text x="10" y="128" fill="black" font-family="sans-serif" font-size="16" font-weight="bold">${zxy}</text>
+                        </svg>`;
+                        return new Response(svg, {
+                            headers: { 'Content-Type': 'image/svg+xml', 'Access-Control-Allow-Origin': '*' }
+                        });
                     });
                 });
             })
