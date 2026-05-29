@@ -1820,29 +1820,59 @@ html_template = f'''<!DOCTYPE html>
             
             try {{
                 const urls = [];
-                const bounds = {{
-                    south: 49.30,
-                    north: 49.95,
-                    west: 18.40,
-                    east: 19.60
-                }};
-                const zooms = [11, 12, 13, 14];
+                const tileSet = new Set();
+                const zooms = [11, 12, 13, 14, 15, 16, 17];
                 
-                zooms.forEach(zoom => {{
-                    const startTile = latLonToTile(bounds.north, bounds.west, zoom);
-                    const endTile = latLonToTile(bounds.south, bounds.east, zoom);
-                    
-                    const minX = Math.min(startTile.x, endTile.x);
-                    const maxX = Math.max(startTile.x, endTile.x);
-                    const minY = Math.min(startTile.y, endTile.y);
-                    const maxY = Math.max(startTile.y, endTile.y);
-                    
-                    for (let x = minX; x <= maxX; x++) {{
-                        for (let y = minY; y <= maxY; y++) {{
-                            urls.push(`https://a.tile.opentopomap.org/${{zoom}}/${{x}}/${{y}}.png`);
+                if (gpxTrackPoints && gpxTrackPoints.length > 0) {{
+                    zooms.forEach(zoom => {{
+                        gpxTrackPoints.forEach(pt => {{
+                            const lat = pt.latlng.lat;
+                            const lon = pt.latlng.lng;
+                            const centerTile = latLonToTile(lat, lon, zoom);
+                            
+                            // Download center tile and its 8 neighbors for a small buffer
+                            for (let dx = -1; dx <= 1; dx++) {{
+                                for (let dy = -1; dy <= 1; dy++) {{
+                                    const x = centerTile.x + dx;
+                                    const y = centerTile.y + dy;
+                                    const tileKey = `${{zoom}}_${{x}}_${{y}}`;
+                                    if (!tileSet.has(tileKey)) {{
+                                        tileSet.add(tileKey);
+                                        urls.push(`https://a.tile.opentopomap.org/${{zoom}}/${{x}}/${{y}}.png`);
+                                    }}
+                                }}
+                            }}
+                        }});
+                    }});
+                }} else {{
+                    // Fallback to bounding box for zooms 11-14 if GPX track points are not loaded yet
+                    const bounds = {{
+                        south: 49.30,
+                        north: 49.95,
+                        west: 18.40,
+                        east: 19.60
+                    }};
+                    const fallbackZooms = [11, 12, 13, 14];
+                    fallbackZooms.forEach(zoom => {{
+                        const startTile = latLonToTile(bounds.north, bounds.west, zoom);
+                        const endTile = latLonToTile(bounds.south, bounds.east, zoom);
+                        
+                        const minX = Math.min(startTile.x, endTile.x);
+                        const maxX = Math.max(startTile.x, endTile.x);
+                        const minY = Math.min(startTile.y, endTile.y);
+                        const maxY = Math.max(startTile.y, endTile.y);
+                        
+                        for (let x = minX; x <= maxX; x++) {{
+                            for (let y = minY; y <= maxY; y++) {{
+                                const tileKey = `${{zoom}}_${{x}}_${{y}}`;
+                                if (!tileSet.has(tileKey)) {{
+                                    tileSet.add(tileKey);
+                                    urls.push(`https://a.tile.opentopomap.org/${{zoom}}/${{x}}/${{y}}.png`);
+                                }}
+                            }}
                         }}
-                    }}
-                }});
+                    }});
+                }}
                 
                 const total = urls.length;
                 const cache = await caches.open('ultra-tiles-v1');
