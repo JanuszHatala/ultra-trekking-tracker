@@ -3190,7 +3190,7 @@ html_template = f'''<!DOCTYPE html>
         // Service Worker registration for PWA installation
         if ('serviceWorker' in navigator) {{
             window.addEventListener('load', () => {{
-                navigator.serviceWorker.register('./sw.js', {{ scope: './Ultra100_standalone.html' }}).then(registration => {{
+                navigator.serviceWorker.register('./sw.js', {{ scope: './' }}).then(registration => {{
                     console.log('SW registered: ', registration);
                     registration.update();
                 }}).catch(registrationError => {{
@@ -3212,16 +3212,46 @@ html_template = f'''<!DOCTYPE html>
 </html>'''
 
 
-print('Writing Ultra100_standalone.html...')
-with open('Ultra100_standalone.html', 'w', encoding='utf-8') as f:
+import os
+
+os.makedirs('100k', exist_ok=True)
+
+# Copy GPX file
+print('Copying GPX file to 100k directory...')
+with open('wyrypa-100km.gpx', 'r', encoding='utf-8') as f:
+    gpx_data_copy = f.read()
+with open('100k/wyrypa-100km.gpx', 'w', encoding='utf-8') as f:
+    f.write(gpx_data_copy)
+
+# Write icons
+print('Writing 100k icons...')
+icon_192 = '''<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192">
+  <rect width="192" height="192" fill="#0f172a"/>
+  <circle cx="96" cy="96" r="48" fill="#84cc16"/>
+  <text x="96" y="104" font-family="sans-serif" font-size="24" font-weight="bold" fill="#0f172a" text-anchor="middle">100k</text>
+</svg>
+'''
+icon_512 = '''<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+  <rect width="512" height="512" fill="#0f172a"/>
+  <circle cx="256" cy="256" r="128" fill="#84cc16"/>
+  <text x="256" y="278" font-family="sans-serif" font-size="64" font-weight="bold" fill="#0f172a" text-anchor="middle">100k</text>
+</svg>
+'''
+with open('100k/icon-192.svg', 'w', encoding='utf-8') as f:
+    f.write(icon_192)
+with open('100k/icon-512.svg', 'w', encoding='utf-8') as f:
+    f.write(icon_512)
+
+print('Writing 100k/index.html...')
+with open('100k/index.html', 'w', encoding='utf-8') as f:
     f.write(html_template)
 
 manifest_data = {
-    "id": "./Ultra100_standalone.html",
-    "scope": "./Ultra100_standalone.html",
+    "id": "./",
+    "scope": "./",
     "name": "Wyrypa 100km",
     "short_name": "Wyrypa 100k",
-    "start_url": "./Ultra100_standalone.html",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
@@ -3242,14 +3272,13 @@ manifest_data = {
     ]
 }
 
-with open('manifest.json', 'w', encoding='utf-8') as f:
+with open('100k/manifest.json', 'w', encoding='utf-8') as f:
     json.dump(manifest_data, f, indent=4)
 
 sw_content = f'''const CACHE_NAME = '{app_version}';
 const ASSETS = [
     './',
     './index.html',
-    './Ultra100_standalone.html',
     './manifest.json',
     './icon-192.svg',
     './icon-512.svg',
@@ -3310,8 +3339,9 @@ self.addEventListener('activate', event => {{
 }});
 '''
 
-print('Writing sw.js...')
-with open('sw.js', 'w', encoding='utf-8') as f:
+print('Writing 100k/sw.js...')
+with open('100k/sw.js', 'w', encoding='utf-8') as f:
     f.write(sw_content)
 
-print('Successfully generated Ultra100_standalone.html, manifest.json, and sw.js.')
+print('Successfully generated 100k PWA assets.')
+
