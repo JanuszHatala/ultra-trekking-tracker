@@ -2060,7 +2060,8 @@ html_template = f'''<!DOCTYPE html>
 
 
         L.tileLayer('https://{{s}}.tile.opentopomap.org/{{z}}/{{x}}/{{y}}.png', {{
-            maxZoom: 17,
+            maxZoom: 19,
+            maxNativeZoom: 17,
             attribution: 'Map data: &copy; OSM | Style: &copy; OpenTopoMap'
         }}).addTo(map);
 
@@ -3306,7 +3307,7 @@ self.addEventListener('fetch', event => {{
         const normalizedUrl = event.request.url.replace(/https?:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
         event.respondWith(
             caches.open('ultra-tiles-v1').then(cache => {{
-                return cache.match(new Request(normalizedUrl), {{ ignoreVary: true, ignoreSearch: true }}).then(response => {{
+                return cache.match(normalizedUrl, {{ ignoreVary: true, ignoreSearch: true }}).then(response => {{
                     return response || fetch(event.request).then(fetchResponse => {{
                         if (fetchResponse.ok) {{
                             const responseClone = fetchResponse.clone();

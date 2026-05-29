@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ultra-trekking-v1780050557';
+const CACHE_NAME = 'ultra-trekking-v1780052403';
 const ASSETS = [
     './',
     './index.html',
@@ -29,7 +29,7 @@ self.addEventListener('fetch', event => {
         const normalizedUrl = event.request.url.replace(/https?:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
         event.respondWith(
             caches.open('ultra-tiles-v1').then(cache => {
-                return cache.match(new Request(normalizedUrl), { ignoreVary: true, ignoreSearch: true }).then(response => {
+                return cache.match(normalizedUrl, { ignoreVary: true, ignoreSearch: true }).then(response => {
                     return response || fetch(event.request).then(fetchResponse => {
                         if (fetchResponse.ok) {
                             const responseClone = fetchResponse.clone();
