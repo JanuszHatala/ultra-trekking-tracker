@@ -1026,6 +1026,9 @@ Check your Browserslist config to be sure that your targets are set up correctly
                             <span class="lang-pl">📥 Pobierz mapę offline</span>
                             <span class="lang-en">📥 Download offline map</span>
                         </button>
+                        <button id="btn-delete-map" class="hidden px-2 md:px-3 text-xs md:text-sm font-bold bg-red-950/40 text-red-400 hover:bg-red-900/60 hover:text-red-200 transition-colors h-full border-l border-slate-600 cursor-pointer" title="Usuń pobraną mapę / Delete downloaded map">
+                            🗑️
+                        </button>
                         <div id="download-progress-bar" class="hidden h-full bg-slate-900 border-l border-slate-600 px-3 flex items-center text-[10px] md:text-xs font-mono text-lime-400">
                             0%
                         </div>
@@ -19551,22 +19554,24 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 for (let i = 0; i < total; i++) {
                     const url = urls[i];
                     try {
-                        const res = await fetch(url, { mode: 'cors' });
-                        if (res.ok) {
-                            await cache.put(url, res);
+                        const cachedRes = await cache.match(url);
+                        if (!cachedRes) {
+                            const res = await fetch(url, { mode: 'cors' });
+                            if (res.ok) {
+                                await cache.put(url, res);
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 150));
                         }
                     } catch (e) {
                         console.warn("Failed to fetch tile: " + url, e);
                     }
-                    
-                    await new Promise(resolve => setTimeout(resolve, 150));
                     
                     const pct = Math.round(((i + 1) / total) * 100);
                     progress.innerHTML = `${pct}%`;
                 }
                 
                 localStorage.setItem('ultra_map_downloaded', '1');
-                btn.innerHTML = `<span class="lang-pl">✓ Mapa offline gotowa</span><span class="lang-en">✓ Offline map ready</span>`;
+                updateMapButtonsState();
                 progress.classList.add('hidden');
                 showToast(isPl ? "Pobieranie mapy zakończone sukcesem!" : "Map download completed successfully!");
                 
@@ -19578,6 +19583,25 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 progress.classList.add('hidden');
                 showToast(isPl ? "Błąd pobierania mapy. Spróbuj ponownie." : "Map download failed. Try again.");
             }
+        }
+
+        function updateMapButtonsState() {
+            const btnDownload = document.getElementById('btn-download-map');
+            const btnDelete = document.getElementById('btn-delete-map');
+            if (!btnDownload) return;
+            try {
+                const downloaded = localStorage.getItem('ultra_map_downloaded');
+                if (downloaded === '1') {
+                    btnDownload.innerHTML = `<span class="lang-pl">✓ Mapa offline gotowa</span><span class="lang-en">✓ Offline map ready</span>`;
+                    if (btnDelete) btnDelete.classList.remove('hidden');
+                } else {
+                    btnDownload.innerHTML = `<span class="lang-pl">📥 Pobierz mapę offline</span><span class="lang-en">📥 Download offline map</span>`;
+                    btnDownload.disabled = false;
+                    btnDownload.classList.remove('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+                    btnDownload.classList.add('bg-slate-700', 'text-slate-300', 'hover:text-white');
+                    if (btnDelete) btnDelete.classList.add('hidden');
+                }
+            } catch(e) {}
         }
 
         function latLonToTile(lat, lon, zoom) {
@@ -19632,15 +19656,25 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 });
             }
 
+            updateMapButtonsState();
             const btnDownload = document.getElementById('btn-download-map');
             if (btnDownload) {
-                try {
-                    const downloaded = localStorage.getItem('ultra_map_downloaded');
-                    if (downloaded === '1') {
-                        btnDownload.innerHTML = `<span class="lang-pl">✓ Mapa offline gotowa</span><span class="lang-en">✓ Offline map ready</span>`;
-                    }
-                } catch(e) {}
                 btnDownload.addEventListener('click', downloadOfflineTiles);
+            }
+            const btnDelete = document.getElementById('btn-delete-map');
+            if (btnDelete) {
+                btnDelete.addEventListener('click', async () => {
+                    const isPl = document.documentElement.getAttribute('lang') === 'pl';
+                    try {
+                        await caches.delete('ultra-tiles-v1');
+                        localStorage.removeItem('ultra_map_downloaded');
+                        updateMapButtonsState();
+                        showToast(isPl ? "Mapa offline została usunięta" : "Offline map has been deleted");
+                    } catch (err) {
+                        console.error("Failed to delete tile cache", err);
+                        showToast(isPl ? "Błąd usuwania mapy" : "Failed to delete offline map");
+                    }
+                });
             }
 
             const btnResetGps = document.getElementById('btn-reset-gps');
