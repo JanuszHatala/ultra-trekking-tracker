@@ -659,7 +659,7 @@ html_template = f'''<!DOCTYPE html>
         <div class="p-3 md:p-6 pb-0 flex-shrink-0 bg-slate-900 z-20">
             <div class="flex justify-between items-center w-full">
                 <div>
-                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 100km Ultra-Trekking <span style="font-size: 0.5em; color: white;">v1.3</span></h1>
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">Wyrypa 100km Ultra-Trekking <span style="font-size: 0.5em; color: white;">v1.4</span></h1>
                     <p class="text-[10px] md:text-xs text-slate-400 italic mb-0"><span class="lang-pl">Prawdziwe chodzenie zaczyna się po setce...</span><span class="lang-en">Real walking begins after a hundred...</span></p>
                 </div>
                 <!-- Show Map Button -->
@@ -1846,7 +1846,7 @@ html_template = f'''<!DOCTYPE html>
                                 }}
                             }}
                             if (resOk && res) {{
-                                await cache.put(url, res);
+                                await cache.put(url, res.clone());
                                 succeeded++;
                             }} else {{
                                 failed++;
@@ -2062,7 +2062,6 @@ html_template = f'''<!DOCTYPE html>
         L.tileLayer('https://{{s}}.tile.opentopomap.org/{{z}}/{{x}}/{{y}}.png', {{
             maxZoom: 19,
             maxNativeZoom: 17,
-            crossOrigin: true,
             attribution: 'Map data: &copy; OSM | Style: &copy; OpenTopoMap'
         }}).addTo(map);
 
