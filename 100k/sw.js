@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ultra-trekking-v1780058746';
+const CACHE_NAME = 'ultra-trekking-v1780059392';
 const ASSETS = [
     './',
     './index.html',
@@ -6,10 +6,6 @@ const ASSETS = [
     './icon-192.svg',
     './icon-512.svg',
     './wyrypa-100km.gpx',
-    'https://cdn.tailwindcss.com',
-    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js'
 ];
 
 self.addEventListener('install', event => {
