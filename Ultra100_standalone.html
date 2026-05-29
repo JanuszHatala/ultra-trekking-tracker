@@ -19566,7 +19566,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 for (let i = 0; i < total; i++) {
                     const url = urls[i];
                     try {
-                        const cachedRes = await cache.match(url);
+                        const cachedRes = await cache.match(url, { ignoreVary: true });
                         if (!cachedRes) {
                             let attempts = 0;
                             let resOk = false;
