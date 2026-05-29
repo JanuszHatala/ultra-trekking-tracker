@@ -17834,14 +17834,14 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 for (let i = 0; i < total; i++) {
                     const url = urls[i];
                     try {
-                        const cachedRes = await cache.match(url, { ignoreVary: true });
+                        const cachedRes = await cache.match(new Request(url), { ignoreVary: true, ignoreSearch: true });
                         if (!cachedRes) {
                             let attempts = 0;
                             let resOk = false;
                             let res = null;
                             while (attempts < 3 && !resOk) {
                                 try {
-                                    res = await fetch(url, { mode: 'cors' });
+                                    res = await fetch(url, { mode: 'cors', cache: 'reload' });
                                     if (res.ok) {
                                         resOk = true;
                                     } else if (res.status === 429) {
@@ -19220,6 +19220,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw_75.js', { scope: './Ultra75_standalone.html' }).then(registration => {
                     console.log('SW registered: ', registration);
+                    registration.update();
                 }).catch(registrationError => {
                     console.log('SW registration failed: ', registrationError);
                 });

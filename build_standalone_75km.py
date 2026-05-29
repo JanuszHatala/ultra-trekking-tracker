@@ -1895,14 +1895,14 @@ html_template = f'''<!DOCTYPE html>
                 for (let i = 0; i < total; i++) {{
                     const url = urls[i];
                     try {{
-                        const cachedRes = await cache.match(url, {{ ignoreVary: true }});
+                        const cachedRes = await cache.match(new Request(url), {{ ignoreVary: true, ignoreSearch: true }});
                         if (!cachedRes) {{
                             let attempts = 0;
                             let resOk = false;
                             let res = null;
                             while (attempts < 3 && !resOk) {{
                                 try {{
-                                    res = await fetch(url, {{ mode: 'cors' }});
+                                    res = await fetch(url, {{ mode: 'cors', cache: 'reload' }});
                                     if (res.ok) {{
                                         resOk = true;
                                     }} else if (res.status === 429) {{
@@ -3281,6 +3281,7 @@ html_template = f'''<!DOCTYPE html>
             window.addEventListener('load', () => {{
                 navigator.serviceWorker.register('./sw_75.js', {{ scope: './Ultra75_standalone.html' }}).then(registration => {{
                     console.log('SW registered: ', registration);
+                    registration.update();
                 }}).catch(registrationError => {{
                     console.log('SW registration failed: ', registrationError);
                 }});
@@ -3353,7 +3354,8 @@ self.addEventListener('install', event => {{
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {{
-            return cache.addAll(ASSETS);
+            const requests = ASSETS.map(url => new Request(url, {{ cache: 'reload' }}));
+            return cache.addAll(requests);
         }})
     );
 }});
@@ -3362,10 +3364,10 @@ self.addEventListener('fetch', event => {{
     if (event.request.method !== 'GET') return;
     
     if (event.request.url.includes('tile.opentopomap.org')) {{
-        const normalizedUrl = event.request.url.replace(/https:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
+        const normalizedUrl = event.request.url.replace(/https?:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
         event.respondWith(
             caches.open('ultra-tiles-v1').then(cache => {{
-                return cache.match(normalizedUrl, {{ ignoreVary: true }}).then(response => {{
+                return cache.match(new Request(normalizedUrl), {{ ignoreVary: true, ignoreSearch: true }}).then(response => {{
                     return response || fetch(event.request).then(fetchResponse => {{
                         if (fetchResponse.ok) {{
                             const responseClone = fetchResponse.clone();
