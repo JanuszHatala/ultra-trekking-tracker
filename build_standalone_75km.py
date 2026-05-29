@@ -3279,7 +3279,7 @@ html_template = f'''<!DOCTYPE html>
         // Service Worker registration for PWA installation
         if ('serviceWorker' in navigator) {{
             window.addEventListener('load', () => {{
-                navigator.serviceWorker.register('./sw_75.js', {{ scope: './Ultra75_standalone.html' }}).then(registration => {{
+                navigator.serviceWorker.register('./sw.js', {{ scope: './' }}).then(registration => {{
                     console.log('SW registered: ', registration);
                     registration.update();
                 }}).catch(registrationError => {{
@@ -3302,29 +3302,59 @@ html_template = f'''<!DOCTYPE html>
 
 
 
-print('Writing Ultra75_standalone.html...')
-with open('Ultra75_standalone.html', 'w', encoding='utf-8') as f:
+import os
+
+os.makedirs('75k', exist_ok=True)
+
+# Copy GPX file
+print('Copying GPX file to 75k directory...')
+with open('wyrypa75km.gpx', 'r', encoding='utf-8') as f:
+    gpx_data_copy = f.read()
+with open('75k/wyrypa75km.gpx', 'w', encoding='utf-8') as f:
+    f.write(gpx_data_copy)
+
+# Write icons
+print('Writing 75k icons...')
+icon_192_content = '''<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192">
+  <rect width="192" height="192" fill="#0f172a"/>
+  <circle cx="96" cy="96" r="48" fill="#06b6d4"/>
+  <text x="96" y="104" font-family="sans-serif" font-size="24" font-weight="bold" fill="#0f172a" text-anchor="middle">75k</text>
+</svg>
+'''
+icon_512_content = '''<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+  <rect width="512" height="512" fill="#0f172a"/>
+  <circle cx="256" cy="256" r="128" fill="#06b6d4"/>
+  <text x="256" y="278" font-family="sans-serif" font-size="64" font-weight="bold" fill="#0f172a" text-anchor="middle">75k</text>
+</svg>
+'''
+with open('75k/icon-192.svg', 'w', encoding='utf-8') as f:
+    f.write(icon_192_content)
+with open('75k/icon-512.svg', 'w', encoding='utf-8') as f:
+    f.write(icon_512_content)
+
+print('Writing 75k/index.html...')
+with open('75k/index.html', 'w', encoding='utf-8') as f:
     f.write(html_template)
 
 manifest_data = {
-    "id": "./Ultra75_standalone.html",
-    "scope": "./Ultra75_standalone.html",
+    "id": "./",
+    "scope": "./",
     "name": "Wyrypa 75km",
     "short_name": "Wyrypa 75k",
-    "start_url": "./Ultra75_standalone.html",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
     "description": "Offline tracker for 75km Ultra-Trekking",
     "icons": [
         {
-            "src": "./icon-192_75.svg",
+            "src": "./icon-192.svg",
             "sizes": "192x192",
             "type": "image/svg+xml",
             "purpose": "any maskable"
         },
         {
-            "src": "./icon-512_75.svg",
+            "src": "./icon-512.svg",
             "sizes": "512x512",
             "type": "image/svg+xml",
             "purpose": "any maskable"
@@ -3332,17 +3362,16 @@ manifest_data = {
     ]
 }
 
-with open('manifest_75.json', 'w', encoding='utf-8') as f:
+with open('75k/manifest.json', 'w', encoding='utf-8') as f:
     json.dump(manifest_data, f, indent=4)
 
 sw_content = f'''const CACHE_NAME = '{app_version}';
 const ASSETS = [
     './',
     './index.html',
-    './Ultra75_standalone.html',
-    './manifest_75.json',
-    './icon-192_75.svg',
-    './icon-512_75.svg',
+    './manifest.json',
+    './icon-192.svg',
+    './icon-512.svg',
     './wyrypa75km.gpx',
     'https://cdn.tailwindcss.com',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
@@ -3400,30 +3429,8 @@ self.addEventListener('activate', event => {{
 }});
 '''
 
-print('Writing sw_75.js...')
-with open('sw_75.js', 'w', encoding='utf-8') as f:
+print('Writing 75k/sw.js...')
+with open('75k/sw.js', 'w', encoding='utf-8') as f:
     f.write(sw_content)
 
-icon_192_content = '''<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192">
-  <rect width="192" height="192" fill="#0f172a"/>
-  <circle cx="96" cy="96" r="48" fill="#06b6d4"/>
-  <text x="96" y="104" font-family="sans-serif" font-size="24" font-weight="bold" fill="#0f172a" text-anchor="middle">75k</text>
-</svg>
-'''
-
-icon_512_content = '''<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
-  <rect width="512" height="512" fill="#0f172a"/>
-  <circle cx="256" cy="256" r="128" fill="#06b6d4"/>
-  <text x="256" y="278" font-family="sans-serif" font-size="64" font-weight="bold" fill="#0f172a" text-anchor="middle">75k</text>
-</svg>
-'''
-
-print('Writing icon-192_75.svg...')
-with open('icon-192_75.svg', 'w', encoding='utf-8') as f:
-    f.write(icon_192_content)
-
-print('Writing icon-512_75.svg...')
-with open('icon-512_75.svg', 'w', encoding='utf-8') as f:
-    f.write(icon_512_content)
-
-print('Successfully generated Ultra75_standalone.html, manifest_75.json, sw_75.js, and 75k icons.')
+print('Successfully generated 75k PWA assets.')
