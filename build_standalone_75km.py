@@ -3364,15 +3364,15 @@ self.addEventListener('fetch', event => {{
     if (event.request.url.includes('tile.opentopomap.org')) {{
         const normalizedUrl = event.request.url.replace(/https:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
         event.respondWith(
-            caches.match(normalizedUrl).then(response => {{
-                return response || fetch(event.request).then(fetchResponse => {{
-                    if (fetchResponse.ok) {{
-                        const responseClone = fetchResponse.clone();
-                        caches.open('ultra-tiles-v1').then(cache => {{
+            caches.open('ultra-tiles-v1').then(cache => {{
+                return cache.match(normalizedUrl).then(response => {{
+                    return response || fetch(event.request).then(fetchResponse => {{
+                        if (fetchResponse.ok) {{
+                            const responseClone = fetchResponse.clone();
                             cache.put(normalizedUrl, responseClone);
-                        }});
-                    }}
-                    return fetchResponse;
+                        }}
+                        return fetchResponse;
+                    }});
                 }});
             }})
         );
