@@ -721,6 +721,7 @@ html_template = f'''<!DOCTYPE html>
                             0%
                         </div>
                     </div>
+                    <div id="cache-debug-info" class="text-[10px] text-slate-400 font-mono mt-1 whitespace-normal max-w-[250px]"></div>
 
                     <!-- Language Toggle -->
                     <div class="flex bg-slate-800 rounded border border-slate-600 overflow-hidden shadow-sm h-[28px] md:h-[38px]">
@@ -1856,6 +1857,7 @@ html_template = f'''<!DOCTYPE html>
                 }}
                 
                 progress.classList.add('hidden');
+                await updateCacheDebugInfo();
                 
                 if (failed === 0) {{
                     localStorage.setItem('ultra_map_downloaded', '1');
@@ -1907,6 +1909,44 @@ html_template = f'''<!DOCTYPE html>
             return {{ x: xtile, y: ytile }};
         }}
 
+        async function updateCacheDebugInfo() {{
+            const infoDiv = document.getElementById('cache-debug-info');
+            if (!infoDiv) return;
+            try {{
+                const cache = await caches.open('ultra-tiles-v1');
+                const keys = await cache.keys();
+                
+                if (keys.length === 0) {{
+                    infoDiv.innerHTML = `<span class="lang-pl">Kafle w pamięci: 0</span><span class="lang-en">Cached tiles: 0</span>`;
+                    return;
+                }}
+                
+                const zooms = {{}};
+                keys.forEach(req => {{
+                    const match = req.url.match(/opentopomap\.org\/(\d+)\//);
+                    if (match) {{
+                        const z = match[1];
+                        zooms[z] = (zooms[z] || 0) + 1;
+                    }}
+                }});
+                
+                let plStr = `Pamięć podręczna: ${{keys.length}} kafli (`;
+                let enStr = `Tile cache: ${{keys.length}} tiles (`;
+                const sortedZooms = Object.keys(zooms).sort((a,b) => a-b);
+                sortedZooms.forEach((z, idx) => {{
+                    const comma = idx > 0 ? ', ' : '';
+                    plStr += `${{comma}}z${{z}}:${{zooms[z]}}`;
+                    enStr += `${{comma}}z${{z}}:${{zooms[z]}}`;
+                }});
+                plStr += ')';
+                enStr += ')';
+                
+                infoDiv.innerHTML = `<span class="lang-pl">${{plStr}}</span><span class="lang-en">${{enStr}}</span>`;
+            }} catch (e) {{
+                infoDiv.innerHTML = `Cache error: ` + e.message;
+            }}
+        }}
+
         // Initialize GPS polling and map pre-caching elements on load
         document.addEventListener('DOMContentLoaded', () => {{
             const intervalSelect = document.getElementById('gps-poll-interval');
@@ -1953,6 +1993,7 @@ html_template = f'''<!DOCTYPE html>
             }}
 
             updateMapButtonsState();
+            updateCacheDebugInfo();
             const btnDownload = document.getElementById('btn-download-map');
             if (btnDownload) {{
                 btnDownload.addEventListener('click', downloadOfflineTiles);
@@ -1965,6 +2006,7 @@ html_template = f'''<!DOCTYPE html>
                         await caches.delete('ultra-tiles-v1');
                         localStorage.removeItem('ultra_map_downloaded');
                         updateMapButtonsState();
+                        await updateCacheDebugInfo();
                         showToast(isPl ? "Mapa offline została usunięta" : "Offline map has been deleted");
                     }} catch (err) {{
                         console.error("Failed to delete tile cache", err);
