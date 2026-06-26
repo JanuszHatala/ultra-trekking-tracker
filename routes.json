@@ -3,7 +3,7 @@
     {
       "id": "100k",
       "name": "Wyrypa 100km Ultra-Trekking",
-      "version": "1.5",
+      "version": "1.6",
       "files": [
         "100k/index.html",
         "100k/sw.js",
@@ -16,7 +16,7 @@
     {
       "id": "75k",
       "name": "Wyrypa 75km Ultra-Trekking",
-      "version": "1.5",
+      "version": "1.6",
       "files": [
         "75k/index.html",
         "75k/sw.js",
