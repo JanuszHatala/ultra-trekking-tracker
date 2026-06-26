@@ -17,4 +17,8 @@ __pycache__/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
-.DS_Store
+node_modules/
+**/node_modules/
+.gemini/
+v2_unified/engine/dist/
+scratch/

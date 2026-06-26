@@ -1760,6 +1760,8 @@ html_template = f'''<!DOCTYPE html>
                     btn.querySelector('a').title = isPl ? "Wyłącz śledzenie GPS" : "Disable GPS tracking";
                 }}
                 
+                try {{ localStorage.setItem('ultra_is_tracking_75', '1'); }} catch(e) {{}}
+                
                 showToast(isPl ? "Uruchamianie śledzenia GPS..." : "Starting GPS tracking...");
                 locateMe();
                 
@@ -1808,6 +1810,7 @@ html_template = f'''<!DOCTYPE html>
                 
             }} else {{
                 isTracking = false;
+                try {{ localStorage.removeItem('ultra_is_tracking_75'); }} catch(e) {{}}
                 if (gpsSnapBackTimeout) {{
                     clearTimeout(gpsSnapBackTimeout);
                     gpsSnapBackTimeout = null;
@@ -2046,7 +2049,7 @@ html_template = f'''<!DOCTYPE html>
                 
                 const zooms = {{}};
                 keys.forEach(req => {{
-                    const match = req.url.match(/opentopomap\.org\/(\d+)\//);
+                    const match = req.url.match(/opentopomap.org\/(\d+)\//);
                     if (match) {{
                         const z = match[1];
                         zooms[z] = (zooms[z] || 0) + 1;
@@ -2072,6 +2075,12 @@ html_template = f'''<!DOCTYPE html>
 
         // Initialize GPS polling and map pre-caching elements on load
         document.addEventListener('DOMContentLoaded', () => {{
+            try {{
+                if (localStorage.getItem('ultra_is_tracking_75') === '1') {{
+                    setTimeout(() => {{ toggleTracking(); }}, 500);
+                }}
+            }} catch(e) {{}}
+            
             const intervalSelect = document.getElementById('gps-poll-interval');
             if (intervalSelect) {{
                 try {{
@@ -3453,7 +3462,7 @@ self.addEventListener('fetch', event => {{
     if (event.request.method !== 'GET') return;
     
     if (event.request.url.includes('tile.opentopomap.org')) {{
-        const normalizedUrl = event.request.url.replace(/https?:\/\/[abc]\.tile\.opentopomap\.org/, 'https://a.tile.opentopomap.org');
+        const normalizedUrl = event.request.url.replace(/https?:\/\/[abc].tile.opentopomap.org/, 'https://a.tile.opentopomap.org');
         event.respondWith(
             caches.open('ultra-tiles-v1').then(cache => {{
                 return cache.match(normalizedUrl, {{ ignoreVary: true, ignoreSearch: true }}).then(response => {{
