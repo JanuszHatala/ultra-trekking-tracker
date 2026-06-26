@@ -1,0 +1,83 @@
+﻿WYRYPA USER PROFILE: ENDURANCE & BIOMECHANICAL SPECIFICATION
+User ID: Janusz H.
+System Load Configuration: * Body Weight (  ):   
+* Target Pack Weight (  ):    (Standard for autonomous/winter trekking)
+* Total System Mass (  ):   
+1. PHYSIOLOGICAL BASELINES & CARDIOVASCULAR PROFILE
+   * Resting Heart Rate (  ):   
+   * Maximum Heart Rate (  ):   
+   * Aerobic Threshold (AeT / Zone 2):    (The "Sustainable Engine" Zone)
+   * Anaerobic Threshold (AnT):   
+   * Critical Threshold Rule: Any sustained effort exceeding    under    load triggers exponential glycogen depletion and guarantees systemic failure (the "wall") within   .
+2. MATHEMATICAL PACING MODEL (12 kg Load Adjustments)
+To accurately predict segment times (   in minutes) over a distance (   in km) with positive elevation gain (   in meters) and negative elevation drop (   in meters), use the following formalized model:
+  A. Model Constants
+      * Comfort Base Pace (  ):    (  ) on flat terrain (  )
+      * Race/Target Base Pace (  ):    (  )
+      * Ascent Penalty Coefficient (  ):    of time penalty per    of positive elevation gain.
+      * Descent Reward Coefficient (  ):    of time bonus per    of elevation drop.
+         * Descent Speed Cap: Under    load, to protect the musculoskeletal system, descending speed is strictly capped at    (  ).
+B. Terrain Slope Buckets (  )
+            1. Flat/Rolling (  ): Dynamic walk. Target pace:   .
+            2. Moderate Climb (  ): Power hiking. Target pace:   .
+            3. Steep Climb (  ): Heavy power hiking. Target pace:   .
+            4. The "Wall" (  ): High-load vertical ascent. Target pace:   . Focus purely on breathing rhythm and pole extension.
+3. FATIGUE DECAY & MECHANICAL BARRIERS
+A. The Cumulative Fatigue Function
+Fatigue degradation is modeled as a linear decay coefficient (  ) based on cumulative distance traveled (   in km):
+               *   Standard Decay Coefficient (  ):    (corresponds to a    pace slowdown at    and    at    under optimal fueling).
+               * Decoupling Decay (Dehydrated/Unfueled): If fueling falls below target,    shifts dynamically to   , causing a catastrophic    slowdown at   .
+B. The Mechanical "Foot-Pain-Point" (FPP)
+                  * Historical Threshold (Without Orthotics/Dry):   .
+                  * Failure Mechanism: Compressive metatarsalgia. Total compression of metatarsal fat pads leads to direct bone-on-nerve impact.
+                  * Wet/Rain Acceleration: Presence of moisture and maceration accelerates skin shear failure by   , shifting FPP down to   .
+                  * Mitigation Target: With customized orthopedic insoles, metatarsal pads (pelotas), and preventively taped hot-spots, the FPP is projected to shift to   .
+4. METABOLIC & NUTRITION ENGINE (Target: 60-80g Carbs/h)
+A. Approved Fuels (High Efficiency, Zero GI Distress)
+                     * Hyper-Mix (2:1 Maltodextrin to Fructose ratio): The primary energy vehicle. Easily absorbed via dual-transporter pathways (SGLT1 & GLUT5).
+                     * Liquid Gels: 100% simple sugars, swallowed easily without requiring large volumes of water.
+                     * Salty Solids (Kabanosy, Pretzels, Salted Peanuts): Crucial for reset of the palate and sodium replenishment.
+B. Prohibited Substances (The Digestive Red Lines)
+                     * Zupa Pomidorowa / Kotlet Schabowy (Silesian/Beskid classics): Banned during active high-intensity phases. Vascular shunt redirects blood flow from the gut to the working quad muscles, causing stomach paralysis, cramping, and systemic nausea.
+                     * Plain Water in Large Volumes: Banned without sodium integration. Drinking low-osmolality water under heavy sweating induces dilutional hyponatremia, leading directly to quadriceps cramping.
+C. Sodium Replenishment Protocol
+                     * Target Concentration:    of Sodium (  ) per    of fluid.
+                     * Tactical Execution: Add a generous pinch (  ) of table salt directly to each dry Hyper-Mix bag. On hot stages, supplement with direct salt sips or Litorsal tablets.
+5. RECOVERY & READINESS PROTOCOL (HRV-Guided)
+To prevent chronic overtraining and protect the cardiovascular system from permanent damage, the return to training must be guided by RMSSD (Root Mean Square of Successive Differences) metrics.
+A. The 7-Day Rolling Average Rule
+Do not execute any training session above Zone 1 (  ) if the 7-day rolling average of RMSSD falls outside the lower bound of your baseline envelope:
+  B. Standardized Morning Measurement Protocol
+                        1. Timing: Immediately upon waking up, after bladder evacuation.
+                        2. Position: Seated (avoids parasympathetic saturation artifact common in supine athletes).
+                        3. Hardware: Chest strap (polar-type ECG) or high-quality PPG optical sensor (HRV4Training).
+                        4. Duration: Exactly 3 minutes of controlled, natural breathing.
+6. SYSTEM PROFILE CONFIGURATION (JSON representation)
+{
+ "profile": {
+   "athlete": "Janusz H.",
+   "mass_body_kg": 75,
+   "mass_gear_kg": 12,
+   "metrics": {
+     "hr_rest": 80,
+     "hr_max": 170,
+     "hr_z2_min": 125,
+     "hr_z2_max": 140
+   },
+   "pacing_model": {
+     "pace_base_min_km": 12.5,
+     "ascent_penalty_min_100m": 15.0,
+     "descent_bonus_min_100m": 4.0,
+     "descent_speed_limit_min_km": 13.5,
+     "fatigue_coefficient_beta": 0.002
+   },
+   "hydration": {
+     "fluid_limit_ml_h": 400,
+     "sodium_target_mg_l": 750
+   },
+   "nutrition": {
+     "carbs_target_g_h": 65,
+     "carb_ratio_malto_fructose": "2:1"
+   }
+ }
+}

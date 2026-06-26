@@ -19431,6 +19431,8 @@ Check your Browserslist config to be sure that your targets are set up correctly
                     btn.querySelector('a').title = isPl ? "Wyłącz śledzenie GPS" : "Disable GPS tracking";
                 }
                 
+                try { localStorage.setItem('ultra_is_tracking', '1'); } catch(e) {}
+                
                 showToast(isPl ? "Uruchamianie śledzenia GPS..." : "Starting GPS tracking...");
                 locateMe();
                 
@@ -19479,6 +19481,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
                 
             } else {
                 isTracking = false;
+                try { localStorage.removeItem('ultra_is_tracking'); } catch(e) {}
                 if (gpsSnapBackTimeout) {
                     clearTimeout(gpsSnapBackTimeout);
                     gpsSnapBackTimeout = null;
@@ -19743,6 +19746,12 @@ Check your Browserslist config to be sure that your targets are set up correctly
 
         // Initialize GPS polling and map pre-caching elements on load
         document.addEventListener('DOMContentLoaded', () => {
+            try {
+                if (localStorage.getItem('ultra_is_tracking') === '1') {
+                    setTimeout(() => { toggleTracking(); }, 500);
+                }
+            } catch(e) {}
+            
             const intervalSelect = document.getElementById('gps-poll-interval');
             if (intervalSelect) {
                 try {

@@ -1,0 +1,25 @@
+Now I have another idea to develop.
+We have this two apps for 75k and 100k ultra trekkings.
+I'd like to unify building next apps or even build one app and only switch between data sets, so that the engine wolud stay the same but the tracks together with their specifics (the track, map, properties, tactics, the table, inventory, schedule, tests, training, etc.) would be different.
+Preparing such data set would be a separate process but the result would be unified - this processed data set would be exposed as new (ultra)trekking challenge and after publishing to some location it would appear as new "app" or new "trekking" to download.
+
+There are two major parts of this application new approach:
+- very good analysis that produces the data that will be used by the applicatoin
+- application that is able to work with different data (different tracks, different sections, different map locations hence offline maps management). The application mechanics should be common and the app should work in two ways in case of some missing data: use defaults if they're necessary for the app engine and mechanics, don't display whatever is not provided in the data set.
+
+The analysis is crucial, base on other already passed trekkings and their analytics any other user insighs about their condition and abilities.
+ * it should discover user's abilities
+ * it should discover the tracks requirements and challenges (length, total ascend, time if there is such constraint, whether conditions depending on the season or other conditions)
+ * the data table should be build in variants of fixed sections (e.g. 5km) or divided by peaks/valleys but the pace on that sections should be aligned with the analytics done earlier or use some defaults if no specific analysis performed.
+ * actions in the data table should be detailed enough and express exactly what is expected to happen or being done from the previous checkpoint (section). It should contain everything, not only basic info, it has to be usefull, but this is rather instruction for the analysis part where all this is prepared.
+ *
+
+The app can have some common user profile data regarding their weight, performance, past passed challenges and their scores etc. whatever will be helpful in further new analytics.
+For now the analsis part will be done separately, it's not gonna be a part of the app. But anywyay I need some structured and formalized procedure of doing the analysis that will always produce the same format depending on various data. For this part I'd expect from you some prompt pattern that I could use to always perform it in the righ way and get the same output format that will be immediatelly taken by the app or easily transformed to the app specs.
+
+I want you to analyse now my new idea and ask me questions and discuss with me to finally formulate the right PRD doc describing the new development phase.
+Check what currently application has, what can be transformed into dynamically loaded data and how to actually build the new track - will it be only a matter of preparing dataset or it will require some more changes in the GitHub published artifacts.
+I think we need to list all functionalities of the apps and confirm the way how it will be done in the new version.
+Maybe also a good step would be now to produce a documentation (technical and high-level user/business level) of the current apps, to have them as reference point to the new unified one.
+
+Help me to sort out the new idea to do everything in the right order and in the right efficient way.
