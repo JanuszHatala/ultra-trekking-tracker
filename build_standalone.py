@@ -1692,13 +1692,46 @@ html_template = f'''<!DOCTYPE html>
                 locateMe();
                 
                 gpsLastUpdateTime = Date.now();
-                gpsTrackingInterval = navigator.geolocation.watchPosition(
-                    handleGpsWatchSuccess,
-                    function(err) {{
-                        console.warn("GPS Watch error: ", err);
-                    }},
-                    {{ enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }}
-                );
+                
+                if (window.Capacitor && window.Capacitor.isNativePlatform()) {{
+                    import('https://cdn.jsdelivr.net/npm/@capacitor/core@5.0.6/+esm').then((core) => {{
+                        const BackgroundGeolocation = core.registerPlugin('BackgroundGeolocation');
+                        BackgroundGeolocation.addWatcher(
+                            {{
+                                backgroundMessage: "Wyrypa is tracking your location.",
+                                requestPermissions: true,
+                                stale: false,
+                                distanceFilter: 10
+                            }},
+                            function(location, error) {{
+                                if (error) {{
+                                    console.warn("BackgroundGeolocation error: ", error);
+                                    return;
+                                }}
+                                if (location) {{
+                                    handleGpsWatchSuccess({{
+                                        coords: {{
+                                            latitude: location.latitude,
+                                            longitude: location.longitude,
+                                            accuracy: location.accuracy
+                                        }},
+                                        timestamp: location.time
+                                    }});
+                                }}
+                            }}
+                        ).then(watcherId => {{
+                            gpsTrackingInterval = watcherId;
+                        }});
+                    }});
+                }} else {{
+                    gpsTrackingInterval = navigator.geolocation.watchPosition(
+                        handleGpsWatchSuccess,
+                        function(err) {{
+                            console.warn("GPS Watch error: ", err);
+                        }},
+                        {{ enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }}
+                    );
+                }}
                 
             }} else {{
                 isTracking = false;
@@ -1712,7 +1745,15 @@ html_template = f'''<!DOCTYPE html>
                 }}
                 
                 if (gpsTrackingInterval !== null) {{
-                    navigator.geolocation.clearWatch(gpsTrackingInterval);
+                    if (window.Capacitor && window.Capacitor.isNativePlatform()) {{
+                        const watcherId = gpsTrackingInterval;
+                        import('https://cdn.jsdelivr.net/npm/@capacitor/core@5.0.6/+esm').then((core) => {{
+                            const BackgroundGeolocation = core.registerPlugin('BackgroundGeolocation');
+                            BackgroundGeolocation.removeWatcher({{ id: watcherId }});
+                        }});
+                    }} else {{
+                        navigator.geolocation.clearWatch(gpsTrackingInterval);
+                    }}
                     gpsTrackingInterval = null;
                 }}
                 
