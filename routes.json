@@ -1,0 +1,30 @@
+{
+  "routes": [
+    {
+      "id": "100k",
+      "name": "Wyrypa 100km Ultra-Trekking",
+      "version": "1.5",
+      "files": [
+        "100k/index.html",
+        "100k/sw.js",
+        "100k/manifest.json",
+        "100k/icon-192.svg",
+        "100k/icon-512.svg",
+        "100k/wyrypa100km.gpx"
+      ]
+    },
+    {
+      "id": "75k",
+      "name": "Wyrypa 75km Ultra-Trekking",
+      "version": "1.5",
+      "files": [
+        "75k/index.html",
+        "75k/sw.js",
+        "75k/manifest.json",
+        "75k/icon-192.svg",
+        "75k/icon-512.svg",
+        "75k/wyrypa75km.gpx"
+      ]
+    }
+  ]
+}
