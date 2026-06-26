@@ -1698,6 +1698,7 @@ html_template = f'''<!DOCTYPE html>
                         const BackgroundGeolocation = core.registerPlugin('BackgroundGeolocation');
                         BackgroundGeolocation.addWatcher(
                             {{
+                                backgroundTitle: "Wyrypa Tracker",
                                 backgroundMessage: "Wyrypa is tracking your location.",
                                 requestPermissions: true,
                                 stale: false,
@@ -3238,6 +3239,27 @@ html_template = f'''<!DOCTYPE html>
                 }}).catch(registrationError => {{
                     console.log('SW registration failed: ', registrationError);
                 }});
+
+                if (window.Capacitor && window.Capacitor.isNativePlatform()) {{
+                    const hubBtn = document.createElement('button');
+                    hubBtn.innerHTML = '⬅️ Hub';
+                    hubBtn.style.position = 'fixed';
+                    hubBtn.style.bottom = '20px';
+                    hubBtn.style.left = '20px';
+                    hubBtn.style.zIndex = '9999';
+                    hubBtn.style.padding = '10px 15px';
+                    hubBtn.style.backgroundColor = '#1e293b';
+                    hubBtn.style.color = '#a3e635';
+                    hubBtn.style.border = '2px solid #a3e635';
+                    hubBtn.style.borderRadius = '12px';
+                    hubBtn.style.fontWeight = 'bold';
+                    hubBtn.style.boxShadow = '0 4px 6px rgba(0,0,0,0.3)';
+                    hubBtn.onclick = () => {{
+                        localStorage.removeItem('wyrypa_last_route_url');
+                        window.location.href = window.location.origin + '/index.html';
+                    }};
+                    document.body.appendChild(hubBtn);
+                }}
             }});
 
             // Force refresh when new service worker takes control
