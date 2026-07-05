@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Crosshair, EyeOff, Maximize, Navigation, MapPin } from 'lucide-react';
 import { GpsTrackingService } from '../services/GpsTrackingService';
+import { Geolocation } from '@capacitor/geolocation';
 
 // Create the custom circle marker icon with green border and number
 const createNumberedIcon = (number) => {
@@ -173,17 +174,23 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
       </div>
       <div className="absolute top-[80px] left-[10px] z-[1000] flex flex-col gap-2">
         <button 
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition((pos) => {
-                map.setView([pos.coords.latitude, pos.coords.longitude], 15, { animate: true });
-                setGpsState(prev => ({ ...prev, lat: pos.coords.latitude, lon: pos.coords.longitude, accuracy: pos.coords.accuracy }));
-              }, (err) => {
-                console.warn("Could not get current position", err);
-                alert("GPS Error: " + err.message + "\nCheck if location permissions are granted for this site.");
-              });
+            try {
+              const permStatus = await Geolocation.checkPermissions();
+              if (permStatus.location !== 'granted') {
+                const req = await Geolocation.requestPermissions();
+                if (req.location !== 'granted') {
+                  throw new Error("Location permission not granted");
+                }
+              }
+              const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 10000 });
+              map.setView([pos.coords.latitude, pos.coords.longitude], 15, { animate: true });
+              setGpsState(prev => ({ ...prev, lat: pos.coords.latitude, lon: pos.coords.longitude, accuracy: pos.coords.accuracy }));
+            } catch (err) {
+              console.warn("Could not get current position", err);
+              alert("GPS Error: " + err.message + "\nCheck if location permissions are granted for this site or app.");
             }
           }}
           className="w-[34px] h-[34px] bg-slate-800 border-2 border-slate-600 text-slate-300 hover:text-lime-400 rounded flex items-center justify-center shadow-lg transition-colors leaflet-control"
