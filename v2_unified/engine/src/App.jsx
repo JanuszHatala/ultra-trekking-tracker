@@ -1,3 +1,4 @@
+import packageJson from '../package.json';
 import React, { useState, useEffect, useRef } from 'react';
 import { GpsEngine } from './services/GpsEngine';
 import { StorageEngine } from './services/StorageEngine';
