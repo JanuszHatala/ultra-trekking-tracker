@@ -239,7 +239,7 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
   );
 }
 
-export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSection, profileHoverPoint, mapVisible, setMapVisible, autoOpenDetails, gpsState, setGpsState, gpsInterval, lang = 'en' }) {
+export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSection, setSelectedSection, profileHoverPoint, mapVisible, setMapVisible, autoOpenDetails, gpsState, setGpsState, gpsInterval, lang = 'en' }) {
   const [positions, setPositions] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [isTracking, setIsTracking] = useState(() => {
@@ -356,8 +356,17 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                 }
             }
             return (
-              <Marker key={i} position={[cp.lat, cp.lon]} icon={createNumberedIcon(i === 0 ? 'S' : i)}>
-                <Popup className="text-slate-900 font-sans custom-popup-styled">
+              <Marker 
+                key={i} 
+                position={[cp.lat, cp.lon]} 
+                icon={createNumberedIcon(i === 0 ? 'S' : i)}
+                eventHandlers={{ 
+                  click: () => { 
+                    if (setSelectedSection) setSelectedSection({ ...cp, actionText, sectionDist }); 
+                  } 
+                }}
+              >
+                <Popup className="text-slate-900 font-sans custom-popup-styled" autoPanPaddingTopLeft={[60, 260]}>
                   <div className="font-bold text-lg mb-1">{cp.name}</div>
                   <div className="text-sm text-slate-600 mb-1">
                     KM: {cp.km.toFixed(1)} {sectionDist > 0 && `(+${sectionDist.toFixed(1)}km)`} • {Math.round(cp.ele)}m

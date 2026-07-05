@@ -161,6 +161,7 @@ function App() {
            checkpoints={checkpoints} 
            actionTimeline={dataset?.actionTimeline}
            activeSection={activeSection}
+           setSelectedSection={setSelectedSection}
            profileHoverPoint={profileHoverPoint}
            mapVisible={mapVisible}
            setMapVisible={setMapVisible}
