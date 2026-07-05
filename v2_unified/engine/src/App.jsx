@@ -142,7 +142,7 @@ function App() {
 
   const title = dataset ? dataset[`title_${lang}`] || dataset.title_en : 'Wyrypa V2';
   const subtitle = dataset ? dataset[`subtitle_${lang}`] || dataset.subtitle_en : '';
-  const version = dataset?.version || "v2.0";
+  const version = `v${packageJson.version}`;
 
   return (
     <div className="bg-slate-900 text-slate-200 font-sans antialiased h-[100dvh] w-full overflow-hidden flex flex-col md:flex-row">
