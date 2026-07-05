@@ -366,7 +366,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                   } 
                 }}
               >
-                <Popup className="text-slate-900 font-sans custom-popup-styled" autoPanPadding={[50, 50]} maxWidth={280}>
+                <Popup className="text-slate-900 font-sans custom-popup-styled" autoPanPadding={[15, 15]} keepInView={true} maxWidth={280}>
                   <div className="font-bold text-lg mb-1">{cp.name}</div>
                   <div className="text-sm text-slate-600 mb-1">
                     KM: {cp.km.toFixed(1)} {sectionDist > 0 && `(+${sectionDist.toFixed(1)}km)`} • {Math.round(cp.ele)}m
