@@ -70,3 +70,26 @@ python build_standalone.py
 python build_standalone_75km.py
 ```
 *Generates/updates: `Ultra75_standalone.html`, `manifest_75.json`, `sw_75.js`, `icon-192_75.svg`, and `icon-512_75.svg`.*
+
+---
+
+## v2 Unified React App (`v2_unified/`)
+A modern, React-based (Vite) Unified Tracking Engine designed to replace the legacy standalone scripts.
+- **Unified Engine**: A single app handling multiple dynamic datasets (`dataset.json`).
+- **Dynamic Start Time & Pace Tracking**: Live "Pace vs Plan" delta and exact clock "ETA" calculations driven by the user's adjustable Start Time.
+- **Interactive Offline Mapping**: Caches Leaflet maps with live stats monitoring, graceful tile resuming, and robust auto-centering when pinning checkpoints.
+- **Modern UI**: Floating map modals (configurable for mobile), sticky tables, and responsive tracker cards.
+
+### V2 Documentation
+All product requirements, architecture notes, and progress walkthroughs for the unified engine are tracked in the `/docs/v2/` directory:
+- [v2_prd.md](docs/v2/v2_prd.md)
+- [current_architecture.md](docs/v2/current_architecture.md)
+- [walkthrough.md](docs/v2/walkthrough.md)
+- [route_analysis_prompt.md](docs/v2/route_analysis_prompt.md)
+
+### Build the Unified App
+```bash
+cd v2_unified/engine
+npm run build
+```
+*Generates: Production build inside `v2_unified/engine/dist/`.*

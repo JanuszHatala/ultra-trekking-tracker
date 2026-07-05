@@ -1,0 +1,412 @@
+{
+  "route_id": "msb-134k",
+  "title_pl": "Mały Szlak Beskidzki",
+  "title_en": "Little Beskid Trail",
+  "subtitle_pl": "134 km górskiego wyzwania",
+  "subtitle_en": "134 km of mountain challenge",
+  "themeColor": "lime",
+  "metadata": {
+    "totalDistanceKm": 134.0,
+    "totalAscendM": 6290,
+    "timeLimitHours": 34,
+    "difficulty": "extreme"
+  },
+  "challengeParameters": {
+    "date": "2026-07-10",
+    "weightKg": "87 (75+12)",
+    "targetBpm": "125-140",
+    "goalTime": "< 34h"
+  },
+  "actionTimeline": [
+    {
+      "startElapsedHours": 0.0,
+      "endElapsedHours": 1.0,
+      "action_pl": "Godzina 1: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 1: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 1.0,
+      "endElapsedHours": 2.0,
+      "action_pl": "Godzina 2: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 2: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 2.0,
+      "endElapsedHours": 3.0,
+      "action_pl": "Godzina 3: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 3: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 3.0,
+      "endElapsedHours": 4.0,
+      "action_pl": "Godzina 4: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 4: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 4.0,
+      "endElapsedHours": 5.0,
+      "action_pl": "Godzina 5: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 5: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 5.0,
+      "endElapsedHours": 6.0,
+      "action_pl": "Godzina 6: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 6: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 6.0,
+      "endElapsedHours": 7.0,
+      "action_pl": "Godzina 7: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 7: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 7.0,
+      "endElapsedHours": 8.0,
+      "action_pl": "Godzina 8: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 8: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 8.0,
+      "endElapsedHours": 9.0,
+      "action_pl": "Godzina 9: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 9: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 9.0,
+      "endElapsedHours": 10.0,
+      "action_pl": "Godzina 10: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 10: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 10.0,
+      "endElapsedHours": 11.0,
+      "action_pl": "Godzina 11: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 11: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 11.0,
+      "endElapsedHours": 12.0,
+      "action_pl": "Godzina 12: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 12: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 12.0,
+      "endElapsedHours": 13.0,
+      "action_pl": "Godzina 13: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 13: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 13.0,
+      "endElapsedHours": 14.0,
+      "action_pl": "Godzina 14: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 14: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 14.0,
+      "endElapsedHours": 15.0,
+      "action_pl": "Godzina 15: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 15: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 15.0,
+      "endElapsedHours": 16.0,
+      "action_pl": "Godzina 16: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 16: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 16.0,
+      "endElapsedHours": 17.0,
+      "action_pl": "Godzina 17: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 17: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 17.0,
+      "endElapsedHours": 18.0,
+      "action_pl": "Godzina 18: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 18: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 18.0,
+      "endElapsedHours": 19.0,
+      "action_pl": "Godzina 19: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 19: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 19.0,
+      "endElapsedHours": 20.0,
+      "action_pl": "Godzina 20: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 20: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 20.0,
+      "endElapsedHours": 21.0,
+      "action_pl": "Godzina 21: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 21: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 21.0,
+      "endElapsedHours": 22.0,
+      "action_pl": "Godzina 22: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 22: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 22.0,
+      "endElapsedHours": 23.0,
+      "action_pl": "Godzina 23: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 23: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 23.0,
+      "endElapsedHours": 24.0,
+      "action_pl": "Godzina 24: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 24: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 24.0,
+      "endElapsedHours": 25.0,
+      "action_pl": "Godzina 25: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 25: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 25.0,
+      "endElapsedHours": 26.0,
+      "action_pl": "Godzina 26: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 26: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 26.0,
+      "endElapsedHours": 27.0,
+      "action_pl": "Godzina 27: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 27: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 27.0,
+      "endElapsedHours": 28.0,
+      "action_pl": "Godzina 28: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 28: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 28.0,
+      "endElapsedHours": 29.0,
+      "action_pl": "Godzina 29: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 29: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 29.0,
+      "endElapsedHours": 30.0,
+      "action_pl": "Godzina 30: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 30: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 30.0,
+      "endElapsedHours": 31.0,
+      "action_pl": "Godzina 31: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 31: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 31.0,
+      "endElapsedHours": 32.0,
+      "action_pl": "Godzina 32: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 32: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 32.0,
+      "endElapsedHours": 33.0,
+      "action_pl": "Godzina 33: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 33: Eat a carb gel, hydrate. Control your heart rate."
+    },
+    {
+      "startElapsedHours": 33.0,
+      "endElapsedHours": 34.0,
+      "action_pl": "Godzina 34: Zjedz żel węglowodanowy, nawadniaj się. Kontroluj tętno.",
+      "action_en": "Hour 34: Eat a carb gel, hydrate. Control your heart rate."
+    }
+  ],
+  "tactics": [
+    {
+      "title_pl": "Płasko (< 8%)",
+      "title_en": "Flat (< 8%)",
+      "description_pl": "Tempo 12:30 - 13:30 min/km. Marsz miarowy.",
+      "description_en": "Pace 12:30 - 13:30 min/km. Steady walk.",
+      "themeColor": "emerald",
+      "icon": "▶"
+    },
+    {
+      "title_pl": "Podejścia",
+      "title_en": "Uphills",
+      "description_pl": "Tempo 15:00 - 18:00 min/km. Krótki krok, praca kijami.",
+      "description_en": "Pace 15:00 - 18:00 min/km. Short steps, pole work.",
+      "themeColor": "orange",
+      "icon": "⛰️"
+    },
+    {
+      "title_pl": "Zejścia",
+      "title_en": "Downhills",
+      "description_pl": "Ochrona kolan. Tempo 11:30 - 12:30 min/km.",
+      "description_en": "Knee protection. Pace 11:30 - 12:30 min/km.",
+      "themeColor": "blue",
+      "icon": "⬇️"
+    }
+  ],
+  "inventory": [
+    {
+      "category_pl": "Sprzęt Obowiązkowy",
+      "category_en": "Mandatory Gear",
+      "themeColor": "red",
+      "displayMode": "list",
+      "items": [
+        {
+          "text_pl": "Folia NRC",
+          "text_en": "Space blanket",
+          "icon": "🛡️",
+          "isCritical": true
+        },
+        {
+          "text_pl": "Naładowany telefon",
+          "text_en": "Charged phone",
+          "icon": "📱",
+          "isCritical": true
+        },
+        {
+          "text_pl": "Kurtka wodoodporna",
+          "text_en": "Waterproof jacket",
+          "icon": "🧥",
+          "isCritical": true
+        }
+      ]
+    },
+    {
+      "category_pl": "Jedzenie Stałe",
+      "category_en": "Solid Food",
+      "themeColor": "orange",
+      "displayMode": "pills",
+      "items": [
+        {
+          "text_pl": "6-8 Kanapek z masłem orzechowym",
+          "text_en": "6-8 Peanut butter sandwiches",
+          "icon": "🥪"
+        },
+        {
+          "text_pl": "10 Żeli węglowodanowych",
+          "text_en": "10 Carb gels",
+          "icon": "🍯"
+        },
+        {
+          "text_pl": "2 Batony energetyczne",
+          "text_en": "2 Energy bars",
+          "icon": "🍫"
+        }
+      ]
+    },
+    {
+      "category_pl": "Suplementacja i Ratunek",
+      "category_en": "Supplementation & Rescue",
+      "themeColor": "red",
+      "displayMode": "list",
+      "items": [
+        {
+          "text_pl": "SaltStick Caps: 30 kaps",
+          "text_en": "SaltStick Caps: 30 caps",
+          "icon": "💊",
+          "isCritical": false
+        },
+        {
+          "text_pl": "Rescue Protocol: 1 saszetka Glukozy",
+          "text_en": "Rescue Protocol: 1 sachet Glucose",
+          "icon": "🚑",
+          "isCritical": true
+        }
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "startKm": 0,
+      "endKm": 65,
+      "title_en": "Continuous march.",
+      "title_pl": "Marsz ciągły.",
+      "dotColor": "gray"
+    },
+    {
+      "startKm": 65,
+      "endKm": 65,
+      "title_pl": "Półmetek - Zmiana Skarpet",
+      "title_en": "Halfway - Socks Change",
+      "description_pl": "Zmiana skarpet, posmarowanie stóp Sudocremem. Krótki postój.",
+      "description_en": "Change socks, apply Sudocrem on feet. Short break.",
+      "dotColor": "blue",
+      "badges_pl": [
+        "Stopy",
+        "Odpoczynek 15m"
+      ],
+      "badges_en": [
+        "Feet",
+        "15m Rest"
+      ]
+    },
+    {
+      "startKm": 100,
+      "endKm": 100,
+      "title_pl": "Przepak Główny",
+      "title_en": "Main Drop Bag",
+      "description_pl": "Ciepły posiłek. Zmiana koszulki na suchą.",
+      "description_en": "Warm meal. Change to dry shirt.",
+      "dotColor": "red",
+      "badges_pl": [
+        "Jedzenie",
+        "Zapas",
+        "45m"
+      ],
+      "badges_en": [
+        "Food",
+        "Spares",
+        "45m"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "title_pl": "Test Sprzętowy: 50 km",
+      "title_en": "Gear Test: 50 km",
+      "themeColor": "cyan",
+      "description_en": "Full load test on similar terrain.",
+      "description_pl": "Test z pełnym obciążeniem w podobnym terenie.",
+      "steps": [
+        {
+          "text_en": "Check backpack chafing after 20km.",
+          "text_pl": "Sprawdź obtarcia plecaka বাতাসে."
+        },
+        {
+          "text_en": "Test headlamp battery life.",
+          "text_pl": "Przetestuj czas życia baterii czołówki."
+        }
+      ],
+      "goal_en": "Pace check: avg < 14:00 min/km",
+      "goal_pl": "Sprawdzenie tempa: śr < 14:00 min/km"
+    }
+  ],
+  "training": [
+    {
+      "title_pl": "Tydzień 1-4 (Budowa Bazy)",
+      "title_en": "Week 1-4 (Base Building)",
+      "description_pl": "Baza tlenowa. Długie marsze w weekend (20-30km). W tygodniu 2x rower.",
+      "description_en": "Aerobic base. Long hikes on weekends (20-30km). Midweek 2x bike.",
+      "icon": "📈"
+    },
+    {
+      "title_pl": "Tydzień 5-8 (Siła i Specyfika)",
+      "title_en": "Week 5-8 (Strength & Specifics)",
+      "description_pl": "Marsze z docelowym obciążeniem (12kg). Ćwiczenia na pośladki.",
+      "description_en": "Hikes with target weight (12kg). Glute exercises.",
+      "icon": "💪"
+    },
+    {
+      "title_pl": "Tydzień 9-10 (Tapering)",
+      "title_en": "Week 9-10 (Tapering)",
+      "description_pl": "Zmniejszenie objętości o 50%. Dużo snu, regeneracja.",
+      "description_en": "Reduce volume by 50%. Lots of sleep, recovery.",
+      "icon": "🔋"
+    }
+  ]
+}

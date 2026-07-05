@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="mountain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0891b2" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="256" height="256" rx="56" fill="url(#bg)" />
+  
+  <!-- Compass styling elements -->
+  <circle cx="128" cy="128" r="110" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="4 8" />
+
+  <!-- Mountains -->
+  <path d="M 30 190 L 100 80 L 150 140 L 210 50 L 240 190 Z" fill="url(#mountain)" />
+  <path d="M 30 190 L 100 80 L 150 140 L 210 50 L 240 190 Z" fill="none" stroke="#22d3ee" stroke-width="4" stroke-linejoin="round" />
+  
+  <!-- GPS Tracking Path -->
+  <path d="M 40 180 Q 90 150 120 160 T 170 90 T 210 50" fill="none" stroke="#84cc16" stroke-width="8" stroke-linecap="round" filter="url(#glow)" stroke-dasharray="10 8" />
+
+  <!-- Current Position Marker -->
+  <circle cx="210" cy="50" r="12" fill="#ef4444" stroke="#ffffff" stroke-width="4" filter="url(#glow)" />
+  <circle cx="210" cy="50" r="4" fill="#ffffff" />
+</svg>

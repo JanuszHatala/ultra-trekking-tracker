@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WyrypaTracker</string>
+    <string name="title_activity_main">WyrypaTracker</string>
+    <string name="package_name">io.wyrypa.tracker</string>
+    <string name="custom_url_scheme">io.wyrypa.tracker</string>
+</resources>

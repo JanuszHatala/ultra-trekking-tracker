@@ -1,16 +1,37 @@
-# React + Vite
+# Wyrypa V2 Unified Engine
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This directory contains the new React/Vite-based **Unified Tracking Engine** for Wyrypa Ultra-Trekking events. 
 
-Currently, two official plugins are available:
+The goal of this engine is to replace the legacy statically generated Python scripts with a modern, dynamic, JSON-driven application capable of parsing topological route data, executing offline Leaflet maps, and tracking live GPS progress accurately without relying on network connectivity.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Documentation
 
-## React Compiler
+Full architectural documentation, Product Requirements, and feature walkthroughs can be found in the root `docs/v2/` directory:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [Product Requirements Document (PRD)](../../docs/v2/v2_prd.md)
+- [Current Architecture (Pre-V2 state)](../../docs/v2/current_architecture.md)
+- [V2 Walkthrough & Changelog](../../docs/v2/walkthrough.md)
+- [Route Analysis Prompt](../../docs/v2/route_analysis_prompt.md)
 
-## Expanding the Oxlint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- **React 18** (UI and Component Tree)
+- **Vite** (Build Tool & Dev Server)
+- **Leaflet & React-Leaflet** (Offline Map Rendering)
+- **LocalForage** (IndexedDB Storage for offline datasets)
+- **Tailwind CSS** (Styling)
+
+## Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+The production output will be generated inside the `dist/` directory, ready to be deployed as a Progressive Web App (PWA).

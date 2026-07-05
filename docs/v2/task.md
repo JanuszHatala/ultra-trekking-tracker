@@ -1,0 +1,23 @@
+- [x] **1. Project Setup & Dependencies**
+  - [x] Install `leaflet`, `react-leaflet`, `gpxparser`, `localforage`, `lucide-react`
+  - [x] Configure Tailwind CSS
+- [x] **2. Data Injection & Route Catalog**
+  - [x] Create `public/data/routes/msb-134k/`
+  - [x] Move `dataset.json` and `route.gpx` to route directory
+  - [x] Update `public/routes.json`
+- [x] **3. Core Services**
+  - [x] Implement `src/services/StorageEngine.js` (localforage wrapper)
+  - [x] Implement `src/services/GpsEngine.js` (Topological algorithm, ETA math)
+- [x] **4. React Components**
+  - [x] Implement `App.jsx` (State controller, routing)
+  - [x] Implement `DataTable.jsx` (Dynamic rows, Settings Modal)
+  - [x] Implement `ElevationProfile.jsx` (Canvas renderer)
+  - [x] Implement `RichTabRenderer.jsx` (UI directive renderer)
+- [x] **5. Verification**
+  - [x] Run `npm run build` to verify compilation
+  - [x] Test the topological math engine and UI layout locally
+- [x] **6. Full App UI Completion**
+  - [x] Implement Language Switcher (`en` / `pl`)
+  - [x] Implement `MapRenderer.jsx` (`react-leaflet`)
+  - [x] Implement `ElevationProfile.jsx` (Slope-colored Canvas)
+  - [x] Integrate Map and Profile into `App.jsx` tabs

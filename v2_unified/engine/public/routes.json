@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "id": "msb-134k",
+      "name": "Mały Szlak Beskidzki",
+      "version": "2.0",
+      "files": [
+        "data/routes/msb-134k/dataset.json",
+        "data/routes/msb-134k/route.gpx"
+      ]
+    }
+  ]
+}
