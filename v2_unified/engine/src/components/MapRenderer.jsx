@@ -238,6 +238,18 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
 }
 
 export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSection, setSelectedSection, profileHoverPoint, mapVisible, setMapVisible, autoOpenDetails, gpsState, setGpsState, gpsInterval, lang = 'en' }) {
+  const markerRefs = useRef({});
+
+  useEffect(() => {
+    if (autoOpenDetails && activeSection && mapVisible) {
+      const activeMarkerKey = activeSection.id || activeSection.name;
+      const marker = markerRefs.current[activeMarkerKey];
+      if (marker) {
+        marker.openPopup();
+      }
+    }
+  }, [activeSection, autoOpenDetails, mapVisible]);
+
   const [positions, setPositions] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [isTracking, setIsTracking] = useState(() => {
@@ -294,31 +306,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
       
       {/* Map Actions Overlay (desktop) -> moved inside MapContainer */}
       
-      {/* Section Information Modal */}
-      {activeSection && mapVisible && autoOpenDetails && activeSection.sectionPoints && (
-        <div className="absolute top-4 left-16 z-[1000] bg-slate-800/95 backdrop-blur-md border border-cyan-500/50 p-4 rounded-xl shadow-2xl max-w-[280px] pointer-events-none">
-          <div className="font-bold text-cyan-400 text-sm mb-2 pb-2 border-b border-slate-700">{activeSection.name}</div>
-          <div className="flex justify-between items-center mb-2">
-            <div className="text-xs text-slate-300">
-              <span className="text-slate-500">Dist: </span>
-              {activeSection.km.toFixed(1)} km {activeSection.sectionDist && <span className="text-cyan-400">(+{activeSection.sectionDist.toFixed(1)} km)</span>}
-            </div>
-            <div className="flex gap-2 text-xs">
-              <span className="text-lime-400">+{Math.round(activeSection.sectionAscent)}m</span>
-              <span className="text-red-400">-{Math.round(activeSection.sectionDescent)}m</span>
-            </div>
-          </div>
-          <div className="flex justify-between items-center mb-2 bg-slate-900/50 p-1.5 rounded border border-slate-700/50 text-xs">
-             <div><span className="text-slate-500">Total ETA:</span> <span className="text-orange-400 font-bold">{Math.floor(activeSection.etaHrs)}h {Math.round((activeSection.etaHrs % 1) * 60).toString().padStart(2, '0')}m</span></div>
-             <div className="text-slate-400 font-semibold">{(activeSection.etaHrs / activeSection.km * 60).toFixed(0)} min/km</div>
-          </div>
-          {activeSection.actionText && (
-            <div className="text-[10px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50">
-              {activeSection.actionText}
-            </div>
-          )}
-        </div>
-      )}
+      {/* Removed redundant Section Information Modal */}
 
       <div className={`w-full h-full ${!mapVisible ? 'hidden md:block' : ''}`}>
         <MapContainer 
@@ -358,9 +346,19 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                 key={i} 
                 position={[cp.lat, cp.lon]} 
                 icon={createNumberedIcon(i === 0 ? 'S' : i)}
+                zIndexOffset={isActive ? 1000 : (isHovered ? 500 : 0)}
+                ref={(r) => {
+                  if (r) markerRefs.current[cp.id || cp.name] = r;
+                }}
                 eventHandlers={{ 
                   click: () => { 
                     if (setSelectedSection) setSelectedSection({ ...cp, actionText, sectionDist }); 
+                  },
+                  mouseover: (e) => {
+                    if (window.innerWidth >= 768) e.target.openPopup();
+                  },
+                  mouseout: (e) => {
+                    if (window.innerWidth >= 768) e.target.closePopup();
                   } 
                 }}
               >
