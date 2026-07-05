@@ -182,6 +182,7 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
                 setGpsState(prev => ({ ...prev, lat: pos.coords.latitude, lon: pos.coords.longitude, accuracy: pos.coords.accuracy }));
               }, (err) => {
                 console.warn("Could not get current position", err);
+                alert("GPS Error: " + err.message + "\nCheck if location permissions are granted for this site.");
               });
             }
           }}
@@ -236,6 +237,8 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
         setGpsState(prev => ({ ...prev, active: true, ...update }));
       }, (err) => {
         console.warn("GPS Tracking Error:", err);
+        alert("GPS Tracking Error: " + err.message + "\nPlease enable location services and grant permission.");
+        setIsTracking(false);
       });
     } else {
       GpsTrackingService.stopTracking();
