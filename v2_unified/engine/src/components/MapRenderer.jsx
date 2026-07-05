@@ -341,12 +341,13 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                     actionText = actions.map(a => `- ${a[`action_${lang}`] || a.action_en}`).join('\n');
                 }
             }
+            const isActive = activeSection && (activeSection.id === cp.id || activeSection.name === cp.name);
             return (
               <Marker 
                 key={i} 
                 position={[cp.lat, cp.lon]} 
                 icon={createNumberedIcon(i === 0 ? 'S' : i)}
-                zIndexOffset={isActive ? 1000 : (isHovered ? 500 : 0)}
+                zIndexOffset={isActive ? 1000 : 0}
                 ref={(r) => {
                   if (r) markerRefs.current[cp.id || cp.name] = r;
                 }}
