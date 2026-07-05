@@ -135,7 +135,7 @@ function MapBounds({ bounds }) {
 function MapResetButton({ bounds }) {
   const map = useMap();
   return (
-    <div className="absolute bottom-6 right-4 z-[1000] leaflet-control">
+    <div className="absolute bottom-6 right-4 z-[650] leaflet-control">
       <button 
         onClick={(e) => {
           e.preventDefault();
@@ -159,7 +159,7 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
   
   return (
     <>
-      <div className="absolute top-[10px] right-[10px] z-[1000]">
+      <div className="absolute top-[10px] right-[10px] z-[650]">
         <button 
           onClick={(e) => {
             e.preventDefault();
@@ -172,7 +172,7 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
           <EyeOff size={18} />
         </button>
       </div>
-      <div className="absolute top-[80px] left-[10px] z-[1000] flex flex-col gap-2">
+      <div className="absolute top-[80px] left-[10px] z-[650] flex flex-col gap-2">
         <button 
           onClick={async (e) => {
             e.preventDefault();
