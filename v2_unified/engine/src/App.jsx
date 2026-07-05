@@ -104,22 +104,36 @@ function App() {
   };
 
   // Resizer logic
-  const handleMouseDown = (e) => {
-    e.preventDefault();
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
-
-  const handleMouseMove = (e) => {
-    const newWidth = (e.clientX / window.innerWidth) * 100;
-    if (newWidth > 20 && newWidth < 80) {
-      setLeftWidth(newWidth);
+  const handleDragStart = (e) => {
+    if (e.type === 'mousedown') {
+      e.preventDefault();
+      document.addEventListener('mousemove', handleDragMove);
+      document.addEventListener('mouseup', handleDragEnd);
+    } else if (e.type === 'touchstart') {
+      document.addEventListener('touchmove', handleDragMove, { passive: false });
+      document.addEventListener('touchend', handleDragEnd);
     }
   };
 
-  const handleMouseUp = () => {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
+  const handleDragMove = (e) => {
+    if (e.type === 'touchmove') e.preventDefault();
+    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+    
+    if (window.innerWidth >= 768) {
+      const newWidth = (clientX / window.innerWidth) * 100;
+      if (newWidth > 20 && newWidth < 80) setLeftWidth(newWidth);
+    } else {
+      const newHeight = (clientY / window.innerHeight) * 100;
+      if (newHeight > 20 && newHeight < 80) setLeftWidth(newHeight);
+    }
+  };
+
+  const handleDragEnd = () => {
+    document.removeEventListener('mousemove', handleDragMove);
+    document.removeEventListener('mouseup', handleDragEnd);
+    document.removeEventListener('touchmove', handleDragMove);
+    document.removeEventListener('touchend', handleDragEnd);
   };
 
   if (loading && !dataset) {
@@ -136,8 +150,11 @@ function App() {
       {/* Map Section */}
       <div 
         id="map-container" 
-        className={`h-[33vh] md:h-screen flex-shrink-0 z-0 relative transition-all duration-300 ${!mapVisible ? 'w-0 hidden md:block md:w-0' : 'w-full'}`}
-        style={{ width: mapVisible ? (window.innerWidth >= 768 ? `${leftWidth}%` : '100%') : '0%' }}
+        className={`md:h-screen flex-shrink-0 z-0 relative transition-none md:transition-all duration-300 ${!mapVisible ? 'h-0 w-0 hidden md:block md:w-0' : 'w-full md:w-auto'}`}
+        style={{ 
+          width: mapVisible && window.innerWidth >= 768 ? `${leftWidth}%` : '100%',
+          height: mapVisible && window.innerWidth < 768 ? `${leftWidth}vh` : undefined
+        }}
       >
         <MapRenderer 
            gpxPoints={gpxPoints} 
@@ -160,8 +177,9 @@ function App() {
         <div 
           id="resizer" 
           ref={resizerRef}
-          onMouseDown={handleMouseDown}
-          className="bg-slate-700 hover:bg-lime-500 flex items-center justify-center cursor-row-resize md:cursor-col-resize h-3 w-full md:h-full md:w-3 z-50 transition-colors flex-shrink-0 border-y border-slate-800 md:border-y-0 md:border-x hidden md:flex"
+          onMouseDown={handleDragStart}
+          onTouchStart={handleDragStart}
+          className="bg-slate-700 hover:bg-lime-500 flex items-center justify-center cursor-row-resize md:cursor-col-resize h-4 w-full md:h-full md:w-3 z-50 transition-colors flex-shrink-0 border-y border-slate-800 md:border-y-0 md:border-x flex"
         >
           <div className="bg-slate-400 w-8 h-1 rounded md:h-8 md:w-1 pointer-events-none"></div>
         </div>
@@ -170,7 +188,7 @@ function App() {
       {/* Right Panel */}
       <div 
         id="content-container" 
-        className="flex-1 flex flex-col min-w-0 bg-slate-900 z-10 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.5)] h-[67vh] md:h-screen overflow-hidden transition-all duration-300"
+        className="flex-1 flex flex-col min-w-0 bg-slate-900 z-10 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.5)] md:h-screen overflow-hidden transition-none md:transition-all duration-300"
         style={{ width: mapVisible ? (window.innerWidth >= 768 ? `${100 - leftWidth}%` : '100%') : '100%' }}
       >
         
