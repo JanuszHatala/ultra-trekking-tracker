@@ -55,7 +55,7 @@ function App() {
     const id = searchParams.get('route') || 'msb-134k';
     setRouteId(id);
 
-    fetch('/routes.json')
+    fetch(`${import.meta.env.BASE_URL}routes.json`)
       .then(r => r.json())
       .then(async catalog => {
         const routeConfig = catalog.routes.find(r => r.id === id);
@@ -67,11 +67,11 @@ function App() {
 
         const [datasetPath, gpxPath] = routeConfig.files;
 
-        const dsRes = await fetch(`/${datasetPath}`);
+        const dsRes = await fetch(`${import.meta.env.BASE_URL}${datasetPath}`);
         const ds = await dsRes.json();
         setDataset(ds);
 
-        const gpxRes = await fetch(`/${gpxPath}`);
+        const gpxRes = await fetch(`${import.meta.env.BASE_URL}${gpxPath}`);
         const gpxText = await gpxRes.text();
         const points = GpsEngine.parseGpx(gpxText);
         setGpxPoints(points);
