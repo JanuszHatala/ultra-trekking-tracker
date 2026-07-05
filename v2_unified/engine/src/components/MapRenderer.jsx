@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap, useMapEvents, ZoomControl, Circle, CircleMarker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Crosshair, EyeOff, Maximize, Navigation, MapPin } from 'lucide-react';
+import { Crosshair, EyeOff, Maximize, Navigation, MapPin, X } from 'lucide-react';
 import { GpsTrackingService } from '../services/GpsTrackingService';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -238,18 +238,6 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
 }
 
 export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSection, setSelectedSection, profileHoverPoint, mapVisible, setMapVisible, autoOpenDetails, gpsState, setGpsState, gpsInterval, lang = 'en' }) {
-  const markerRefs = useRef({});
-
-  useEffect(() => {
-    if (autoOpenDetails && activeSection && mapVisible) {
-      const activeMarkerKey = activeSection.id || activeSection.name;
-      const marker = markerRefs.current[activeMarkerKey];
-      if (marker) {
-        marker.openPopup();
-      }
-    }
-  }, [activeSection, autoOpenDetails, mapVisible]);
-
   const [positions, setPositions] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [isTracking, setIsTracking] = useState(() => {
@@ -306,7 +294,37 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
       
       {/* Map Actions Overlay (desktop) -> moved inside MapContainer */}
       
-      {/* Removed redundant Section Information Modal */}
+      {/* Section Information Overlay Card */}
+      {activeSection && mapVisible && activeSection.sectionPoints && (
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-[340px] z-[2000] bg-slate-800/95 backdrop-blur-md border border-cyan-500/50 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] pointer-events-auto">
+          <button 
+            onClick={() => setSelectedSection(null)}
+            className="absolute top-3 right-3 text-slate-400 hover:text-white bg-slate-700/50 hover:bg-slate-600 rounded-full p-1 transition-colors"
+          >
+            <X size={16} />
+          </button>
+          <div className="font-bold text-cyan-400 text-sm mb-2 pb-2 border-b border-slate-700 pr-6">{activeSection.name}</div>
+          <div className="flex justify-between items-center mb-2">
+            <div className="text-xs text-slate-300">
+              <span className="text-slate-500">Dist: </span>
+              {activeSection.km.toFixed(1)} km {activeSection.sectionDist && <span className="text-cyan-400">(+{activeSection.sectionDist.toFixed(1)} km)</span>}
+            </div>
+            <div className="flex gap-2 text-xs">
+              <span className="text-lime-400">+{Math.round(activeSection.sectionAscent)}m</span>
+              <span className="text-red-400">-{Math.round(activeSection.sectionDescent)}m</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-center mb-2 bg-slate-900/50 p-1.5 rounded border border-slate-700/50 text-xs">
+             <div><span className="text-slate-500">Total ETA:</span> <span className="text-orange-400 font-bold">{Math.floor(activeSection.etaHrs)}h {Math.round((activeSection.etaHrs % 1) * 60).toString().padStart(2, '0')}m</span></div>
+             <div className="text-slate-400 font-semibold">{(activeSection.etaHrs / activeSection.km * 60).toFixed(0)} min/km</div>
+          </div>
+          {activeSection.actionText && (
+            <div className="text-[10px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50 max-h-[100px] overflow-y-auto custom-scrollbar">
+              {activeSection.actionText}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className={`w-full h-full ${!mapVisible ? 'hidden md:block' : ''}`}>
         <MapContainer 
@@ -348,35 +366,12 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                 position={[cp.lat, cp.lon]} 
                 icon={createNumberedIcon(i === 0 ? 'S' : i)}
                 zIndexOffset={isActive ? 1000 : 0}
-                ref={(r) => {
-                  if (r) markerRefs.current[cp.id || cp.name] = r;
-                }}
                 eventHandlers={{ 
                   click: () => { 
                     if (setSelectedSection) setSelectedSection({ ...cp, actionText, sectionDist }); 
-                  },
-                  mouseover: (e) => {
-                    if (window.innerWidth >= 768) e.target.openPopup();
-                  },
-                  mouseout: (e) => {
-                    if (window.innerWidth >= 768) e.target.closePopup();
                   } 
                 }}
-              >
-                <Popup className="text-slate-900 font-sans custom-popup-styled" autoPanPaddingTopLeft={[60, 60]} autoPanPaddingBottomRight={[10, 10]} keepInView={true} maxWidth={280}>
-                  <div className="font-bold text-lg mb-1">{cp.name}</div>
-                  <div className="text-sm text-slate-600 mb-1">
-                    KM: {cp.km.toFixed(1)} {sectionDist > 0 && `(+${sectionDist.toFixed(1)}km)`} • {Math.round(cp.ele)}m
-                  </div>
-                  <div className="text-sm text-slate-500 font-medium">ETA: {Math.floor(cp.etaHrs)}h {Math.round((cp.etaHrs % 1) * 60).toString().padStart(2, '0')}m</div>
-                  {actionText && (
-                    <div className="mt-3 bg-slate-100 p-2 rounded text-xs text-slate-700 leading-tight border border-slate-200 whitespace-pre-wrap">
-                      <strong>{lang === 'en' ? 'Action: ' : 'Akcja: '}</strong>
-                      {actionText}
-                    </div>
-                  )}
-                </Popup>
-              </Marker>
+              />
             );
           })}
 
