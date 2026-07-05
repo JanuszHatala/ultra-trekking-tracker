@@ -21,6 +21,8 @@
             --accent-100k-glow: rgba(132, 204, 22, 0.15);
             --accent-75k: #06b6d4;
             --accent-75k-glow: rgba(6, 182, 212, 0.15);
+            --accent-v2: #a855f7;
+            --accent-v2-glow: rgba(168, 85, 247, 0.15);
             --font-family: 'Outfit', sans-serif;
         }
 
@@ -69,6 +71,17 @@
             width: 60%;
             height: 60%;
             background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-glow-v2 {
+            position: absolute;
+            top: 40%;
+            left: 20%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
             z-index: 0;
             pointer-events: none;
         }
@@ -180,7 +193,7 @@
 
         @media (min-width: 768px) {
             .grid-container {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr;
             }
         }
 
@@ -207,6 +220,10 @@
             border: 1px solid rgba(6, 182, 212, 0.12);
         }
 
+        .card-v2 {
+            border: 1px solid rgba(168, 85, 247, 0.12);
+        }
+
         /* Card Hover Effects */
         .card:hover {
             transform: translateY(-8px);
@@ -221,6 +238,11 @@
         .card-75k:hover {
             border-color: rgba(6, 182, 212, 0.4);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-75k-glow);
+        }
+
+        .card-v2:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-v2-glow);
         }
 
         /* Card Glow Backgrounds */
@@ -244,6 +266,10 @@
 
         .card-75k::before {
             background: var(--accent-75k);
+        }
+
+        .card-v2::before {
+            background: var(--accent-v2);
         }
 
         .card:hover::before {
@@ -274,6 +300,12 @@
             border: 1px solid rgba(6, 182, 212, 0.3);
         }
 
+        .card-v2 .badge {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-v2);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
         /* Card Content */
         .card-title {
             font-size: 1.85rem;
@@ -287,6 +319,10 @@
         }
 
         .card-75k .card-title {
+            color: var(--text-primary);
+        }
+
+        .card-v2 .card-title {
             color: var(--text-primary);
         }
 
@@ -336,6 +372,10 @@
             color: var(--accent-75k);
         }
 
+        .card-v2 .metric-value {
+            color: var(--accent-v2);
+        }
+
         /* Bullet Features list */
         .features-list {
             list-style: none;
@@ -365,6 +405,10 @@
 
         .card-75k .features-list li::before {
             color: var(--accent-75k);
+        }
+
+        .card-v2 .features-list li::before {
+            color: var(--accent-v2);
         }
 
         /* Action Buttons */
@@ -408,6 +452,40 @@
             background: #22d3ee; /* lighter cyan */
             transform: scale(1.01);
             box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .card-v2 .btn {
+            background: var(--accent-v2);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+        }
+
+        .card-v2 .btn:hover {
+            background: #c084fc; /* lighter purple */
+            transform: scale(1.01);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .apk-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.8rem;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            background: transparent;
+            color: var(--accent-v2);
+            border: 1px solid var(--accent-v2);
+            transition: all 0.2s ease;
+        }
+
+        .apk-btn:hover {
+            background: rgba(168, 85, 247, 0.1);
         }
 
         /* Footer */
@@ -454,6 +532,7 @@
     </style>
 </head>
 <body class="lang-pl">
+    <div class="bg-glow-v2"></div>
 
     <header>
         <div class="logo-area">
@@ -599,6 +678,51 @@
                     <span class="lang-en">LAUNCH 75KM TRACKER</span>
                     <span>→</span>
                 </a>
+            </article>
+        </div>
+
+        <div class="grid-container" style="grid-template-columns: 1fr; max-width: 600px;">
+            <!-- V2 UNIFIED CARD -->
+            <article class="card card-v2">
+                <span class="card-icon">🚀</span>
+                <div>
+                    <span class="badge">
+                        <span class="lang-pl">Nowa Wersja</span>
+                        <span class="lang-en">New Version</span>
+                    </span>
+                    <h3 class="card-title">Wyrypa V2 Unified</h3>
+                    <p class="card-desc">
+                        <span class="lang-pl">Zupełnie nowa, zintegrowana aplikacja PWA łącząca tryby 100km i 75km, zbudowana na Reactcie. Działa niezwykle szybko i posiada mapy offline.</span>
+                        <span class="lang-en">The brand new unified PWA tracking application supporting both 100km and 75km modes. Built with React for extreme performance and offline mapping.</span>
+                    </p>
+
+                    <ul class="features-list">
+                        <li>
+                            <span class="lang-pl">Dynamiczna zmiana trasy</span>
+                            <span class="lang-en">Dynamic route switching</span>
+                        </li>
+                        <li>
+                            <span class="lang-pl">Pobieranie wektorowych map offline PWA</span>
+                            <span class="lang-en">PWA vector map downloads</span>
+                        </li>
+                        <li>
+                            <span class="lang-pl">Interaktywny profil wzniosów i synchronizacja</span>
+                            <span class="lang-en">Interactive elevation sync and hover</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <a href="./v2/" class="btn">
+                        <span class="lang-pl">URUCHOM V2 UNIFIED APP</span>
+                        <span class="lang-en">LAUNCH V2 UNIFIED APP</span>
+                        <span>→</span>
+                    </a>
+                    <a href="./app-debug.apk" class="apk-btn">
+                        <span>📱</span>
+                        <span class="lang-pl">Pobierz Aplikację Android (.apk)</span>
+                        <span class="lang-en">Download Android App (.apk)</span>
+                    </a>
+                </div>
             </article>
         </div>
     </main>
