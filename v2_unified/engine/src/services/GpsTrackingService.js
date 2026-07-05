@@ -6,7 +6,7 @@ import { Geolocation } from '@capacitor/geolocation';
 export class GpsTrackingService {
   static watcherId = null;
   static lastUpdateTime = 0;
-  static lastMatchedIndex = null;
+  static lastMatchedIndex = parseInt(localStorage.getItem('gps_last_matched_index')) || null;
   
   // Calculate distance between two lat/lon points using Haversine
   static distanceTo(lat1, lon1, lat2, lon2) {
@@ -104,6 +104,7 @@ export class GpsTrackingService {
             
             if (closestIdx !== -1) {
                 this.lastMatchedIndex = closestIdx;
+                try { localStorage.setItem('gps_last_matched_index', closestIdx); } catch(e) {}
             }
           }
           

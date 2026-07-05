@@ -152,7 +152,7 @@ function MapResetButton({ bounds }) {
 }
 
 // Component to handle overlay buttons (must be inside MapContainer for useMap context)
-function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracking, bounds, setGpsState }) {
+function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracking, bounds, setGpsState, activeSection }) {
   const map = useMap();
   
   if (!mapVisible) return null;
@@ -209,6 +209,20 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
         >
           <Maximize size={18} />
         </button>
+        {activeSection && activeSection.sectionPoints && activeSection.sectionPoints.length > 0 && (
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const sectionBounds = L.latLngBounds(activeSection.sectionPoints.map(p => [p.lat, p.lon]));
+              map.fitBounds(sectionBounds, { padding: [20, 20], maxZoom: 15, animate: true });
+            }}
+            className="w-[34px] h-[34px] bg-slate-800 border-2 border-cyan-500 text-cyan-400 hover:text-cyan-300 rounded flex items-center justify-center shadow-lg transition-colors leaflet-control"
+            title="Fit selected section to view"
+          >
+            <MapPin size={18} />
+          </button>
+        )}
         <button 
           onClick={(e) => {
             e.preventDefault();
@@ -228,7 +242,23 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
 export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSection, profileHoverPoint, mapVisible, setMapVisible, autoOpenDetails, gpsState, setGpsState, gpsInterval, lang = 'en' }) {
   const [positions, setPositions] = useState([]);
   const [bounds, setBounds] = useState(null);
-  const [isTracking, setIsTracking] = useState(false);
+  const [isTracking, setIsTracking] = useState(() => {
+    try {
+      return localStorage.getItem('ultra_is_tracking') === '1';
+    } catch(e) {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      if (isTracking) {
+        localStorage.setItem('ultra_is_tracking', '1');
+      } else {
+        localStorage.removeItem('ultra_is_tracking');
+      }
+    } catch(e) {}
+  }, [isTracking]);
 
   useEffect(() => {
     if (gpxPoints && gpxPoints.length > 0) {
@@ -375,7 +405,8 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
              isTracking={isTracking} 
              setIsTracking={setIsTracking} 
              bounds={bounds} 
-             setGpsState={setGpsState}
+             setGpsState={setGpsState} 
+             activeSection={activeSection}
           />
           {/* Live GPS Markers */}
           {gpsState?.lat !== null && (
