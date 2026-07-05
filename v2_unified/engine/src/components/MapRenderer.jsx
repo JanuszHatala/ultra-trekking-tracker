@@ -159,7 +159,7 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
   
   return (
     <>
-      <div className="absolute top-[10px] right-[10px] z-[650]">
+      <div className="absolute top-[80px] left-[10px] z-[650] flex flex-col gap-2">
         <button 
           onClick={(e) => {
             e.preventDefault();
@@ -171,8 +171,6 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
         >
           <EyeOff size={18} />
         </button>
-      </div>
-      <div className="absolute top-[80px] left-[10px] z-[650] flex flex-col gap-2">
         <button 
           onClick={async (e) => {
             e.preventDefault();
@@ -366,7 +364,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                   } 
                 }}
               >
-                <Popup className="text-slate-900 font-sans custom-popup-styled" autoPanPadding={[15, 15]} keepInView={true} maxWidth={280}>
+                <Popup className="text-slate-900 font-sans custom-popup-styled" autoPanPaddingTopLeft={[60, 60]} autoPanPaddingBottomRight={[10, 10]} keepInView={true} maxWidth={280}>
                   <div className="font-bold text-lg mb-1">{cp.name}</div>
                   <div className="text-sm text-slate-600 mb-1">
                     KM: {cp.km.toFixed(1)} {sectionDist > 0 && `(+${sectionDist.toFixed(1)}km)`} • {Math.round(cp.ele)}m
