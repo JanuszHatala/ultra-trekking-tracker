@@ -11,3 +11,8 @@
   }
 }
 
+@layer utilities {
+  .leaflet-popup-pane {
+    z-index: 1100 !important;
+  }
+}
