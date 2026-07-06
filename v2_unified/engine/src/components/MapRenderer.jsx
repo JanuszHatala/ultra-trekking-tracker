@@ -306,7 +306,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
       
       {/* Section Information Overlay Card */}
       {activeSection && mapVisible && activeSection.sectionPoints && showOverlay && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-[340px] z-[2000] bg-slate-800/95 backdrop-blur-md border border-cyan-500/50 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] pointer-events-auto">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-[340px] md:max-w-[500px] z-[2000] bg-slate-800/95 backdrop-blur-md border border-cyan-500/50 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] pointer-events-auto">
           <button 
             onClick={() => setShowOverlay(false)}
             className="absolute top-3 right-3 text-slate-400 hover:text-white bg-slate-700/50 hover:bg-slate-600 rounded-full p-1 transition-colors"
@@ -346,7 +346,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
              <div className="text-slate-400 font-semibold">{(activeSection.etaHrs / activeSection.km * 60).toFixed(0)} min/km</div>
           </div>
           {activeSection.actionText && (
-            <div className="text-[10px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50 max-h-[100px] overflow-y-auto custom-scrollbar">
+            <div className="text-[10px] md:text-[11px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50 max-h-[100px] md:max-h-none overflow-y-auto md:overflow-y-visible custom-scrollbar">
               {activeSection.actionText}
             </div>
           )}

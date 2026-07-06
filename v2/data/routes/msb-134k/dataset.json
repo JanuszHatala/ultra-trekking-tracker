@@ -14,6 +14,7 @@
   },
   "challengeParameters": {
     "date": "2026-09-26",
+    "startTime": "17:00",
     "weightKg": "87 (75 ciało + 12 plecak)",
     "targetBpm": "125-140",
     "goalTime": "< 34h"

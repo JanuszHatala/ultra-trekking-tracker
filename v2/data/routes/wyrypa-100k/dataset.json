@@ -14,6 +14,7 @@
   },
   "challengeParameters": {
     "date": "2026-07-10",
+    "startTime": "19:45",
     "weightKg": "87 (75 ciało + 12 plecak)",
     "targetBpm": "125-140",
     "goalTime": "< 24h"
@@ -22,8 +23,8 @@
     {
       "startElapsedHours": 0.0,
       "endElapsedHours": 1.0,
-      "action_pl": "0-1h: Start (19:00). Płaski odcinek wyjściowy z Bielska-Białej. Kontroluj emocje i adrenalinę. Tętno strictly < 130 bpm. Pij małe łyki wody z bukłaka co 15 min.",
-      "action_en": "0-1h: Start (19:00). Flat exit section from Bielsko-Biała. Control excitement and adrenaline. HR strictly < 130 bpm. Sip water from bladder every 15 min."
+      "action_pl": "0-1h: Start. Płaski odcinek wyjściowy z Bielska-Białej. Kontroluj emocje i adrenalinę. Tętno strictly < 130 bpm. Pij małe łyki wody z bukłaka co 15 min.",
+      "action_en": "0-1h: Start. Flat exit section from Bielsko-Biała. Control excitement and adrenaline. HR strictly < 130 bpm. Sip water from bladder every 15 min."
     },
     {
       "startElapsedHours": 1.0,
@@ -52,8 +53,8 @@
     {
       "startElapsedHours": 5.0,
       "endElapsedHours": 6.0,
-      "action_pl": "5-6h: KM 25 (~00:44). POSTÓJ 5 MIN. Przełęcz. Zmiana skarpet na suche (kluczowe zabezpieczenie stóp przed pęcherzami), nałóż wazelinę. Weź 2 kaps. SaltStick + 1 Baton.",
-      "action_en": "5-6h: KM 25 (~00:44). 5 MIN BREAK. Pass. Change socks to dry ones (critical blister protection), apply vaseline. Take 2 SaltStick caps + 1 energy bar."
+      "action_pl": "5-6h: KM 25. POSTÓJ 5 MIN. Przełęcz. Zmiana skarpet na suche (kluczowe zabezpieczenie stóp przed pęcherzami), nałóż wazelinę. Weź 2 kaps. SaltStick + 1 Baton.",
+      "action_en": "5-6h: KM 25. 5 MIN BREAK. Pass. Change socks to dry ones (critical blister protection), apply vaseline. Take 2 SaltStick caps + 1 energy bar."
     },
     {
       "startElapsedHours": 6.0,
@@ -76,14 +77,14 @@
     {
       "startElapsedHours": 9.0,
       "endElapsedHours": 10.0,
-      "action_pl": "9-10h: KM 40 (~04:14). Trudna faza techniczna. Zgnieć puszkę Red Bulla i schowaj śmieć. Obserwuj stopy pod kątem gorących punktów ucisku.",
-      "action_en": "9-10h: KM 40 (~04:14). Tough technical phase. Crush Red Bull can and pack trash. Monitor feet for hot pressure points."
+      "action_pl": "9-10h: KM 40. Trudna faza techniczna. Zgnieć puszkę Red Bulla i schowaj śmieć. Obserwuj stopy pod kątem gorących punktów ucisku.",
+      "action_en": "9-10h: KM 40. Tough technical phase. Crush Red Bull can and pack trash. Monitor feet for hot pressure points."
     },
     {
       "startElapsedHours": 10.0,
       "endElapsedHours": 11.0,
-      "action_pl": "10-11h: KM 45 (~05:20). KRYZYS NOCNY (Godzina Wilka). Uruchom Protokół Ratunkowy: wypij Red Bull #1 + Glukoza 1WW pod język. Maszeruj powoli przez 10 min.",
-      "action_en": "10-11h: KM 45 (~05:20). NIGHT CRISIS (Witching Hour). Run Rescue Protocol: drink Red Bull #1 + Glucose 1WW under tongue. March slowly for 10 mins."
+      "action_pl": "10-11h: KM 45. KRYZYS NOCNY (Godzina Wilka). Uruchom Protokół Ratunkowy: wypij Red Bull #1 + Glukoza 1WW pod język. Maszeruj powoli przez 10 min.",
+      "action_en": "10-11h: KM 45. NIGHT CRISIS (Witching Hour). Run Rescue Protocol: drink Red Bull #1 + Glucose 1WW under tongue. March slowly for 10 mins."
     },
     {
       "startElapsedHours": 11.0,
@@ -94,20 +95,20 @@
     {
       "startElapsedHours": 12.0,
       "endElapsedHours": 13.0,
-      "action_pl": "12-13h: KM 50 (~06:33). POSTÓJ 5 MIN. Druga inspekcja stóp, zmiana skarpet jeśli wilgotne, ponowna wazelina. Weź 2 kaps. SaltStick. Świt - zdejmij czołówkę.",
-      "action_en": "12-13h: KM 50 (~06:33). 5 MIN BREAK. Second foot check, change socks if damp, reapply vaseline. Take 2 SaltStick caps. Dawn - pack headlamp."
+      "action_pl": "12-13h: KM 50. POSTÓJ 5 MIN. Druga inspekcja stóp, zmiana skarpet jeśli wilgotne, ponowna wazelina. Weź 2 kaps. SaltStick. Świt - zdejmij czołówkę.",
+      "action_en": "12-13h: KM 50. 5 MIN BREAK. Second foot check, change socks if damp, reapply vaseline. Take 2 SaltStick caps. Dawn - pack headlamp."
     },
     {
       "startElapsedHours": 13.0,
       "endElapsedHours": 14.0,
-      "action_pl": "13-14h: KM 55 (~07:31). Podejście pod kolejną przełęcz. Rozpocznij powolne przechodzenie na żele węglowodanowe. Żołądek zaczyna gorzej absorbować stałe jedzenie.",
-      "action_en": "13-14h: KM 55 (~07:31). Climbing to the next pass. Start transitioning slowly to carb gels. Stomach begins to struggle with solid absorption."
+      "action_pl": "13-14h: KM 55. Podejście pod kolejną przełęcz. Rozpocznij powolne przechodzenie na żele węglowodanowe. Żołądek zaczyna gorzej absorbować stałe jedzenie.",
+      "action_en": "13-14h: KM 55. Climbing to the next pass. Start transitioning slowly to carb gels. Stomach begins to struggle with solid absorption."
     },
     {
       "startElapsedHours": 14.0,
       "endElapsedHours": 15.0,
-      "action_pl": "14-15h: KM 60 (~09:28). PRZEPAK (30 MIN). Obowiązkowa zmiana butów na drugą parę, suche skarpety, Sudocrem. Zjedz ciepłą zupę. Załaduj depozyt Hyper-Mix i żeli.",
-      "action_en": "14-15h: KM 60 (~09:28). DROP BAG (30 MIN). Mandatory shoe change to second pair, dry socks, Sudocrem. Eat warm soup. Load drop bag Hyper-Mix and gels."
+      "action_pl": "14-15h: KM 60. PRZEPAK (30 MIN). Obowiązkowa zmiana butów na drugą parę, suche skarpety, Sudocrem. Zjedz ciepłą zupę. Załaduj depozyt Hyper-Mix i żeli.",
+      "action_en": "14-15h: KM 60. DROP BAG (30 MIN). Mandatory shoe change to second pair, dry socks, Sudocrem. Eat warm soup. Load drop bag Hyper-Mix and gels."
     },
     {
       "startElapsedHours": 15.0,
@@ -118,44 +119,44 @@
     {
       "startElapsedHours": 16.0,
       "endElapsedHours": 17.0,
-      "action_pl": "16-17h: Ustabilizowanie tempa. Marsz po płaskim grzbiecie. KM 70 (~11:44). Zjedz żel + Banan + 2 kaps. SaltStick. Temperatura powietrza zaczyna mocno rosnąć.",
-      "action_en": "16-17h: Pace stabilization. Marching flat ridge. KM 70 (~11:44). Eat 1 gel + Banana + 2 SaltStick caps. Air temperature starts rising rapidly."
+      "action_pl": "16-17h: Ustabilizowanie tempa. Marsz po płaskim grzbiecie. KM 70. Zjedz żel + Banan + 2 kaps. SaltStick. Temperatura powietrza zaczyna mocno rosnąć.",
+      "action_en": "16-17h: Pace stabilization. Marching flat ridge. KM 70. Eat 1 gel + Banana + 2 SaltStick caps. Air temperature starts rising rapidly."
     },
     {
       "startElapsedHours": 17.0,
       "endElapsedHours": 18.0,
-      "action_pl": "17-18h: KM 75 (~12:51). POSTÓJ 5 MIN. Kontrola otarć w pachwinach, nałóż Sudocrem. Zjedz 1 kostkę Dextro Energy. Polej kark chłodną wodą. Zapnij paski plecaka.",
-      "action_en": "17-18h: KM 75 (~12:51). 5 MIN BREAK. Check groin chafing, apply Sudocrem. Eat 1 Dextro Energy cube. Pour cool water on neck. Tighten pack straps."
+      "action_pl": "17-18h: KM 75. POSTÓJ 5 MIN. Kontrola otarć w pachwinach, nałóż Sudocrem. Zjedz 1 kostkę Dextro Energy. Polej kark chłodną wodą. Zapnij paski plecaka.",
+      "action_en": "17-18h: KM 75. 5 MIN BREAK. Check groin chafing, apply Sudocrem. Eat 1 Dextro Energy cube. Pour cool water on neck. Tighten pack straps."
     },
     {
       "startElapsedHours": 18.0,
       "endElapsedHours": 19.5,
-      "action_pl": "18-19.5h: KM 80 (~14:11). KRYZYS UPAŁU. Uruchom protokół awaryjny na gorąco: wypij Red Bull #2 + maksymalna dawka SaltStick (2 kaps.). Zwolnij tempo na podejściach.",
-      "action_en": "18-19.5h: KM 80 (~14:11). HEAT CRISIS. Run hot emergency protocol: drink Red Bull #2 + max SaltStick dose (2 caps). Slow down on uphills."
+      "action_pl": "18-19.5h: KM 80. KRYZYS UPAŁU. Uruchom protokół awaryjny na gorąco: wypij Red Bull #2 + maksymalna dawka SaltStick (2 kaps.). Zwolnij tempo na podejściach.",
+      "action_en": "18-19.5h: KM 80. HEAT CRISIS. Run hot emergency protocol: drink Red Bull #2 + max SaltStick dose (2 caps). Slow down on uphills."
     },
     {
       "startElapsedHours": 19.5,
       "endElapsedHours": 20.5,
-      "action_pl": "19.5-20.5h: KM 85 (~15:26). Podejście pod przedostatni szczyt. Zjedz żel energetyczny. Bezwzględny koniec jedzenia stałego - trawienie jest zablokowane.",
-      "action_en": "19.5-20.5h: KM 85 (~15:26). Climbing penultimate peak. Eat energy gel. Strict end of solid food - digestion is shut down."
+      "action_pl": "19.5-20.5h: KM 85. Podejście pod przedostatni szczyt. Zjedz żel energetyczny. Bezwzględny koniec jedzenia stałego - trawienie jest zablokowane.",
+      "action_en": "19.5-20.5h: KM 85. Climbing penultimate peak. Eat energy gel. Strict end of solid food - digestion is shut down."
     },
     {
       "startElapsedHours": 20.5,
       "endElapsedHours": 21.5,
-      "action_pl": "20.5-21.5h: KM 90 (~16:26). Opróżnij ostatni bidon Hyper-Mix. Marsz w trybie automatycznym. Skup się wyłącznie na wbijaniu kijów i rytmie oddechu.",
-      "action_en": "20.5-21.5h: KM 90 (~16:26). Empty last Hyper-Mix flask. Marching in automatic mode. Focus solely on pole plants and breathing rhythm."
+      "action_pl": "20.5-21.5h: KM 90. Opróżnij ostatni bidon Hyper-Mix. Marsz w trybie automatycznym. Skup się wyłącznie na wbijaniu kijów i rytmie oddechu.",
+      "action_en": "20.5-21.5h: KM 90. Empty last Hyper-Mix flask. Marching in automatic mode. Focus solely on pole plants and breathing rhythm."
     },
     {
       "startElapsedHours": 21.5,
       "endElapsedHours": 22.5,
-      "action_pl": "21.5-22.5h: KM 95 (~17:27). FINISZ. Ostatnie strome podejście. Wypij Red Bull #3 + Glukoza 1WW. Zignoruj ból kolan i stóp, to gra mentalna.",
-      "action_en": "21.5-22.5h: KM 95 (~17:27). FINISH. Last steep climb. Drink Red Bull #3 + Glucose 1WW. Ignore knee/foot pain, this is a mental game."
+      "action_pl": "21.5-22.5h: KM 95. FINISZ. Ostatnie strome podejście. Wypij Red Bull #3 + Glukoza 1WW. Zignoruj ból kolan i stóp, to gra mentalna.",
+      "action_en": "21.5-22.5h: KM 95. FINISH. Last steep climb. Drink Red Bull #3 + Glucose 1WW. Ignore knee/foot pain, this is a mental game."
     },
     {
       "startElapsedHours": 22.5,
       "endElapsedHours": 24.0,
-      "action_pl": "22.5-24h: KM 100 (~18:46). Ostatni zbieg do mety. Ląduj na śródstopiu, amortyzuj kijami. Utrzymaj skupienie do samego końca. META (100 km).",
-      "action_en": "22.5-24h: KM 100 (~18:46). Last downhill to finish. Land on midfoot, absorb impact with poles. Keep focus until the very end. FINISH (100 km)."
+      "action_pl": "22.5-24h: KM 100. Ostatni zbieg do mety. Ląduj na śródstopiu, amortyzuj kijami. Utrzymaj skupienie do samego końca. META (100 km).",
+      "action_en": "22.5-24h: KM 100. Last downhill to finish. Land on midfoot, absorb impact with poles. Keep focus until the very end. FINISH (100 km)."
     }
   ],
   "tactics": [
@@ -334,8 +335,14 @@
       "description_pl": "Przełęcz u podnóża zbiegu. Pierwszy zaplanowany postój. Obowiązkowa zmiana skarpet na suche i grube smarowanie stóp wazeliną. Zjedz baton owsiany + 2 kaps. SaltStick.",
       "description_en": "Pass at the bottom of descent. First scheduled break. Mandatory change to dry socks and thick vaseline application on feet. Eat an oat bar + 2 SaltStick caps.",
       "dotColor": "orange",
-      "badges_pl": ["5 min przerwy", "Skarpetki"],
-      "badges_en": ["5 min break", "Socks"]
+      "badges_pl": [
+        "5 min przerwy",
+        "Skarpetki"
+      ],
+      "badges_en": [
+        "5 min break",
+        "Socks"
+      ]
     },
     {
       "startKm": 25,
@@ -350,8 +357,12 @@
       "description_pl": "Przełęcz przed świtem. Druga kontrola stóp, zmiana skarpet jeśli wilgotne. Opróżnij 5. bidon Hyper-Mix. Przygotuj psychikę na podejście przed przepakiem.",
       "description_en": "Pass before dawn. Second foot check, change socks if damp. Empty 5th Hyper-Mix flask. Prepare mentally for the climb before the drop bag.",
       "dotColor": "orange",
-      "badges_pl": ["5 min przerwy"],
-      "badges_en": ["5 min break"]
+      "badges_pl": [
+        "5 min przerwy"
+      ],
+      "badges_en": [
+        "5 min break"
+      ]
     },
     {
       "startKm": 50,
@@ -368,8 +379,16 @@
       "description_pl": "Duży postój regeneracyjny. Obowiązkowa zmiana butów na drugą parę (świeża amortyzacja), suche skarpety, Sudocrem. Zjedz gorącą zupę. Uzupełnij zapasy Hyper-Mixu i żeli z depozytu na drugą połowę trasy.",
       "description_en": "Major recovery break. Mandatory shoe change to second pair (fresh cushioning), dry socks, Sudocrem. Eat hot soup. Replenish Hyper-Mix and gel stocks from drop bag for the second half.",
       "dotColor": "green",
-      "badges_pl": ["30 min przerwy", "Ciepła zupa", "Buty"],
-      "badges_en": ["30 min break", "Hot soup", "Shoes"]
+      "badges_pl": [
+        "30 min przerwy",
+        "Ciepła zupa",
+        "Buty"
+      ],
+      "badges_en": [
+        "30 min break",
+        "Hot soup",
+        "Shoes"
+      ]
     },
     {
       "startKm": 60,
@@ -384,8 +403,14 @@
       "description_pl": "Dolina. Ostatni krótki postój. Kontrola otarć w pachwinach, nałóż Sudocrem. Wypij Red Bull #2 i weź maksymalną dawkę soli przed najgorszym upałem.",
       "description_en": "Valley. Last short break. Check groin chafing, apply Sudocrem. Drink Red Bull #2 and take max salt dose before the worst heat peak.",
       "dotColor": "orange",
-      "badges_pl": ["5 min przerwy", "Sól"],
-      "badges_en": ["5 min break", "Salt"]
+      "badges_pl": [
+        "5 min przerwy",
+        "Sól"
+      ],
+      "badges_en": [
+        "5 min break",
+        "Salt"
+      ]
     },
     {
       "startKm": 75,

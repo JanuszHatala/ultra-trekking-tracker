@@ -8,7 +8,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [cacheStats, setCacheStats] = useState({ total: 0, zooms: {} });
-  const [startTime, setStartTime] = useState(localStorage.getItem('ultra_start_time_v2') || "05:00");
+  const [startTime, setStartTime] = useState('05:00');
   const [challengeDate, setChallengeDate] = useState('2026-07-10');
   const [showResetModal, setShowResetModal] = useState(false);
 
@@ -17,6 +17,10 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
       const key = `ultra_challenge_date_${dataset.route_id}`;
       const savedDate = localStorage.getItem(key);
       setChallengeDate(savedDate || dataset.challengeParameters?.date || '2026-07-10');
+
+      const timeKey = `ultra_start_time_v2_${dataset.route_id}`;
+      const savedTime = localStorage.getItem(timeKey);
+      setStartTime(savedTime || dataset.challengeParameters?.startTime || '05:00');
     }
   }, [dataset]);
 
@@ -25,6 +29,12 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
       localStorage.setItem(`ultra_challenge_date_${dataset.route_id}`, challengeDate);
     }
   }, [challengeDate, dataset?.route_id]);
+
+  useEffect(() => {
+    if (dataset?.route_id && startTime) {
+      localStorage.setItem(`ultra_start_time_v2_${dataset.route_id}`, startTime);
+    }
+  }, [startTime, dataset?.route_id]);
 
   const fetchStats = async () => {
     const stats = await MapOfflineService.getCacheStats();
@@ -110,10 +120,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
             <input 
               type="time" 
               value={startTime} 
-              onChange={(e) => {
-                setStartTime(e.target.value);
-                localStorage.setItem('ultra_start_time_v2', e.target.value);
-              }}
+              onChange={(e) => setStartTime(e.target.value)}
               style={{ colorScheme: 'dark' }} 
               className="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1.5 md:px-2 py-0.5 text-xs md:text-sm outline-none" 
             />
