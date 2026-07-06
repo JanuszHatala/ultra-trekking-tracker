@@ -50,7 +50,8 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
   }, [selectedSection]);
 
   useEffect(() => {
-    MapOfflineService.isDownloaded().then(setIsDownloaded);
+    const routeId = dataset?.route_id;
+    MapOfflineService.isDownloaded(routeId).then(setIsDownloaded);
     fetchStats();
     
     const unsubscribe = MapOfflineService.subscribe((state) => {
@@ -58,12 +59,12 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
       setDownloadProgress(state.progress);
       if (!state.isDownloading) {
          fetchStats();
-         MapOfflineService.isDownloaded().then(setIsDownloaded);
+         MapOfflineService.isDownloaded(routeId).then(setIsDownloaded);
       }
     });
     
     return unsubscribe;
-  }, []);
+  }, [dataset?.route_id]);
 
   useEffect(() => {
     let intervalId;
@@ -83,8 +84,11 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     setDownloadProgress(0);
     try {
       const result = await MapOfflineService.downloadOfflineTiles(gpxPoints);
-      if (result.success) {
+      if (result.success !== false) { // it might just return empty if done
         setIsDownloaded(true);
+        if (dataset?.route_id) {
+          localStorage.setItem(`${MapOfflineService.DOWNLOADED_FLAG}_${dataset.route_id}`, '1');
+        }
       } else {
         alert(lang === 'en' ? result.message : `Błąd: ${result.message}`);
       }

@@ -346,7 +346,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
              <div className="text-slate-400 font-semibold">{(activeSection.etaHrs / activeSection.km * 60).toFixed(0)} min/km</div>
           </div>
           {activeSection.actionText && (
-            <div className="text-[10px] md:text-[11px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50 max-h-[100px] md:max-h-none overflow-y-auto md:overflow-y-visible custom-scrollbar">
+            <div className="text-[10px] md:text-[11px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50 max-h-[35vh] md:max-h-[60vh] overflow-y-auto custom-scrollbar">
               {activeSection.actionText}
             </div>
           )}
