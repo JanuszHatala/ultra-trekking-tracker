@@ -122,41 +122,30 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4 flex-shrink-0">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4 flex-shrink-0 bg-slate-800 p-3 rounded-xl border border-slate-700">
         <h2 className="text-xl font-bold text-slate-100">{lang === 'en' ? 'Data Table' : 'Tabela Danych'}</h2>
-        <button 
-          onClick={() => setShowSettings(!showSettings)}
-          className="p-1.5 md:p-2 bg-slate-800 rounded-lg text-slate-300 hover:text-lime-400 border border-slate-700"
-        >
-          <Settings2 size={18} />
-        </button>
-      </div>
-
-      {showSettings && (
-        <div className="bg-slate-800 p-3 md:p-4 rounded-xl border border-slate-700 mb-4 animate-in slide-in-from-top-2 flex-shrink-0">
-          <h3 className="text-sm font-semibold text-lime-400 mb-3">{lang === 'en' ? 'Topological Settings' : 'Ustawienia Topologiczne'}</h3>
-          <div className="flex gap-4">
-            <label className="flex flex-col flex-1">
-              <span className="text-[10px] md:text-xs text-slate-400 mb-1">{lang === 'en' ? 'Min Window (km)' : 'Min Okno (km)'}</span>
-              <input 
-                type="number" 
-                value={minWindow} 
-                onChange={e => setMinWindow(Number(e.target.value))}
-                className="bg-slate-900 border border-slate-700 rounded p-1.5 md:p-2 text-xs md:text-sm text-white focus:border-lime-500 focus:outline-none"
-              />
-            </label>
-            <label className="flex flex-col flex-1">
-              <span className="text-[10px] md:text-xs text-slate-400 mb-1">{lang === 'en' ? 'Max Window (km)' : 'Max Okno (km)'}</span>
-              <input 
-                type="number" 
-                value={maxWindow} 
-                onChange={e => setMaxWindow(Number(e.target.value))}
-                className="bg-slate-900 border border-slate-700 rounded p-1.5 md:p-2 text-xs md:text-sm text-white focus:border-lime-500 focus:outline-none"
-              />
-            </label>
-          </div>
+        
+        <div className="flex gap-4">
+          <label className="flex items-center gap-2">
+            <span className="text-[10px] md:text-xs text-slate-400">{lang === 'en' ? 'Min Window (km)' : 'Min Okno (km)'}</span>
+            <input 
+              type="number" 
+              value={minWindow} 
+              onChange={e => setMinWindow(Number(e.target.value))}
+              className="bg-slate-900 border border-slate-700 rounded p-1.5 md:p-2 text-xs md:text-sm text-white focus:border-lime-500 focus:outline-none w-16"
+            />
+          </label>
+          <label className="flex items-center gap-2">
+            <span className="text-[10px] md:text-xs text-slate-400">{lang === 'en' ? 'Max Window (km)' : 'Max Okno (km)'}</span>
+            <input 
+              type="number" 
+              value={maxWindow} 
+              onChange={e => setMaxWindow(Number(e.target.value))}
+              className="bg-slate-900 border border-slate-700 rounded p-1.5 md:p-2 text-xs md:text-sm text-white focus:border-lime-500 focus:outline-none w-16"
+            />
+          </label>
         </div>
-      )}
+      </div>
 
       <div className="rounded-lg border border-slate-700 shadow-xl bg-slate-800/50 flex-1 overflow-y-auto">
         <table className="w-full text-left border-collapse whitespace-nowrap min-w-[600px]">

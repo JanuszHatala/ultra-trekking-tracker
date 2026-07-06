@@ -28,7 +28,11 @@ export class MapOfflineService {
     return { x: xtile, y: ytile };
   }
 
-  static async isDownloaded() {
+  static async isDownloaded(routeId = null) {
+    if (routeId) {
+      return localStorage.getItem(`${this.DOWNLOADED_FLAG}_${routeId}`) === '1';
+    }
+    // Fallback if no route specified (legacy)
     return localStorage.getItem(this.DOWNLOADED_FLAG) === '1';
   }
 
@@ -54,7 +58,13 @@ export class MapOfflineService {
   static async deleteMap() {
     try {
       await caches.delete(this.CACHE_NAME);
-      localStorage.removeItem(this.DOWNLOADED_FLAG);
+      // Remove all download flags from localStorage
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(this.DOWNLOADED_FLAG)) {
+          localStorage.removeItem(key);
+        }
+      }
       return true;
     } catch (e) {
       console.error('Failed to delete map cache', e);

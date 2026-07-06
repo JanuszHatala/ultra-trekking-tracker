@@ -23,38 +23,38 @@
     {
       "startElapsedHours": 0.0,
       "endElapsedHours": 1.0,
-      "action_pl": "0-1h: Start. Wejście w noc. Adaptacja do najcięższego plecaka (pełna woda na starcie). Trzymaj tętno strictly < 130 bpm. Pij równe 100ml płynów co 15 min.",
-      "action_en": "0-1h: Start. Entering the night. Adapting to the heaviest pack (full water). Keep HR strictly < 130 bpm. Drink exactly 100ml fluids every 15 min."
+      "action_pl": "Start. Wejście w noc. Adaptacja do najcięższego plecaka (pełna woda na starcie). Trzymaj tętno strictly < 130 bpm. Pij równe 100ml płynów co 15 min.",
+      "action_en": "Start. Entering the night. Adapting to the heaviest pack (full water). Keep HR strictly < 130 bpm. Drink exactly 100ml fluids every 15 min."
     },
     {
       "startElapsedHours": 1.0,
       "endElapsedHours": 2.0,
-      "action_pl": "1-2h: Podejście pod strome wzniesienie (+500m). Zwolnij tempo do ok. 3.75 km/h. KM 5 - weź mały łyk wody i zjedz baton energetyczny.",
-      "action_en": "1-2h: Steep climb (+500m). Slow down to ~3.75 km/h. KM 5 - take a small sip of water and eat an energy bar."
+      "action_pl": "Podejście pod strome wzniesienie (+500m). Zwolnij tempo do ok. 3.75 km/h. KM 5 - weź mały łyk wody i zjedz baton energetyczny.",
+      "action_en": "Steep climb (+500m). Slow down to ~3.75 km/h. KM 5 - take a small sip of water and eat an energy bar."
     },
     {
       "startElapsedHours": 2.0,
       "endElapsedHours": 3.0,
-      "action_pl": "2-3h: Grzbiet górski i łagodny zbieg. KM 10 - weź szczyptę soli (lub Litorsal) i kabanosa na sód. Zbiegaj ostrożnie, max 4.4 km/h dla kolan.",
-      "action_en": "2-3h: Ridge and gentle downhill. KM 10 - take a pinch of salt (or Litorsal) and a kabanos for sodium. Descend cautiously, max 4.4 km/h for knees."
+      "action_pl": "Grzbiet górski i łagodny zbieg. KM 10 - weź szczyptę soli (lub Litorsal) i kabanosa na sód. Zbiegaj ostrożnie, max 4.4 km/h dla kolan.",
+      "action_en": "Ridge and gentle downhill. KM 10 - take a pinch of salt (or Litorsal) and a kabanos for sodium. Descend cautiously, max 4.4 km/h for knees."
     },
     {
       "startElapsedHours": 3.0,
       "endElapsedHours": 4.0,
-      "action_pl": "3-4h: Kolejne podejście (+405m). KM 15 - zjedz kanapkę. Pij ostrożnie, zachowaj rytm popijania z bukłaka i flaska.",
-      "action_en": "3-4h: Next climb (+405m). KM 15 - eat a sandwich. Drink carefully, maintain the bladder and flask sipping rhythm."
+      "action_pl": "Kolejne podejście (+405m). KM 15 - zjedz kanapkę. Pij ostrożnie, zachowaj rytm popijania z bukłaka i flaska.",
+      "action_en": "Next climb (+405m). KM 15 - eat a sandwich. Drink carefully, maintain the bladder and flask sipping rhythm."
     },
     {
       "startElapsedHours": 4.0,
       "endElapsedHours": 5.0,
-      "action_pl": "4-5h: Trudny techniczny odcinek w głębokiej nocy. KM 20 - powinieneś zużyć już 1 pełny flask Hyper-Mixu.",
-      "action_en": "4-5h: Tough technical section in deep night. KM 20 - you should have finished 1 full flask of Hyper-Mix."
+      "action_pl": "Trudny techniczny odcinek w głębokiej nocy. KM 20 - powinieneś zużyć już 1 pełny flask Hyper-Mixu.",
+      "action_en": "Tough technical section in deep night. KM 20 - you should have finished 1 full flask of Hyper-Mix."
     },
     {
       "startElapsedHours": 5.0,
       "endElapsedHours": 6.5,
-      "action_pl": "5-6.5h: KM 25. POSTÓJ 5 MIN. Obowiązkowa zmiana skarpet na suche i smarowanie stóp wazeliną. Zjedz kabanosa. Przygotuj się psychicznie na najtrudniejszą fazę senności.",
-      "action_en": "5-6.5h: KM 25. 5 MIN BREAK. Mandatory change to dry socks and apply vaseline. Eat a kabanos. Prepare mentally for the toughest sleep phase."
+      "action_pl": "KM 25. POSTÓJ 5 MIN. Obowiązkowa zmiana skarpet na suche i smarowanie stóp wazeliną. Zjedz kabanosa. Przygotuj się psychicznie na najtrudniejszą fazę senności.",
+      "action_en": "KM 25. 5 MIN BREAK. Mandatory change to dry socks and apply vaseline. Eat a kabanos. Prepare mentally for the toughest sleep phase."
     },
     {
       "startElapsedHours": 6.5,
@@ -77,26 +77,26 @@
     {
       "startElapsedHours": 10.0,
       "endElapsedHours": 11.0,
-      "action_pl": "10-11h: KM 45. Zjedz baton energetyczny. Ciało odzyskuje siły w świetle dnia. Zdejmij kurtkę przeciwwiatrową.",
-      "action_en": "10-11h: KM 45. Eat an energy bar. Body regains strength in daylight. Remove wind jacket."
+      "action_pl": "KM 45. Zjedz baton energetyczny. Ciało odzyskuje siły w świetle dnia. Zdejmij kurtkę przeciwwiatrową.",
+      "action_en": "KM 45. Eat an energy bar. Body regains strength in daylight. Remove wind jacket."
     },
     {
       "startElapsedHours": 11.0,
       "endElapsedHours": 12.0,
-      "action_pl": "11-12h: KM 50. POSTÓJ 10 MIN. Druga konserwacja stóp. Przelej gotowy Hyper-Mix z dużych butelek PET w plecaku do flasków na klatce.",
-      "action_en": "11-12h: KM 50. 10 MIN BREAK. Second foot maintenance. Decant ready Hyper-Mix from large PET bottles in pack to chest flasks."
+      "action_pl": "KM 50. POSTÓJ 10 MIN. Druga konserwacja stóp. Przelej gotowy Hyper-Mix z dużych butelek PET w plecaku do flasków na klatce.",
+      "action_en": "KM 50. 10 MIN BREAK. Second foot maintenance. Decant ready Hyper-Mix from large PET bottles in pack to chest flasks."
     },
     {
       "startElapsedHours": 12.0,
       "endElapsedHours": 13.0,
-      "action_pl": "12-13h: Podejście (+292m). KM 55 - zjedz słoną przekąskę lub weź szczyptę soli. Temperatura rośnie. Popijaj regularnie.",
-      "action_en": "12-13h: Climb (+292m). KM 55 - eat a salty snack or take a pinch of salt. Temperature is rising. Sip regularly."
+      "action_pl": "Podejście (+292m). KM 55 - zjedz słoną przekąskę lub weź szczyptę soli. Temperatura rośnie. Popijaj regularnie.",
+      "action_en": "Climb (+292m). KM 55 - eat a salty snack or take a pinch of salt. Temperature is rising. Sip regularly."
     },
     {
       "startElapsedHours": 13.0,
       "endElapsedHours": 14.5,
-      "action_pl": "13-14.5h: Faza upału. KM 60 - żołądek zmęczony, przejdź wyłącznie na żele. KM 65 - wypij Red Bull #2 przed finałową wspinaczką.",
-      "action_en": "13-14.5h: Heat phase. KM 60 - stomach fatigued, switch entirely to gels. KM 65 - drink Red Bull #2 before the final climb."
+      "action_pl": "Faza upału. KM 60 - żołądek zmęczony, przejdź wyłącznie na żele. KM 65 - wypij Red Bull #2 przed finałową wspinaczką.",
+      "action_en": "Heat phase. KM 60 - stomach fatigued, switch entirely to gels. KM 65 - drink Red Bull #2 before the final climb."
     },
     {
       "startElapsedHours": 14.5,

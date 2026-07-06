@@ -23,62 +23,62 @@
     {
       "startElapsedHours": 0.0,
       "endElapsedHours": 1.0,
-      "action_pl": "Godzina 1: Rozgrzewka, kontrolowanie tętna (<130 bpm). Pierwszy łyk Hyper-Mix po 30 min. Skupienie na miarowym, swobodnym kroku.",
-      "action_en": "Hour 1: Warm-up, control HR (<130 bpm). First sip of Hyper-Mix after 30 min. Focus on steady, relaxed stride."
+      "action_pl": "Rozgrzewka, kontrolowanie tętna (<130 bpm). Pierwszy łyk Hyper-Mix po 30 min. Skupienie na miarowym, swobodnym kroku.",
+      "action_en": "Warm-up, control HR (<130 bpm). First sip of Hyper-Mix after 30 min. Focus on steady, relaxed stride."
     },
     {
       "startElapsedHours": 1.0,
       "endElapsedHours": 2.0,
-      "action_pl": "Godzina 2: Zwiększenie tempa do docelowego. 2 kapsułki SaltStick. Kontynuacja nawadniania Hyper-Mix (co 15 min mały łyk).",
-      "action_en": "Hour 2: Settle into target pace. 2 SaltStick caps. Continue Hyper-Mix hydration (small sip every 15 mins)."
+      "action_pl": "Zwiększenie tempa do docelowego. 2 kapsułki SaltStick. Kontynuacja nawadniania Hyper-Mix (co 15 min mały łyk).",
+      "action_en": "Settle into target pace. 2 SaltStick caps. Continue Hyper-Mix hydration (small sip every 15 mins)."
     },
     {
       "startElapsedHours": 2.0,
       "endElapsedHours": 3.0,
-      "action_pl": "Godzina 3: Zjedz pierwszy stały pokarm (połowa kanapki z masłem orzechowym). Obserwacja punktów ucisku w butach.",
-      "action_en": "Hour 3: Eat first solid food (half peanut butter sandwich). Monitor shoe pressure points."
+      "action_pl": "Zjedz pierwszy stały pokarm (połowa kanapki z masłem orzechowym). Obserwacja punktów ucisku w butach.",
+      "action_en": "Eat first solid food (half peanut butter sandwich). Monitor shoe pressure points."
     },
     {
       "startElapsedHours": 3.0,
       "endElapsedHours": 4.0,
-      "action_pl": "Godzina 4: Uzupełnij płyny na punkcie zrzutu/sklepie (jeśli dostępny). Zjedz baton energetyczny.",
-      "action_en": "Hour 4: Refill fluids at a drop point/shop (if available). Eat an energy bar."
+      "action_pl": "Uzupełnij płyny na punkcie zrzutu/sklepie (jeśli dostępny). Zjedz baton energetyczny.",
+      "action_en": "Refill fluids at a drop point/shop (if available). Eat an energy bar."
     },
     {
       "startElapsedHours": 4.0,
       "endElapsedHours": 5.0,
-      "action_pl": "Godzina 5: Pierwszy większy test zmęczenia. Zjedz żel węglowodanowy i wypij 250ml wody. 2 kapsułki SaltStick.",
-      "action_en": "Hour 5: First major fatigue check. Eat a carb gel and drink 250ml water. 2 SaltStick caps."
+      "action_pl": "Pierwszy większy test zmęczenia. Zjedz żel węglowodanowy i wypij 250ml wody. 2 kapsułki SaltStick.",
+      "action_en": "First major fatigue check. Eat a carb gel and drink 250ml water. 2 SaltStick caps."
     },
     {
       "startElapsedHours": 5.0,
       "endElapsedHours": 6.0,
-      "action_pl": "Godzina 6: Druga połowa kanapki. Sprawdź stopy pod kątem pęcherzy. Zastosuj Sudocrem profilaktycznie.",
-      "action_en": "Hour 6: Second half of sandwich. Check feet for blisters. Apply Sudocrem preventively."
+      "action_pl": "Druga połowa kanapki. Sprawdź stopy pod kątem pęcherzy. Zastosuj Sudocrem profilaktycznie.",
+      "action_en": "Second half of sandwich. Check feet for blisters. Apply Sudocrem preventively."
     },
     {
       "startElapsedHours": 6.0,
       "endElapsedHours": 7.0,
-      "action_pl": "Godzina 7: Pełny Hyper-Mix (kolejny flask opróżniony). Skup się na głębokim oddychaniu na podejściach.",
-      "action_en": "Hour 7: Full Hyper-Mix (next flask emptied). Focus on deep breathing on ascents."
+      "action_pl": "Pełny Hyper-Mix (kolejny flask opróżniony). Skup się na głębokim oddychaniu na podejściach.",
+      "action_en": "Full Hyper-Mix (next flask emptied). Focus on deep breathing on ascents."
     },
     {
       "startElapsedHours": 7.0,
       "endElapsedHours": 8.0,
-      "action_pl": "Godzina 8: Zjedz Dextro Energy. Sprawdź sprzęt przed nocą. Wyciągnij czołówkę na wierzch plecaka.",
-      "action_en": "Hour 8: Eat Dextro Energy. Gear check before night. Move headlamp to top of backpack."
+      "action_pl": "Zjedz Dextro Energy. Sprawdź sprzęt przed nocą. Wyciągnij czołówkę na wierzch plecaka.",
+      "action_en": "Eat Dextro Energy. Gear check before night. Move headlamp to top of backpack."
     },
     {
       "startElapsedHours": 8.0,
       "endElapsedHours": 9.0,
-      "action_pl": "Godzina 9: Przepak/Duży postój. Zmiana skarpet. Gorący posiłek (zupa). Uzupełnienie zapasów w plecaku.",
-      "action_en": "Hour 9: Drop bag/Major break. Change socks. Hot meal (soup). Restock backpack supplies."
+      "action_pl": "Przepak/Duży postój. Zmiana skarpet. Gorący posiłek (zupa). Uzupełnienie zapasów w plecaku.",
+      "action_en": "Drop bag/Major break. Change socks. Hot meal (soup). Restock backpack supplies."
     },
     {
       "startElapsedHours": 9.0,
       "endElapsedHours": 10.0,
-      "action_pl": "Godzina 10: Powrót na trasę. Tempo ostrożne z powodu pełnego żołądka. Włącz czołówkę.",
-      "action_en": "Hour 10: Back on trail. Cautious pace due to full stomach. Turn on headlamp."
+      "action_pl": "Powrót na trasę. Tempo ostrożne z powodu pełnego żołądka. Włącz czołówkę.",
+      "action_en": "Back on trail. Cautious pace due to full stomach. Turn on headlamp."
     },
     {
       "startElapsedHours": 10.0,
@@ -295,8 +295,12 @@
       "description_en": "First major peak. Quick gear check, adjust backpack straps. If feet are getting hot, re-tie shoes.",
       "description_pl": "Pierwszy większy szczyt. Szybki przegląd sprzętu, dopasuj paski plecaka. Jeśli stopy się przegrzewają, przesznuruj buty.",
       "dotColor": "orange",
-      "badges_en": ["3 min break"],
-      "badges_pl": ["3 min przerwy"]
+      "badges_en": [
+        "3 min break"
+      ],
+      "badges_pl": [
+        "3 min przerwy"
+      ]
     },
     {
       "startKm": 15,
@@ -311,8 +315,14 @@
       "description_en": "Transition point. Eat a full sandwich. Empty gravel from shoes. Prepare mentally for the upcoming night phase.",
       "description_pl": "Punkt przejściowy. Zjedz całą kanapkę. Wytrzep kamienie z butów. Przygotuj się mentalnie na nadchodzącą fazę nocną.",
       "dotColor": "orange",
-      "badges_en": ["5 min break", "Food"],
-      "badges_pl": ["5 min przerwy", "Jedzenie"]
+      "badges_en": [
+        "5 min break",
+        "Food"
+      ],
+      "badges_pl": [
+        "5 min przerwy",
+        "Jedzenie"
+      ]
     },
     {
       "startKm": 35,
@@ -329,8 +339,16 @@
       "description_en": "Mandatory shoe and sock change. Wash and dry feet, apply thick Sudocrem. Eat a warm meal (soup/broth). Resupply backpack with 50% of gels, bars, and fresh batteries. Leave old trash.",
       "description_pl": "Obowiązkowa zmiana butów i skarpet. Umyj i wysusz stopy, nałóż grubą warstwę Sudocremu. Zjedz ciepły posiłek (zupa/bulion). Uzupełnij plecak o 50% żeli, batonów i świeże baterie. Wyrzuć śmieci.",
       "dotColor": "green",
-      "badges_en": ["30 min break", "Feet Care", "Hot Meal"],
-      "badges_pl": ["30 min przerwy", "Pielęgnacja Stóp", "Ciepły Posiłek"]
+      "badges_en": [
+        "30 min break",
+        "Feet Care",
+        "Hot Meal"
+      ],
+      "badges_pl": [
+        "30 min przerwy",
+        "Pielęgnacja Stóp",
+        "Ciepły Posiłek"
+      ]
     },
     {
       "startKm": 65,
@@ -345,8 +363,14 @@
       "description_en": "Summit check. Extreme wind exposure. Put on windbreaker immediately. Take a caffeinated gel to fight the sleep deprivation hitting hard right now.",
       "description_pl": "Szczyt. Ekstremalna ekspozycja na wiatr. Natychmiast załóż wiatrówkę. Weź żel z kofeiną, aby zwalczyć deprywację senną, która uderza właśnie teraz.",
       "dotColor": "orange",
-      "badges_en": ["2 min break", "Jacket On"],
-      "badges_pl": ["2 min przerwy", "Zakładanie Kurtki"]
+      "badges_en": [
+        "2 min break",
+        "Jacket On"
+      ],
+      "badges_pl": [
+        "2 min przerwy",
+        "Zakładanie Kurtki"
+      ]
     },
     {
       "startKm": 85,
@@ -361,8 +385,14 @@
       "description_en": "Final system check. Drop pack for 2 mins, stretch hip flexors. Take the 'Red Crisis Protocol' (Red Bull + Glucose) to override the central nervous system shutdown.",
       "description_pl": "Ostatni przegląd systemów. Zdejmij plecak na 2 min, rozciągnij zginacze bioder. Zastosuj 'Protokół Czerwony Kryzys' (Red Bull + Glukoza), aby przełamać odcięcie ośrodkowego układu nerwowego.",
       "dotColor": "orange",
-      "badges_en": ["5 min break", "Red Bull Protocol"],
-      "badges_pl": ["5 min przerwy", "Protokół Red Bull"]
+      "badges_en": [
+        "5 min break",
+        "Red Bull Protocol"
+      ],
+      "badges_pl": [
+        "5 min przerwy",
+        "Protokół Red Bull"
+      ]
     },
     {
       "startKm": 115,
