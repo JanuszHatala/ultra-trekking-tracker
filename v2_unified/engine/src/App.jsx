@@ -10,6 +10,7 @@ import { Tests } from './components/Tests';
 import { Training } from './components/Training';
 
 function App() {
+  const [routesList, setRoutesList] = useState([]);
   const [routeId, setRouteId] = useState(null);
   const [dataset, setDataset] = useState(null);
   const [gpxPoints, setGpxPoints] = useState([]);
@@ -51,33 +52,77 @@ function App() {
   const [minWindow, setMinWindow] = useState(5);
   const [maxWindow, setMaxWindow] = useState(10);
 
+  // Load route catalog once on mount
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const id = searchParams.get('route') || 'msb-134k';
-    setRouteId(id);
-
     fetch(`${import.meta.env.BASE_URL}routes.json`)
       .then(r => r.json())
-      .then(async catalog => {
-        const routeConfig = catalog.routes.find(r => r.id === id);
-        if (!routeConfig) {
-          console.error('Route not found in catalog');
-          setLoading(false);
-          return;
+      .then(catalog => {
+        setRoutesList(catalog.routes);
+        
+        // Determine initial route: query parameter -> localStorage -> default 'msb-134k'
+        const searchParams = new URLSearchParams(window.location.search);
+        const initialId = searchParams.get('route') || localStorage.getItem('ultra_last_route_id') || 'msb-134k';
+        
+        // If query param is missing, set it so the address bar reflects the actual route loaded
+        if (!searchParams.has('route')) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('route', initialId);
+          window.history.replaceState({}, '', url.toString());
         }
 
-        const [datasetPath, gpxPath] = routeConfig.files;
-
-        const dsRes = await fetch(`${import.meta.env.BASE_URL}${datasetPath}`);
-        const ds = await dsRes.json();
-        setDataset(ds);
-
-        const gpxRes = await fetch(`${import.meta.env.BASE_URL}${gpxPath}`);
-        const gpxText = await gpxRes.text();
-        const points = GpsEngine.parseGpx(gpxText);
-        setGpxPoints(points);
+        setRouteId(initialId);
+      })
+      .catch(err => {
+        console.error('Failed to load routes catalog:', err);
+        setLoading(false);
       });
   }, []);
+
+  // Fetch dataset and GPX track when routeId changes
+  useEffect(() => {
+    if (routesList.length === 0 || !routeId) return;
+
+    const routeConfig = routesList.find(r => r.id === routeId);
+    if (!routeConfig) {
+      console.error('Route not found in catalog:', routeId);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    const [datasetPath, gpxPath] = routeConfig.files;
+
+    Promise.all([
+      fetch(`${import.meta.env.BASE_URL}${datasetPath}`).then(r => r.json()),
+      fetch(`${import.meta.env.BASE_URL}${gpxPath}`).then(r => r.text())
+    ])
+      .then(([ds, gpxText]) => {
+        setDataset(ds);
+        const points = GpsEngine.parseGpx(gpxText);
+        setGpxPoints(points);
+        
+        // Reset navigation / hover states on route change to prevent visual mismatch
+        setSelectedSection(null);
+        setHoveredSection(null);
+        setProfileHoverPoint(null);
+      })
+      .catch(err => {
+        console.error('Error loading route data:', err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [routeId, routesList]);
+
+  const handleRouteChange = (newRouteId) => {
+    setRouteId(newRouteId);
+    localStorage.setItem('ultra_last_route_id', newRouteId);
+    
+    // Update address bar dynamically
+    const url = new URL(window.location.href);
+    url.searchParams.set('route', newRouteId);
+    window.history.pushState({}, '', url.toString());
+  };
 
   useEffect(() => {
     if (gpxPoints.length === 0 || !routeId) return;
@@ -196,7 +241,7 @@ function App() {
         
         {/* Header & Tabs */}
         <div className="p-3 md:p-6 pb-0 flex-shrink-0 bg-slate-900 z-20 border-b border-slate-700">
-          <div className="flex justify-between items-center w-full">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 w-full pb-3 sm:pb-0">
             <div className="flex items-center gap-3">
               <div>
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">
@@ -215,10 +260,28 @@ function App() {
                 </button>
               )}
             </div>
-            <button onClick={toggleLanguage} className="h-[28px] flex items-center bg-slate-800 rounded shadow border border-slate-600 font-bold text-[10px] sm:text-xs overflow-hidden cursor-pointer ml-2">
-              <span className={`px-2 md:px-3 h-full flex items-center justify-center transition-colors ${lang === 'en' ? 'bg-lime-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}>EN</span>
-              <span className={`px-2 md:px-3 h-full flex items-center justify-center transition-colors ${lang === 'pl' ? 'bg-lime-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}>PL</span>
-            </button>
+            
+            <div className="flex items-center justify-between sm:justify-end gap-2">
+              {/* Route Selector Dropdown */}
+              {routesList.length > 0 && (
+                <select
+                  value={routeId || 'msb-134k'}
+                  onChange={(e) => handleRouteChange(e.target.value)}
+                  className="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2.5 py-1 text-xs md:text-sm font-semibold focus:outline-none focus:border-lime-400 cursor-pointer"
+                >
+                  {routesList.map(r => (
+                    <option key={r.id} value={r.id}>
+                      {r.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              <button onClick={toggleLanguage} className="h-[28px] flex items-center bg-slate-800 rounded shadow border border-slate-600 font-bold text-[10px] sm:text-xs overflow-hidden cursor-pointer">
+                <span className={`px-2 md:px-3 h-full flex items-center justify-center transition-colors ${lang === 'en' ? 'bg-lime-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}>EN</span>
+                <span className={`px-2 md:px-3 h-full flex items-center justify-center transition-colors ${lang === 'pl' ? 'bg-lime-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}>PL</span>
+              </button>
+            </div>
           </div>
             
           {/* Tab Bar */}
