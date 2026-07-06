@@ -248,6 +248,16 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
     }
   });
 
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  useEffect(() => {
+    if (!activeSection) {
+      setShowOverlay(false);
+    } else if (autoOpenDetails) {
+      setShowOverlay(true);
+    }
+  }, [activeSection, autoOpenDetails]);
+
   useEffect(() => {
     try {
       if (isTracking) {
@@ -295,10 +305,10 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
       {/* Map Actions Overlay (desktop) -> moved inside MapContainer */}
       
       {/* Section Information Overlay Card */}
-      {activeSection && mapVisible && activeSection.sectionPoints && (
+      {activeSection && mapVisible && activeSection.sectionPoints && showOverlay && (
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-[340px] z-[2000] bg-slate-800/95 backdrop-blur-md border border-cyan-500/50 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] pointer-events-auto">
           <button 
-            onClick={() => setSelectedSection(null)}
+            onClick={() => setShowOverlay(false)}
             className="absolute top-3 right-3 text-slate-400 hover:text-white bg-slate-700/50 hover:bg-slate-600 rounded-full p-1 transition-colors"
           >
             <X size={16} />
@@ -369,6 +379,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                 eventHandlers={{ 
                   click: () => { 
                     if (setSelectedSection) setSelectedSection({ ...cp, actionText, sectionDist }); 
+                    setShowOverlay(true);
                   } 
                 }}
               />

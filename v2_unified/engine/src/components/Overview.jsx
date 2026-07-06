@@ -186,7 +186,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
               className="w-4 h-4 rounded accent-lime-500" 
             />
             <span className="text-xs md:text-sm font-bold text-slate-300">
-              {lang === 'en' ? 'Auto-open map popup' : 'Auto-otwieranie detali na mapie'}
+              {lang === 'en' ? 'Auto-open section info on map' : 'Auto-otwieranie panelu sekcji na mapie'}
             </span>
           </label>
           
