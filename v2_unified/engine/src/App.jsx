@@ -12,6 +12,7 @@ import { Training } from './components/Training';
 function App() {
   const [routesList, setRoutesList] = useState([]);
   const [routeId, setRouteId] = useState(null);
+  const [gpxRouteId, setGpxRouteId] = useState(null);
   const [dataset, setDataset] = useState(null);
   const [gpxPoints, setGpxPoints] = useState([]);
   const [checkpoints, setCheckpoints] = useState([]);
@@ -92,6 +93,7 @@ function App() {
     setLoading(true);
     setDataset(null);
     setGpxPoints([]);
+    setGpxRouteId(null);
     setCheckpoints([]);
     const [datasetPath, gpxPath] = routeConfig.files;
 
@@ -103,6 +105,7 @@ function App() {
         setDataset(ds);
         const points = GpsEngine.parseGpx(gpxText);
         setGpxPoints(points);
+        setGpxRouteId(routeId);
         
         // Reset navigation / hover states on route change to prevent visual mismatch
         setSelectedSection(null);
@@ -128,7 +131,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (gpxPoints.length === 0 || !routeId) return;
+    if (gpxPoints.length === 0 || !routeId || gpxRouteId !== routeId) return;
 
     const processCheckpoints = async () => {
       setLoading(true);
@@ -146,7 +149,7 @@ function App() {
     };
 
     processCheckpoints();
-  }, [gpxPoints, routeId, minWindow, maxWindow]);
+  }, [gpxPoints, routeId, gpxRouteId, minWindow, maxWindow]);
 
   const toggleLanguage = () => {
     setLang(prev => prev === 'en' ? 'pl' : 'en');
