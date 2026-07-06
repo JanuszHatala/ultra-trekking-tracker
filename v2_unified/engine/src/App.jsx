@@ -90,6 +90,9 @@ function App() {
     }
 
     setLoading(true);
+    setDataset(null);
+    setGpxPoints([]);
+    setCheckpoints([]);
     const [datasetPath, gpxPath] = routeConfig.files;
 
     Promise.all([
