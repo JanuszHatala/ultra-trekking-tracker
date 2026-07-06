@@ -211,7 +211,24 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                       {cp.km.toFixed(1)}
                     </div>
                     <div className="text-[10px] text-cyan-500 ml-5">+{sectionDist.toFixed(1)} km section</div>
-                    <div className="text-[10px] text-slate-500 ml-5 truncate max-w-[80px]" title={cp.name}>{cp.name}</div>
+                    <div className="text-[10px] text-slate-500 ml-5 truncate max-w-[180px]" title={cp.name}>{cp.name}</div>
+                    {cp.type && (
+                      <div className="ml-5 mt-1 select-none">
+                        <span className={`inline-block text-[8px] font-bold px-1.5 py-0.5 rounded ${
+                          cp.type === 'Peak' ? 'bg-red-950/60 text-red-400 border border-red-800/40' :
+                          cp.type === 'Valley' ? 'bg-blue-950/60 text-blue-400 border border-blue-800/40' :
+                          cp.type === 'Start' ? 'bg-lime-950/60 text-lime-400 border border-lime-800/40' :
+                          cp.type === 'Finish' ? 'bg-pink-950/60 text-pink-400 border border-pink-800/40' :
+                          'bg-slate-800 text-slate-400 border border-slate-700'
+                        }`}>
+                          {cp.type === 'Peak' ? (lang === 'en' ? '▲ PEAK' : '▲ SZCZYT') :
+                           cp.type === 'Valley' ? (lang === 'en' ? '▼ VALLEY' : '▼ DOLINA') :
+                           cp.type === 'Start' ? 'START' :
+                           cp.type === 'Finish' ? (lang === 'en' ? 'FINISH' : 'META') :
+                           (lang === 'en' ? '▶ FLAT' : '▶ PŁASKO')}
+                        </span>
+                      </div>
+                    )}
                   </td>
                   
                   <td className="p-2 md:p-3 border-r border-slate-700/30">

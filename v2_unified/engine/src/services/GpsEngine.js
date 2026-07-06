@@ -60,6 +60,7 @@ export const GpsEngine = {
     checkpoints.push({
       id: 0,
       name: 'Start',
+      type: 'Start',
       km: 0,
       ele: points[0].ele,
       lat: points[0].lat,
@@ -114,18 +115,22 @@ export const GpsEngine = {
       let selectedPt;
       let cpName = '';
 
+      let cpType = 'Flat';
       if (eleVariance > 40) { // If there is significant topology (>40m variance)
         if (deltaUp > deltaDown) {
           selectedPt = maxElePt;
           cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)}) (Peak)`;
+          cpType = 'Peak';
         } else {
           selectedPt = minElePt;
           cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)}) (Valley)`;
+          cpType = 'Valley';
         }
       } else {
         // Flat terrain fallback -> just take the furthest point in the window
         selectedPt = windowPoints[windowPoints.length - 1];
         cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)})`;
+        cpType = 'Flat';
       }
 
       // Calculate ascent/descent for this section (from lastCp to selectedPt)
@@ -140,6 +145,7 @@ export const GpsEngine = {
       checkpoints.push({
         id: cpId++,
         name: cpName,
+        type: cpType,
         km: selectedPt.dist,
         ele: selectedPt.ele,
         lat: selectedPt.lat,
@@ -167,6 +173,7 @@ export const GpsEngine = {
       checkpoints.push({
         id: cpId,
         name: `Finish (KM ${lastCpDist.toFixed(1)} - ${totalDistance.toFixed(1)})`,
+        type: 'Finish',
         km: totalDistance,
         ele: endPt.ele,
         lat: endPt.lat,

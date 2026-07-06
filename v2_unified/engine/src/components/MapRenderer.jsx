@@ -313,7 +313,24 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
           >
             <X size={16} />
           </button>
-          <div className="font-bold text-cyan-400 text-sm mb-2 pb-2 border-b border-slate-700 pr-6">{activeSection.name}</div>
+          <div className="font-bold text-cyan-400 text-sm mb-2 pb-2 border-b border-slate-700 pr-6 flex items-center gap-2">
+            <span>{activeSection.name}</span>
+            {activeSection.type && (
+              <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded select-none ${
+                activeSection.type === 'Peak' ? 'bg-red-950/60 text-red-400 border border-red-800/40' :
+                activeSection.type === 'Valley' ? 'bg-blue-950/60 text-blue-400 border border-blue-800/40' :
+                activeSection.type === 'Start' ? 'bg-lime-950/60 text-lime-400 border border-lime-800/40' :
+                activeSection.type === 'Finish' ? 'bg-pink-950/60 text-pink-400 border border-pink-800/40' :
+                'bg-slate-800 text-slate-400 border border-slate-700'
+              }`}>
+                {activeSection.type === 'Peak' ? (lang === 'en' ? 'PEAK' : 'SZCZYT') :
+                 activeSection.type === 'Valley' ? (lang === 'en' ? 'VALLEY' : 'DOLINA') :
+                 activeSection.type === 'Start' ? 'START' :
+                 activeSection.type === 'Finish' ? (lang === 'en' ? 'FINISH' : 'META') :
+                 (lang === 'en' ? 'FLAT' : 'PŁASKO')}
+              </span>
+            )}
+          </div>
           <div className="flex justify-between items-center mb-2">
             <div className="text-xs text-slate-300">
               <span className="text-slate-500">Dist: </span>
