@@ -21,4 +21,3 @@ node_modules/
 **/node_modules/
 .gemini/
 v2_unified/engine/dist/
-scratch/
