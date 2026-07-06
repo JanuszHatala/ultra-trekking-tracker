@@ -9,18 +9,22 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
   const [isDownloading, setIsDownloading] = useState(false);
   const [cacheStats, setCacheStats] = useState({ total: 0, zooms: {} });
   const [startTime, setStartTime] = useState(localStorage.getItem('ultra_start_time_v2') || "05:00");
-  const [challengeDate, setChallengeDate] = useState(() => localStorage.getItem('ultra_challenge_date') || dataset?.challengeParameters?.date || '2024-08-15');
+  const [challengeDate, setChallengeDate] = useState('2026-07-10');
   const [showResetModal, setShowResetModal] = useState(false);
 
   useEffect(() => {
-    if (dataset?.challengeParameters?.date && !localStorage.getItem('ultra_challenge_date')) {
-      setChallengeDate(dataset.challengeParameters.date);
+    if (dataset?.route_id) {
+      const key = `ultra_challenge_date_${dataset.route_id}`;
+      const savedDate = localStorage.getItem(key);
+      setChallengeDate(savedDate || dataset.challengeParameters?.date || '2026-07-10');
     }
   }, [dataset]);
 
   useEffect(() => {
-    localStorage.setItem('ultra_challenge_date', challengeDate);
-  }, [challengeDate]);
+    if (dataset?.route_id && challengeDate) {
+      localStorage.setItem(`ultra_challenge_date_${dataset.route_id}`, challengeDate);
+    }
+  }, [challengeDate, dataset?.route_id]);
 
   const fetchStats = async () => {
     const stats = await MapOfflineService.getCacheStats();

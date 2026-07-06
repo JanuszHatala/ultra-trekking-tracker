@@ -335,12 +335,13 @@ function App() {
           )}
 
           {activeTab === 'table' && (
-             <DataTable 
-               checkpoints={checkpoints} 
-               actionTimeline={dataset?.actionTimeline} 
-               minWindow={minWindow} 
-               maxWindow={maxWindow}
-               setMinWindow={setMinWindow}
+              <DataTable 
+                checkpoints={checkpoints} 
+                actionTimeline={dataset?.actionTimeline} 
+                minWindow={minWindow} 
+                maxWindow={maxWindow}
+                setMinWindow={setMinWindow}
+                setMaxWindow={setMaxWindow}
                lang={lang}
                activeSection={activeSection}
                selectedSection={selectedSection}
