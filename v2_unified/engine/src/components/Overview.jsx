@@ -7,6 +7,10 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadingRouteId, setDownloadingRouteId] = useState(null);
+  const [offlineStatus, setOfflineStatus] = useState({ total: 0, cached: 0, percent: 0 });
+  const [statusMessage, setStatusMessage] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [cacheStats, setCacheStats] = useState({ total: 0, zooms: {} });
   const [startTime, setStartTime] = useState('05:00');
   const [challengeDate, setChallengeDate] = useState('2026-07-10');
@@ -22,6 +26,8 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
       const savedTime = localStorage.getItem(timeKey);
       setStartTime(savedTime || dataset.challengeParameters?.startTime || '05:00');
     }
+    setStatusMessage(null);
+    setShowDeleteConfirm(false);
   }, [dataset]);
 
   useEffect(() => {
@@ -41,6 +47,15 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     setCacheStats(stats);
   };
 
+  const updateOfflineStatus = async () => {
+    if (gpxPoints && gpxPoints.length > 0) {
+      const status = await MapOfflineService.calculateOfflineStatus(gpxPoints);
+      setOfflineStatus(status);
+    } else {
+      setOfflineStatus({ total: 0, cached: 0, percent: 0 });
+    }
+  };
+
   useEffect(() => {
     // live update for clock in GPS card
     const timer = setInterval(() => {
@@ -53,59 +68,100 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     const routeId = dataset?.route_id;
     MapOfflineService.isDownloaded(routeId).then(setIsDownloaded);
     fetchStats();
+    updateOfflineStatus();
     
     const unsubscribe = MapOfflineService.subscribe((state) => {
       setIsDownloading(state.isDownloading);
+      setDownloadingRouteId(state.downloadingRouteId);
       setDownloadProgress(state.progress);
       if (!state.isDownloading) {
          fetchStats();
+         updateOfflineStatus();
          MapOfflineService.isDownloaded(routeId).then(setIsDownloaded);
       }
     });
     
     return unsubscribe;
-  }, [dataset?.route_id]);
+  }, [dataset?.route_id, gpxPoints]);
 
   useEffect(() => {
     let intervalId;
-    if (isDownloading) {
+    if (isDownloading && downloadingRouteId === dataset?.route_id) {
       intervalId = setInterval(() => {
         fetchStats();
+        updateOfflineStatus();
       }, 1500);
     }
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [isDownloading]);
+  }, [isDownloading, downloadingRouteId, dataset?.route_id]);
+
+  // Auto-resume download on startup if it matched
+  useEffect(() => {
+    const routeId = dataset?.route_id;
+    if (!routeId || !gpxPoints || gpxPoints.length === 0 || isDownloaded) return;
+
+    const savedDownloadId = localStorage.getItem('ultra_downloading_route_id');
+    if (savedDownloadId === routeId && !isDownloading && !MapOfflineService.isDownloading) {
+      handleDownloadMap();
+    }
+  }, [dataset?.route_id, gpxPoints, isDownloaded]);
 
   const handleDownloadMap = async () => {
     if (isDownloaded || isDownloading) return;
     setIsDownloading(true);
     setDownloadProgress(0);
+    setStatusMessage(null);
     try {
-      const result = await MapOfflineService.downloadOfflineTiles(gpxPoints);
-      if (result.success !== false) { // it might just return empty if done
+      const result = await MapOfflineService.downloadOfflineTiles(dataset?.route_id, gpxPoints);
+      if (result.success !== false) {
         setIsDownloaded(true);
-        if (dataset?.route_id) {
-          localStorage.setItem(`${MapOfflineService.DOWNLOADED_FLAG}_${dataset.route_id}`, '1');
-        }
+        setStatusMessage({
+          type: 'success',
+          text: lang === 'en' ? '✓ Map downloaded successfully' : '✓ Mapa pobrana pomyślnie'
+        });
       } else {
-        alert(lang === 'en' ? result.message : `Błąd: ${result.message}`);
+        setIsDownloaded(false);
+        if (result.message !== 'Download cancelled') {
+          setStatusMessage({
+            type: 'error',
+            text: lang === 'en' ? `Download failed: ${result.message}` : `Błąd pobierania: ${result.message}`
+          });
+        } else {
+          setStatusMessage({
+            type: 'info',
+            text: lang === 'en' ? 'Download stopped' : 'Pobieranie przerwane'
+          });
+        }
       }
       fetchStats();
+      updateOfflineStatus();
     } catch (e) {
       console.error(e);
-      alert(lang === 'en' ? 'Download failed' : 'Pobieranie nie powiodło się');
+      setIsDownloaded(false);
+      setStatusMessage({
+        type: 'error',
+        text: lang === 'en' ? 'Download failed' : 'Pobieranie nie powiodło się'
+      });
     }
   };
 
-  const handleDeleteMap = async () => {
-    if (window.confirm(lang === 'en' ? 'Delete offline map data?' : 'Usunąć dane mapy offline?')) {
-      await MapOfflineService.deleteMap();
-      setIsDownloaded(false);
-      setDownloadProgress(0);
-      fetchStats();
-    }
+  const handleDeleteMap = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDeleteMap = async () => {
+    await MapOfflineService.deleteMap();
+    setIsDownloaded(false);
+    setDownloadProgress(0);
+    setShowDeleteConfirm(false);
+    setStatusMessage({
+      type: 'info',
+      text: lang === 'en' ? 'Offline map deleted' : 'Mapa offline została usunięta'
+    });
+    fetchStats();
+    updateOfflineStatus();
   };
 
   return (
@@ -148,46 +204,94 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
               <option value="60000">1 min</option>
             </select>
           </div>
-
-          <div className="flex bg-slate-800 rounded border border-slate-600 overflow-hidden shadow-sm h-[28px] md:h-[38px] items-center">
-             {isDownloaded ? (
-               <>
-                 <div className="px-3 md:px-4 text-xs md:text-sm font-bold bg-slate-800 text-slate-400 h-full flex items-center cursor-default border-r border-slate-700">
-                    {lang === 'en' ? '✓ Offline map ready' : '✓ Mapa offline gotowa'}
-                 </div>
-                 <button onClick={handleDeleteMap} className="px-2 md:px-3 text-xs md:text-sm font-bold bg-red-950/40 text-red-400 hover:bg-red-900/60 hover:text-red-200 transition-colors h-full cursor-pointer" title={lang === 'en' ? 'Delete offline map' : 'Usuń mapę offline'}>
-                    ✕
-                 </button>
-               </>
-             ) : (
-               <button 
-                 className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 md:px-4 font-bold text-xs md:text-sm transition-colors h-full whitespace-nowrap cursor-pointer disabled:opacity-50"
-                 onClick={handleDownloadMap}
-                 disabled={isDownloaded || isDownloading}
-               >
-                 {isDownloading 
-                    ? (lang === 'en' ? 'Downloading...' : 'Pobieranie...') 
-                    : (lang === 'en' ? '📥 Download offline map' : '📥 Pobierz mapę offline')}
-               </button>
-             )}
-             {isDownloading && (
-               <>
-                 <div className="h-full bg-slate-900 border-l border-slate-600 px-3 flex items-center text-[10px] md:text-xs font-mono text-lime-400">
-                    {downloadProgress}%
-                 </div>
+          {showDeleteConfirm ? (
+            <div className="flex items-center space-x-2 bg-slate-800 p-1 px-2.5 rounded border border-red-950 shadow-sm h-[28px] md:h-[38px]">
+              <span className="text-xs md:text-sm font-bold text-red-400 whitespace-nowrap">
+                {lang === 'en' ? 'Delete offline map?' : 'Czy usunąć mapę offline?'}
+              </span>
+              <button 
+                onClick={confirmDeleteMap} 
+                className="px-2 py-0.5 bg-red-700 hover:bg-red-600 text-white rounded text-xs font-bold transition-colors cursor-pointer"
+              >
+                {lang === 'en' ? 'Yes' : 'Tak'}
+              </button>
+              <button 
+                onClick={() => setShowDeleteConfirm(false)} 
+                className="px-2 py-0.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded text-xs font-bold transition-colors cursor-pointer"
+              >
+                {lang === 'en' ? 'No' : 'Nie'}
+              </button>
+            </div>
+          ) : (
+            <div className="flex bg-slate-800 rounded border border-slate-600 overflow-hidden shadow-sm h-[28px] md:h-[38px] items-center">
+               {isDownloaded ? (
+                 <>
+                   <div className="px-3 md:px-4 text-xs md:text-sm font-bold bg-slate-800 text-slate-400 h-full flex items-center cursor-default border-r border-slate-700 border-r border-slate-700">
+                      {lang === 'en' ? '✓ Offline map ready' : '✓ Mapa offline gotowa'}
+                   </div>
+                   <button onClick={handleDeleteMap} className="px-2 md:px-3 text-xs md:text-sm font-bold bg-red-950/40 text-red-400 hover:bg-red-900/60 hover:text-red-200 transition-colors h-full cursor-pointer" title={lang === 'en' ? 'Delete offline map' : 'Usuń mapę offline'}>
+                      ✕
+                   </button>
+                 </>
+               ) : (
                  <button 
-                   onClick={() => MapOfflineService.cancelDownload()}
-                   className="bg-red-900/50 hover:bg-red-800 text-red-400 px-3 border-l border-slate-600 text-xs font-bold transition-colors cursor-pointer"
+                   className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 md:px-4 font-bold text-xs md:text-sm transition-colors h-full whitespace-nowrap cursor-pointer disabled:opacity-50"
+                   onClick={handleDownloadMap}
+                   disabled={isDownloaded || isDownloading}
                  >
-                   {lang === 'en' ? 'Stop' : 'Stop'}
+                   {isDownloading && downloadingRouteId === dataset?.route_id
+                      ? (lang === 'en' ? 'Downloading...' : 'Pobieranie...') 
+                      : (isDownloading && downloadingRouteId !== dataset?.route_id
+                         ? (lang === 'en' ? 'Busy...' : 'Zajęte...')
+                         : (lang === 'en' ? '📥 Download offline map' : '📥 Pobierz mapę offline'))}
                  </button>
-               </>
-             )}
-          </div>
+               )}
+               {isDownloading && downloadingRouteId === dataset?.route_id && (
+                 <>
+                   <div className="h-full bg-slate-900 border-l border-slate-600 px-3 flex items-center text-[10px] md:text-xs font-mono text-lime-400">
+                      {downloadProgress}%
+                   </div>
+                   <button 
+                     onClick={() => MapOfflineService.cancelDownload()}
+                     className="bg-red-900/50 hover:bg-red-800 text-red-400 px-3 border-l border-slate-600 text-xs font-bold transition-colors cursor-pointer"
+                   >
+                     {lang === 'en' ? 'Stop' : 'Stop'}
+                   </button>
+                 </>
+               )}
+            </div>
+          )}
+          {isDownloading && downloadingRouteId !== dataset?.route_id && (
+            <div className="text-xs text-orange-400 font-bold flex items-center ml-1">
+              ⚠️ {lang === 'en' ? 'Another route is downloading...' : 'Inna trasa jest pobierana...'}
+            </div>
+          )}
+        </div>
+
+        {/* Offline Cache Stats Display */}
+        <div className="text-[10px] md:text-xs text-slate-500 font-mono flex flex-col ml-1 space-y-1 mb-4 md:mb-6">
           {cacheStats.total > 0 && (
-            <div className="text-[10px] md:text-xs text-slate-500 font-mono flex items-center ml-1">
-               {lang === 'en' ? 'Tile cache:' : 'Pamięć map:'} {cacheStats.total} tiles 
+            <div>
+               {lang === 'en' ? 'Global tile cache:' : 'Globalna pamięć map:'} {cacheStats.total} kafelków 
                ({Object.entries(cacheStats.zooms).map(([k,v]) => `${k}:${v}`).join(', ')})
+            </div>
+          )}
+          {offlineStatus.total > 0 && (
+            <div className="text-lime-500/80">
+               {lang === 'en' 
+                 ? `Route status: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} tiles)` 
+                 : `Status trasy: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} kafelków)`}
+            </div>
+          )}
+          {statusMessage && (
+            <div className={`text-xs font-bold mt-2 px-3 py-1.5 rounded border max-w-max ${
+              statusMessage.type === 'success' 
+                ? 'bg-lime-950/30 text-lime-400 border-lime-800' 
+                : statusMessage.type === 'info'
+                ? 'bg-blue-950/30 text-blue-400 border-blue-800'
+                : 'bg-red-950/30 text-red-400 border-red-800'
+            }`}>
+              {statusMessage.text}
             </div>
           )}
         </div>
