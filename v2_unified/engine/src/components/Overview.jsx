@@ -205,9 +205,17 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     <div className="space-y-4">
       {/* Settings & Challenge Parameters */}
       <div className="bg-slate-800/50 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl">
-        <h2 className="text-base md:text-lg font-bold text-lime-400 mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2">
-          {lang === 'en' ? 'Settings' : 'Ustawienia'}
-        </h2>
+        <div className="flex justify-between items-center mb-2 md:mb-3 border-b border-slate-700 pb-1 md:pb-2">
+          <h2 className="text-base md:text-lg font-bold text-lime-400">
+            {lang === 'en' ? 'Settings' : 'Ustawienia'}
+          </h2>
+          <button
+            onClick={() => setShowResetModal(true)}
+            className="px-2.5 py-1 bg-red-950/40 hover:bg-red-900 text-red-400 border border-red-800 rounded text-[10px] md:text-xs font-bold transition-colors cursor-pointer"
+          >
+            {lang === 'en' ? 'Reset Settings' : 'Resetuj Ustawienia'}
+          </button>
+        </div>
         
         <div className="flex flex-wrap gap-2 md:gap-3 items-center mb-4 md:mb-6">
           <div className="flex items-center space-x-2 bg-slate-800 p-1.5 md:p-2 px-2 md:px-3 rounded border border-slate-600 shadow-sm h-[28px] md:h-[38px]">
@@ -359,13 +367,6 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
               </span>
             </label>
           )}
-          
-          <button
-            onClick={() => setShowResetModal(true)}
-            className="px-3 py-1.5 md:py-2 bg-red-900/40 text-red-400 hover:bg-red-800 border border-red-700 rounded text-xs md:text-sm font-bold shadow-sm transition-colors"
-          >
-            {lang === 'en' ? 'Reset Settings' : 'Resetuj Ustawienia'}
-          </button>
         </div>
 
         {dataset?.challengeParameters && (
