@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { Capacitor } from '@capacitor/core';
 import { ElevationProfile } from './ElevationProfile';
 import { MapOfflineService } from '../services/MapOfflineService';
 
-export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, selectedSection, onHoverPoint, autoOpenDetails, setAutoOpenDetails, gpsState, gpsInterval, setGpsInterval }) {
+export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, selectedSection, onHoverPoint, autoOpenDetails, setAutoOpenDetails, gpsState, gpsInterval, setGpsInterval, keepScreenOn, setKeepScreenOn }) {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -15,6 +16,30 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
   const [startTime, setStartTime] = useState('05:00');
   const [challengeDate, setChallengeDate] = useState('2026-07-10');
   const [showResetModal, setShowResetModal] = useState(false);
+
+  const autoKeepScreenOnRef = useRef(false);
+  const lastIsDownloadingRef = useRef(false);
+
+  const handleKeepScreenOnToggle = (e) => {
+    setKeepScreenOn(e.target.checked);
+    autoKeepScreenOnRef.current = false;
+  };
+
+  useEffect(() => {
+    if (isDownloading && downloadingRouteId === dataset?.route_id && !lastIsDownloadingRef.current) {
+      if (!keepScreenOn) {
+        setKeepScreenOn(true);
+        autoKeepScreenOnRef.current = true;
+      }
+    }
+    else if (!isDownloading && lastIsDownloadingRef.current) {
+      if (autoKeepScreenOnRef.current) {
+        setKeepScreenOn(false);
+        autoKeepScreenOnRef.current = false;
+      }
+    }
+    lastIsDownloadingRef.current = isDownloading;
+  }, [isDownloading, downloadingRouteId, dataset?.route_id, keepScreenOn, setKeepScreenOn]);
 
   useEffect(() => {
     if (dataset?.route_id) {
@@ -320,6 +345,20 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
               {lang === 'en' ? 'Auto-open section info on map' : 'Auto-otwieranie panelu sekcji na mapie'}
             </span>
           </label>
+
+          {Capacitor.isNativePlatform() && (
+            <label className="flex items-center space-x-2 bg-slate-800 p-1.5 md:p-2 px-2 md:px-3 rounded border border-slate-600 shadow-sm cursor-pointer hover:bg-slate-700 transition-colors">
+              <input 
+                type="checkbox" 
+                checked={keepScreenOn} 
+                onChange={handleKeepScreenOnToggle}
+                className="w-4 h-4 rounded accent-lime-500" 
+              />
+              <span className="text-xs md:text-sm font-bold text-slate-300">
+                {lang === 'en' ? '☀️ Keep Screen Awake' : '☀️ Ekran Zawsze Włączony'}
+              </span>
+            </label>
+          )}
           
           <button
             onClick={() => setShowResetModal(true)}

@@ -1,4 +1,3 @@
-import { KeepAwake } from '@capacitor-community/keep-awake';
 
 export class MapOfflineService {
   static CACHE_NAME = 'ultra-tiles-v2';
@@ -92,9 +91,6 @@ export class MapOfflineService {
       throw new Error("No GPX points provided");
     }
 
-    try {
-      await KeepAwake.keepAwake();
-    } catch (e) { console.warn('KeepAwake error', e); }
 
     try {
       this.isDownloading = true;
@@ -236,9 +232,7 @@ export class MapOfflineService {
       this.shouldCancel = false;
       this.keepDownloadingFlag = false;
       this.notify();
-      try {
-        await KeepAwake.allowSleep();
-      } catch (e) { console.warn('KeepAwake error', e); }
+
     }
   }
 

@@ -1,5 +1,7 @@
 import packageJson from '../package.json';
 import React, { useState, useEffect, useRef } from 'react';
+import { KeepAwake } from '@capacitor-community/keep-awake';
+import { Capacitor } from '@capacitor/core';
 import { GpsEngine } from './services/GpsEngine';
 import { StorageEngine } from './services/StorageEngine';
 import { DataTable } from './components/DataTable';
@@ -22,6 +24,33 @@ function App() {
   useEffect(() => {
     localStorage.setItem('ultra_lang', lang);
   }, [lang]);
+
+  const [keepScreenOn, setKeepScreenOn] = useState(() => {
+    try {
+      return localStorage.getItem('ultra_keep_screen_on') === '1';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('ultra_keep_screen_on', keepScreenOn ? '1' : '0');
+    } catch (e) {}
+
+    const applyKeepScreenOn = async () => {
+      try {
+        if (keepScreenOn) {
+          await KeepAwake.keepAwake();
+        } else {
+          await KeepAwake.allowSleep();
+        }
+      } catch (e) {
+        console.warn('KeepAwake error', e);
+      }
+    };
+    applyKeepScreenOn();
+  }, [keepScreenOn]);
   const [hoveredSection, setHoveredSection] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
   const [profileHoverPoint, setProfileHoverPoint] = useState(null);
@@ -426,6 +455,8 @@ function App() {
               gpsState={gpsState}
               gpsInterval={gpsInterval}
               setGpsInterval={setGpsInterval}
+              keepScreenOn={keepScreenOn}
+              setKeepScreenOn={setKeepScreenOn}
             />
           )}
 
