@@ -66,6 +66,17 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
 
   useEffect(() => {
     const routeId = dataset?.route_id;
+    if (!routeId) return;
+
+    // Check if another route is downloading, and cancel it, preserving its download flag
+    if (MapOfflineService.isDownloading && MapOfflineService.downloadingRouteId && MapOfflineService.downloadingRouteId !== routeId) {
+      MapOfflineService.cancelDownload(true);
+      setStatusMessage({
+        type: 'info',
+        text: lang === 'en' ? 'Previous download paused' : 'Poprzednie pobieranie wstrzymane'
+      });
+    }
+
     MapOfflineService.isDownloaded(routeId).then(setIsDownloaded);
     fetchStats();
     updateOfflineStatus();
@@ -97,16 +108,17 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     };
   }, [isDownloading, downloadingRouteId, dataset?.route_id]);
 
-  // Auto-resume download on startup if it matched
+  // Auto-resume download on startup / route switch if flagged
   useEffect(() => {
     const routeId = dataset?.route_id;
     if (!routeId || !gpxPoints || gpxPoints.length === 0 || isDownloaded) return;
 
-    const savedDownloadId = localStorage.getItem('ultra_downloading_route_id');
-    if (savedDownloadId === routeId && !isDownloading && !MapOfflineService.isDownloading) {
+    // Check for route-specific downloading flag
+    const isRouteDownloadingFlagged = localStorage.getItem(`${MapOfflineService.DOWNLOADED_FLAG}_downloading_${routeId}`) === '1';
+    if (isRouteDownloadingFlagged && !isDownloading && !MapOfflineService.isDownloading) {
       handleDownloadMap();
     }
-  }, [dataset?.route_id, gpxPoints, isDownloaded]);
+  }, [dataset?.route_id, gpxPoints, isDownloaded, isDownloading]);
 
   const handleDownloadMap = async () => {
     if (isDownloaded || isDownloading) return;
@@ -242,7 +254,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
                    {isDownloading && downloadingRouteId === dataset?.route_id
                       ? (lang === 'en' ? 'Downloading...' : 'Pobieranie...') 
                       : (isDownloading && downloadingRouteId !== dataset?.route_id
-                         ? (lang === 'en' ? 'Busy...' : 'Zajęte...')
+                         ? (lang === 'en' ? 'Pausing...' : 'Wstrzymywanie...')
                          : (lang === 'en' ? '📥 Download offline map' : '📥 Pobierz mapę offline'))}
                  </button>
                )}
@@ -263,7 +275,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
           )}
           {isDownloading && downloadingRouteId !== dataset?.route_id && (
             <div className="text-xs text-orange-400 font-bold flex items-center ml-1">
-              ⚠️ {lang === 'en' ? 'Another route is downloading...' : 'Inna trasa jest pobierana...'}
+              ⚠️ {lang === 'en' ? 'Pausing previous download...' : 'Wstrzymywanie poprzedniego pobierania...'}
             </div>
           )}
         </div>
