@@ -278,6 +278,17 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
               ⚠️ {lang === 'en' ? 'Pausing previous download...' : 'Wstrzymywanie poprzedniego pobierania...'}
             </div>
           )}
+          {statusMessage && (
+            <div className={`text-xs font-bold px-3 py-1.5 rounded border max-w-max h-[28px] md:h-[38px] flex items-center shadow-sm ${
+              statusMessage.type === 'success' 
+                ? 'bg-lime-950/30 text-lime-400 border-lime-800' 
+                : statusMessage.type === 'info'
+                ? 'bg-blue-950/30 text-blue-400 border-blue-800'
+                : 'bg-red-950/30 text-red-400 border-red-800'
+            }`}>
+              {statusMessage.text}
+            </div>
+          )}
         </div>
 
         {/* Offline Cache Stats Display */}
@@ -293,17 +304,6 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
                {lang === 'en' 
                  ? `Route status: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} tiles)` 
                  : `Status trasy: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} kafelków)`}
-            </div>
-          )}
-          {statusMessage && (
-            <div className={`text-xs font-bold mt-2 px-3 py-1.5 rounded border max-w-max ${
-              statusMessage.type === 'success' 
-                ? 'bg-lime-950/30 text-lime-400 border-lime-800' 
-                : statusMessage.type === 'info'
-                ? 'bg-blue-950/30 text-blue-400 border-blue-800'
-                : 'bg-red-950/30 text-red-400 border-red-800'
-            }`}>
-              {statusMessage.text}
             </div>
           )}
         </div>
