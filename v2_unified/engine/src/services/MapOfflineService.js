@@ -8,6 +8,7 @@ export class MapOfflineService {
   static downloadingRouteId = null;
   static currentProgress = 0;
   static shouldCancel = false;
+  static keepDownloadingFlag = false;
   static listeners = new Set();
 
   static subscribe(listener) {
@@ -28,8 +29,9 @@ export class MapOfflineService {
     }));
   }
 
-  static cancelDownload() {
+  static cancelDownload(keepDownloadingFlag = false) {
     this.shouldCancel = true;
+    this.keepDownloadingFlag = keepDownloadingFlag;
   }
 
   static latLonToTile(lat, lon, zoom) {
@@ -98,7 +100,7 @@ export class MapOfflineService {
       this.isDownloading = true;
       this.downloadingRouteId = routeId;
       try {
-        localStorage.setItem('ultra_downloading_route_id', routeId);
+        localStorage.setItem(`${this.DOWNLOADED_FLAG}_downloading_${routeId}`, '1');
       } catch (e) {}
       this.shouldCancel = false;
       this.currentProgress = 0;
@@ -216,6 +218,9 @@ export class MapOfflineService {
 
       if (failed === 0) {
         localStorage.setItem(`${this.DOWNLOADED_FLAG}_${routeId}`, '1');
+        try {
+          localStorage.removeItem(`${this.DOWNLOADED_FLAG}_downloading_${routeId}`);
+        } catch (e) {}
         return { success: true, message: 'All tiles downloaded' };
       } else {
         return { success: false, message: `Failed to download ${failed} tiles`, succeeded, failed, total };
@@ -223,9 +228,13 @@ export class MapOfflineService {
     } finally {
       this.isDownloading = false;
       this.downloadingRouteId = null;
-      try {
-        localStorage.removeItem('ultra_downloading_route_id');
-      } catch (e) {}
+      if (!this.keepDownloadingFlag) {
+        try {
+          localStorage.removeItem(`${this.DOWNLOADED_FLAG}_downloading_${routeId}`);
+        } catch (e) {}
+      }
+      this.shouldCancel = false;
+      this.keepDownloadingFlag = false;
       this.notify();
       try {
         await KeepAwake.allowSleep();
