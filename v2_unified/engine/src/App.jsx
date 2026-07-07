@@ -48,6 +48,7 @@ function App() {
   // Resizer state
   const [leftWidth, setLeftWidth] = useState(45); // percentage
   const resizerRef = useRef(null);
+  const routeInitializedRef = useRef({});
 
   // Default window settings
   const [minWindow, setMinWindow] = useState(5);
@@ -138,13 +139,33 @@ function App() {
       const cacheKey = StorageEngine.getCacheKey(routeId, minWindow, maxWindow);
       
       let cached = await StorageEngine.getCheckpoints(cacheKey);
+      let loadedCheckpoints = [];
       if (cached) {
-        setCheckpoints(cached);
+        loadedCheckpoints = cached;
       } else {
-        const newCheckpoints = GpsEngine.generateTopologicalCheckpoints(gpxPoints, minWindow, maxWindow);
-        setCheckpoints(newCheckpoints);
-        await StorageEngine.cacheCheckpoints(cacheKey, newCheckpoints);
+        loadedCheckpoints = GpsEngine.generateTopologicalCheckpoints(gpxPoints, minWindow, maxWindow);
+        await StorageEngine.cacheCheckpoints(cacheKey, loadedCheckpoints);
       }
+      setCheckpoints(loadedCheckpoints);
+
+      // Restore per-route state only once per route load
+      if (!routeInitializedRef.current[routeId]) {
+         routeInitializedRef.current[routeId] = true;
+         try {
+           const saved = localStorage.getItem(`ultra_state_${routeId}`);
+           if (saved) {
+             const state = JSON.parse(saved);
+             if (state.mapVisible !== undefined) setMapVisible(state.mapVisible);
+             if (state.activeTab !== undefined) setActiveTab(state.activeTab);
+             if (state.isTracking !== undefined) setGpsState(prev => ({ ...prev, active: state.isTracking }));
+             if (state.selectedSectionId) {
+                const sec = loadedCheckpoints.find(c => c.id === state.selectedSectionId);
+                if (sec) setSelectedSection(sec);
+             }
+           }
+         } catch (e) { console.warn('Failed to parse route state', e); }
+      }
+
       setLoading(false);
     };
 
@@ -187,6 +208,19 @@ function App() {
     document.removeEventListener('touchmove', handleDragMove);
     document.removeEventListener('touchend', handleDragEnd);
   };
+
+  // State persistence saver
+  useEffect(() => {
+    if (!loading && routeId && routeInitializedRef.current[routeId]) {
+       const state = {
+          mapVisible,
+          activeTab,
+          selectedSectionId: selectedSection ? selectedSection.id : null,
+          isTracking: gpsState.active
+       };
+       localStorage.setItem(`ultra_state_${routeId}`, JSON.stringify(state));
+    }
+  }, [mapVisible, activeTab, selectedSection, gpsState.active, routeId, loading]);
 
   if (loading && !dataset) {
     return <div className="min-h-screen flex items-center justify-center text-lime-400 bg-slate-900">Loading Wyrypa Engine...</div>;
