@@ -23,104 +23,104 @@
     {
       "startElapsedHours": 0.0,
       "endElapsedHours": 1.0,
-      "action_pl": "Rozgrzewka, kontrolowanie tętna (<130 bpm). Pierwszy łyk Hyper-Mix po 30 min. Skupienie na miarowym, swobodnym kroku.",
-      "action_en": "Warm-up, control HR (<130 bpm). First sip of Hyper-Mix after 30 min. Focus on steady, relaxed stride."
+      "action_pl": "[0.0 - 2.5km | Strome Podejście] Rozgrzewka, kontrolowanie tętna (<130 bpm). Pierwszy łyk Hyper-Mix po 30 min. Skupienie na miarowym, swobodnym kroku.",
+      "action_en": "[0.0 - 2.5km | Steep Climb] Warm-up, control HR (<130 bpm). First sip of Hyper-Mix after 30 min. Focus on steady, relaxed stride."
     },
     {
       "startElapsedHours": 1.0,
       "endElapsedHours": 2.0,
-      "action_pl": "Zwiększenie tempa do docelowego. 2 kapsułki SaltStick. Kontynuacja nawadniania Hyper-Mix (co 15 min mały łyk).",
-      "action_en": "Settle into target pace. 2 SaltStick caps. Continue Hyper-Mix hydration (small sip every 15 mins)."
+      "action_pl": "[2.5 - 6.7km | Podejście] Zwiększenie tempa do docelowego. 2 kapsułki SaltStick. Kontynuacja nawadniania Hyper-Mix (co 15 min mały łyk).",
+      "action_en": "[2.5 - 6.7km | Climb] Settle into target pace. 2 SaltStick caps. Continue Hyper-Mix hydration (small sip every 15 mins)."
     },
     {
       "startElapsedHours": 2.0,
       "endElapsedHours": 3.0,
-      "action_pl": "Zjedz pierwszy stały pokarm (połowa kanapki z masłem orzechowym). Obserwacja punktów ucisku w butach.",
-      "action_en": "Eat first solid food (half peanut butter sandwich). Monitor shoe pressure points."
+      "action_pl": "[6.7 - 13.1km | Stromy Zbieg] Zjedz pierwszy stały pokarm (połowa kanapki z masłem orzechowym). Obserwacja punktów ucisku w butach.",
+      "action_en": "[6.7 - 13.1km | Steep Descent] Eat first solid food (half peanut butter sandwich). Monitor shoe pressure points."
     },
     {
       "startElapsedHours": 3.0,
       "endElapsedHours": 4.0,
-      "action_pl": "Uzupełnij płyny na punkcie zrzutu/sklepie (jeśli dostępny). Zjedz baton energetyczny.",
-      "action_en": "Refill fluids at a drop point/shop (if available). Eat an energy bar."
+      "action_pl": "[13.1 - 15.5km | Strome Podejście] Uzupełnij płyny na punkcie zrzutu/sklepie (jeśli dostępny). Zjedz baton energetyczny.",
+      "action_en": "[13.1 - 15.5km | Steep Climb] Refill fluids at a drop point/shop (if available). Eat an energy bar."
     },
     {
       "startElapsedHours": 4.0,
       "endElapsedHours": 5.0,
-      "action_pl": "Pierwszy większy test zmęczenia. Zjedz żel węglowodanowy i wypij 250ml wody. 2 kapsułki SaltStick.",
-      "action_en": "First major fatigue check. Eat a carb gel and drink 250ml water. 2 SaltStick caps."
+      "action_pl": "[15.5 - 19.2km | Podejście] Pierwszy większy test zmęczenia. Zjedz żel węglowodanowy i wypij 250ml wody. 2 kapsułki SaltStick.",
+      "action_en": "[15.5 - 19.2km | Climb] First major fatigue check. Eat a carb gel and drink 250ml water. 2 SaltStick caps."
     },
     {
       "startElapsedHours": 5.0,
       "endElapsedHours": 6.0,
-      "action_pl": "Druga połowa kanapki. Sprawdź stopy pod kątem pęcherzy. Zastosuj Sudocrem profilaktycznie.",
-      "action_en": "Second half of sandwich. Check feet for blisters. Apply Sudocrem preventively."
+      "action_pl": "[19.2 - 23.4km | Podejście] Druga połowa kanapki. Sprawdź stopy pod kątem pęcherzy. Zastosuj Sudocrem profilaktycznie.",
+      "action_en": "[19.2 - 23.4km | Climb] Second half of sandwich. Check feet for blisters. Apply Sudocrem preventively."
     },
     {
       "startElapsedHours": 6.0,
       "endElapsedHours": 7.0,
-      "action_pl": "Pełny Hyper-Mix (kolejny flask opróżniony). Skup się na głębokim oddychaniu na podejściach.",
-      "action_en": "Full Hyper-Mix (next flask emptied). Focus on deep breathing on ascents."
+      "action_pl": "[23.4 - 27.8km | Podejście] Pełny Hyper-Mix (kolejny flask opróżniony). Skup się na głębokim oddychaniu na podejściach.",
+      "action_en": "[23.4 - 27.8km | Climb] Full Hyper-Mix (next flask emptied). Focus on deep breathing on ascents."
     },
     {
       "startElapsedHours": 7.0,
       "endElapsedHours": 8.0,
-      "action_pl": "Zjedz Dextro Energy. Sprawdź sprzęt przed nocą. Wyciągnij czołówkę na wierzch plecaka.",
-      "action_en": "Eat Dextro Energy. Gear check before night. Move headlamp to top of backpack."
+      "action_pl": "[27.8 - 31.7km | Podejście] Zjedz Dextro Energy. Sprawdź sprzęt przed nocą. Wyciągnij czołówkę na wierzch plecaka.",
+      "action_en": "[27.8 - 31.7km | Climb] Eat Dextro Energy. Gear check before night. Move headlamp to top of backpack."
     },
     {
       "startElapsedHours": 8.0,
       "endElapsedHours": 9.0,
-      "action_pl": "Przepak/Duży postój. Zmiana skarpet. Gorący posiłek (zupa). Uzupełnienie zapasów w plecaku.",
-      "action_en": "Drop bag/Major break. Change socks. Hot meal (soup). Restock backpack supplies."
+      "action_pl": "[31.7 - 36.5km | Zbieg] Przepak/Duży postój. Zmiana skarpet. Gorący posiłek (zupa). Uzupełnienie zapasów w plecaku.",
+      "action_en": "[31.7 - 36.5km | Descent] Drop bag/Major break. Change socks. Hot meal (soup). Restock backpack supplies."
     },
     {
       "startElapsedHours": 9.0,
       "endElapsedHours": 10.0,
-      "action_pl": "Powrót na trasę. Tempo ostrożne z powodu pełnego żołądka. Włącz czołówkę.",
-      "action_en": "Back on trail. Cautious pace due to full stomach. Turn on headlamp."
+      "action_pl": "[36.5 - 42.6km | Stromy Zbieg] Powrót na trasę. Tempo ostrożne z powodu pełnego żołądka. Włącz czołówkę.",
+      "action_en": "[36.5 - 42.6km | Steep Descent] Back on trail. Cautious pace due to full stomach. Turn on headlamp."
     },
     {
       "startElapsedHours": 10.0,
       "endElapsedHours": 12.0,
-      "action_pl": "Godziny 10-12: Tryb nocny. Skupienie na bezpiecznym stawianiu stóp. Żel co godzinę + woda.",
-      "action_en": "Hours 10-12: Night mode. Focus on safe foot placement. Gel every hour + water."
+      "action_pl": "[42.6 - 46.3km | Strome Podejście] Godziny 10-12: Tryb nocny. Skupienie na bezpiecznym stawianiu stóp. Żel co godzinę + woda.",
+      "action_en": "[42.6 - 46.3km | Steep Climb] Hours 10-12: Night mode. Focus on safe foot placement. Gel every hour + water."
     },
     {
       "startElapsedHours": 12.0,
       "endElapsedHours": 15.0,
-      "action_pl": "Godziny 12-15: Kryzys nocy. Spadek temperatury ciała. Załóż kurtkę przeciwwiatrową. Wypij Red Bull #1 + Glukoza 1WW na zwalczenie snu.",
-      "action_en": "Hours 12-15: Night crisis. Body temperature drop. Put on wind jacket. Drink Red Bull #1 + Glucose 1WW to fight sleep."
+      "action_pl": "[52.2 - 56.6km | Strome Podejście] Godziny 12-15: Kryzys nocy. Spadek temperatury ciała. Załóż kurtkę przeciwwiatrową. Wypij Red Bull #1 + Glukoza 1WW na zwalczenie snu.",
+      "action_en": "[52.2 - 56.6km | Steep Climb] Hours 12-15: Night crisis. Body temperature drop. Put on wind jacket. Drink Red Bull #1 + Glucose 1WW to fight sleep."
     },
     {
       "startElapsedHours": 15.0,
       "endElapsedHours": 18.0,
-      "action_pl": "Godziny 15-18: Oczekiwanie na świt. Zjedz baton energetyczny. 2x SaltStick. Marsz miarowy, bez forsowania tempa.",
-      "action_en": "Hours 15-18: Waiting for dawn. Eat energy bar. 2x SaltStick. Steady march, no pushing pace."
+      "action_pl": "[65.7 - 70.3km | Podejście] Godziny 15-18: Oczekiwanie na świt. Zjedz baton energetyczny. 2x SaltStick. Marsz miarowy, bez forsowania tempa.",
+      "action_en": "[65.7 - 70.3km | Climb] Hours 15-18: Waiting for dawn. Eat energy bar. 2x SaltStick. Steady march, no pushing pace."
     },
     {
       "startElapsedHours": 18.0,
       "endElapsedHours": 22.0,
-      "action_pl": "Godziny 18-22: Świt i ożywienie. Zdejmij czołówkę i kurtkę. Pełne nawadnianie Hyper-Mix. Żołądek może odrzucać stałe pokarmy – przejdź w 100% na żele i płyny.",
-      "action_en": "Hours 18-22: Dawn and revival. Remove headlamp and jacket. Full Hyper-Mix hydration. Stomach may reject solids – switch 100% to gels/liquids."
+      "action_pl": "[79.8 - 84.8km | Zbieg] Godziny 18-22: Świt i ożywienie. Zdejmij czołówkę i kurtkę. Pełne nawadnianie Hyper-Mix. Żołądek może odrzucać stałe pokarmy – przejdź w 100% na żele i płyny.",
+      "action_en": "[79.8 - 84.8km | Descent] Hours 18-22: Dawn and revival. Remove headlamp and jacket. Full Hyper-Mix hydration. Stomach may reject solids – switch 100% to gels/liquids."
     },
     {
       "startElapsedHours": 22.0,
       "endElapsedHours": 26.0,
-      "action_pl": "Godziny 22-26: Narastający upał i zmęczenie. Kryzys upału (Heat Crisis). Wdróż protokół: Red Bull #2, Max Salt, podwójne nawadnianie, polewanie karku wodą.",
-      "action_en": "Hours 22-26: Rising heat and fatigue. Heat crisis. Deploy protocol: Red Bull #2, Max Salt, double hydration, water on neck."
+      "action_pl": "[97.6 - 100.9km | Strome Podejście] Godziny 22-26: Narastający upał i zmęczenie. Kryzys upału (Heat Crisis). Wdróż protokół: Red Bull #2, Max Salt, podwójne nawadnianie, polewanie karku wodą.",
+      "action_en": "[97.6 - 100.9km | Steep Climb] Hours 22-26: Rising heat and fatigue. Heat crisis. Deploy protocol: Red Bull #2, Max Salt, double hydration, water on neck."
     },
     {
       "startElapsedHours": 26.0,
       "endElapsedHours": 30.0,
-      "action_pl": "Godziny 26-30: Tryb przetrwania. Wyłącznie płyny izotoniczne i glukoza. Odliczanie kilometrów. Odciążanie kolan na zejściach za pomocą kijów.",
-      "action_en": "Hours 26-30: Survival mode. Only isotonic fluids and glucose. Counting down kilometers. Offload knees on descents using poles."
+      "action_pl": "[115.1 - 117.6km | Strome Podejście] Godziny 26-30: Tryb przetrwania. Wyłącznie płyny izotoniczne i glukoza. Odliczanie kilometrów. Odciążanie kolan na zejściach za pomocą kijów.",
+      "action_en": "[115.1 - 117.6km | Steep Climb] Hours 26-30: Survival mode. Only isotonic fluids and glucose. Counting down kilometers. Offload knees on s using poles."
     },
     {
       "startElapsedHours": 30.0,
       "endElapsedHours": 34.0,
-      "action_pl": "Godziny 30-34: Ostatnie kilometry. Ignorowanie bólu, utrzymanie stałego rytmu. Ostatnia rezerwa Dextro Energy. Meta.",
-      "action_en": "Hours 30-34: Final kilometers. Ignore pain, maintain steady rhythm. Last reserve of Dextro Energy. Finish line."
+      "action_pl": "[132.1 - 133.9km | Podejście] Godziny 30-34: Ostatnie kilometry. Ignorowanie bólu, utrzymanie stałego rytmu. Ostatnia rezerwa Dextro Energy. Meta.",
+      "action_en": "[132.1 - 133.9km | Climb] Hours 30-34: Final kilometers. Ignore pain, maintain steady rhythm. Last reserve of Dextro Energy. Finish line."
     }
   ],
   "tactics": [
