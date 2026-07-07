@@ -236,7 +236,7 @@ function App() {
       {/* Map Section */}
       <div 
         id="map-container" 
-        className={`md:h-screen flex-shrink-0 z-0 relative transition-none md:transition-all duration-300 ${!mapVisible ? 'h-0 w-0 hidden md:block md:w-0' : 'w-full md:w-auto'}`}
+        className={`md:h-screen flex-shrink-0 z-0 relative transition-none md:transition-all duration-300 ${!mapVisible ? 'h-0 w-0 hidden' : 'w-full md:w-auto'}`}
         style={{ 
           width: mapVisible && window.innerWidth >= 768 ? `${leftWidth}%` : '100%',
           height: mapVisible && window.innerWidth < 768 ? `${leftWidth}vh` : undefined

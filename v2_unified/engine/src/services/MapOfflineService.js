@@ -5,18 +5,27 @@ export class MapOfflineService {
   static DOWNLOADED_FLAG = 'ultra_map_downloaded_v2';
 
   static isDownloading = false;
+  static downloadingRouteId = null;
   static currentProgress = 0;
   static shouldCancel = false;
   static listeners = new Set();
 
   static subscribe(listener) {
     this.listeners.add(listener);
-    listener({ isDownloading: this.isDownloading, progress: this.currentProgress });
+    listener({ 
+      isDownloading: this.isDownloading, 
+      downloadingRouteId: this.downloadingRouteId,
+      progress: this.currentProgress 
+    });
     return () => this.listeners.delete(listener);
   }
 
   static notify() {
-    this.listeners.forEach(l => l({ isDownloading: this.isDownloading, progress: this.currentProgress }));
+    this.listeners.forEach(l => l({ 
+      isDownloading: this.isDownloading, 
+      downloadingRouteId: this.downloadingRouteId,
+      progress: this.currentProgress 
+    }));
   }
 
   static cancelDownload() {
@@ -74,7 +83,7 @@ export class MapOfflineService {
     }
   }
 
-  static async downloadOfflineTiles(gpxPoints, onProgress) {
+  static async downloadOfflineTiles(routeId, gpxPoints, onProgress) {
     if (this.isDownloading) return { success: false, message: 'Already downloading' };
     
     if (!gpxPoints || gpxPoints.length === 0) {
@@ -87,6 +96,10 @@ export class MapOfflineService {
 
     try {
       this.isDownloading = true;
+      this.downloadingRouteId = routeId;
+      try {
+        localStorage.setItem('ultra_downloading_route_id', routeId);
+      } catch (e) {}
       this.shouldCancel = false;
       this.currentProgress = 0;
       this.notify();
@@ -148,8 +161,6 @@ export class MapOfflineService {
 
       for (let i = 0; i < total; i++) {
         if (this.shouldCancel) {
-          this.isDownloading = false;
-          this.notify();
           return { success: false, message: 'Download cancelled' };
         }
 
@@ -203,19 +214,72 @@ export class MapOfflineService {
         this.notify();
       }
 
-      this.isDownloading = false;
-      this.notify();
-
       if (failed === 0) {
-        localStorage.setItem(this.DOWNLOADED_FLAG, '1');
+        localStorage.setItem(`${this.DOWNLOADED_FLAG}_${routeId}`, '1');
         return { success: true, message: 'All tiles downloaded' };
       } else {
         return { success: false, message: `Failed to download ${failed} tiles`, succeeded, failed, total };
       }
     } finally {
+      this.isDownloading = false;
+      this.downloadingRouteId = null;
+      try {
+        localStorage.removeItem('ultra_downloading_route_id');
+      } catch (e) {}
+      this.notify();
       try {
         await KeepAwake.allowSleep();
       } catch (e) { console.warn('KeepAwake error', e); }
+    }
+  }
+
+  static async calculateOfflineStatus(gpxPoints) {
+    if (!gpxPoints || gpxPoints.length === 0) return { total: 0, cached: 0, percent: 0 };
+    
+    const urls = [];
+    const tileSet = new Set();
+    const zooms = [11, 12, 13, 14, 15, 16, 17];
+
+    zooms.forEach(zoom => {
+      gpxPoints.forEach(pt => {
+        const centerTile = this.latLonToTile(pt.lat, pt.lon, zoom);
+        let buf = 1;
+        if (zoom === 14 || zoom === 15) {
+          buf = 2;
+        } else if (zoom === 16) {
+          buf = 3;
+        } else if (zoom === 17) {
+          buf = 4;
+        }
+
+        for (let dx = -buf; dx <= buf; dx++) {
+          for (let dy = -buf; dy <= buf; dy++) {
+            const x = centerTile.x + dx;
+            const y = centerTile.y + dy;
+            const tileKey = `${zoom}_${x}_${y}`;
+            if (!tileSet.has(tileKey)) {
+              tileSet.add(tileKey);
+              urls.push(`https://a.tile.opentopomap.org/${zoom}/${x}/${y}.png`);
+            }
+          }
+        }
+      });
+    });
+
+    try {
+      const cache = await caches.open(this.CACHE_NAME);
+      const keys = await cache.keys();
+      const cachedUrls = new Set(keys.map(k => k.url));
+      
+      let cachedCount = 0;
+      urls.forEach(url => {
+        if (cachedUrls.has(url)) cachedCount++;
+      });
+      
+      const percent = urls.length > 0 ? Math.round((cachedCount / urls.length) * 100) : 0;
+      return { total: urls.length, cached: cachedCount, percent };
+    } catch (e) {
+      return { total: urls.length, cached: 0, percent: 0 };
     }
   }
 }
