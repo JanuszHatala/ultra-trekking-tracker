@@ -55,8 +55,10 @@ def clean_action(text_pl, text_en, start_hr, topo):
     text_en = re.sub(r'\s+', ' ', text_en).replace(' .', '.').strip()
     
     # Prepend the true topography!
-    if start_hr in topo:
-        t = topo[start_hr]
+    import math
+    start_hr_idx = float(math.floor(start_hr))
+    if start_hr_idx in topo:
+        t = topo[start_hr_idx]
         pl_prefix = f"[{t['km_range']}km | {TERRAIN_PL.get(t['terrain'], t['terrain'])}] "
         en_prefix = f"[{t['km_range']}km | {t['terrain']}] "
         
