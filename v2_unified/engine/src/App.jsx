@@ -29,7 +29,18 @@ function App() {
   const [autoOpenDetails, setAutoOpenDetails] = useState(window.innerWidth >= 768);
 
   const [gpsState, setGpsState] = useState({ active: false, lat: null, lon: null, accuracy: null, km: 0, offRoute: false, timestamp: 0 });
-  const [gpsInterval, setGpsInterval] = useState(() => parseInt(localStorage.getItem('ultra_gps_interval')) || 15000);
+  const [gpsInterval, setGpsInterval] = useState(() => {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const initialId = searchParams.get('route') || localStorage.getItem('ultra_last_route_id') || 'msb-134k';
+      const saved = localStorage.getItem(`ultra_state_${initialId}`);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.gpsInterval !== undefined) return state.gpsInterval;
+      }
+    } catch (e) {}
+    return 15000;
+  });
 
   let currentGpsSection = null;
   if (gpsState && gpsState.active && gpsState.lat !== null && checkpoints.length > 0) {
@@ -51,8 +62,51 @@ function App() {
   const routeInitializedRef = useRef({});
 
   // Default window settings
-  const [minWindow, setMinWindow] = useState(5);
-  const [maxWindow, setMaxWindow] = useState(10);
+  const [minWindow, setMinWindow] = useState(() => {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const initialId = searchParams.get('route') || localStorage.getItem('ultra_last_route_id') || 'msb-134k';
+      const saved = localStorage.getItem(`ultra_state_${initialId}`);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.minWindow !== undefined) return state.minWindow;
+      }
+    } catch (e) {}
+    return 5;
+  });
+  const [maxWindow, setMaxWindow] = useState(() => {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const initialId = searchParams.get('route') || localStorage.getItem('ultra_last_route_id') || 'msb-134k';
+      const saved = localStorage.getItem(`ultra_state_${initialId}`);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.maxWindow !== undefined) return state.maxWindow;
+      }
+    } catch (e) {}
+    return 10;
+  });
+
+  const loadRouteSpecificState = (rId) => {
+    try {
+      const saved = localStorage.getItem(`ultra_state_${rId}`);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.mapVisible !== undefined) setMapVisible(state.mapVisible);
+        if (state.activeTab !== undefined) setActiveTab(state.activeTab);
+        if (state.isTracking !== undefined) setGpsState(prev => ({ ...prev, active: state.isTracking }));
+        if (state.gpsInterval !== undefined) setGpsInterval(state.gpsInterval);
+        if (state.minWindow !== undefined) setMinWindow(state.minWindow);
+        if (state.maxWindow !== undefined) setMaxWindow(state.maxWindow);
+      } else {
+        setGpsInterval(15000);
+        setMinWindow(5);
+        setMaxWindow(10);
+      }
+    } catch (e) {
+      console.warn('Failed to parse route state', e);
+    }
+  };
 
   // Load route catalog once on mount
   useEffect(() => {
@@ -72,6 +126,8 @@ function App() {
           window.history.replaceState({}, '', url.toString());
         }
 
+        routeInitializedRef.current[initialId] = false;
+        loadRouteSpecificState(initialId);
         setRouteId(initialId);
       })
       .catch(err => {
@@ -122,6 +178,8 @@ function App() {
   }, [routeId, routesList]);
 
   const handleRouteChange = (newRouteId) => {
+    routeInitializedRef.current[newRouteId] = false;
+    loadRouteSpecificState(newRouteId);
     setRouteId(newRouteId);
     localStorage.setItem('ultra_last_route_id', newRouteId);
     
@@ -150,20 +208,20 @@ function App() {
 
       // Restore per-route state only once per route load
       if (!routeInitializedRef.current[routeId]) {
-         routeInitializedRef.current[routeId] = true;
-         try {
-           const saved = localStorage.getItem(`ultra_state_${routeId}`);
-           if (saved) {
-             const state = JSON.parse(saved);
-             if (state.mapVisible !== undefined) setMapVisible(state.mapVisible);
-             if (state.activeTab !== undefined) setActiveTab(state.activeTab);
-             if (state.isTracking !== undefined) setGpsState(prev => ({ ...prev, active: state.isTracking }));
-             if (state.selectedSectionId) {
-                const sec = loadedCheckpoints.find(c => c.id === state.selectedSectionId);
-                if (sec) setSelectedSection(sec);
-             }
-           }
-         } catch (e) { console.warn('Failed to parse route state', e); }
+          routeInitializedRef.current[routeId] = true;
+          try {
+            const saved = localStorage.getItem(`ultra_state_${routeId}`);
+            if (saved) {
+              const state = JSON.parse(saved);
+              if (state.mapVisible !== undefined) setMapVisible(state.mapVisible);
+              if (state.activeTab !== undefined) setActiveTab(state.activeTab);
+              if (state.isTracking !== undefined) setGpsState(prev => ({ ...prev, active: state.isTracking }));
+              if (state.selectedSectionId) {
+                 const sec = loadedCheckpoints.find(c => c.id === state.selectedSectionId);
+                 if (sec) setSelectedSection(sec);
+              }
+            }
+          } catch (e) { console.warn('Failed to parse route state', e); }
       }
 
       setLoading(false);
@@ -216,11 +274,14 @@ function App() {
           mapVisible,
           activeTab,
           selectedSectionId: selectedSection ? selectedSection.id : null,
-          isTracking: gpsState.active
+          isTracking: gpsState.active,
+          gpsInterval,
+          minWindow,
+          maxWindow
        };
        localStorage.setItem(`ultra_state_${routeId}`, JSON.stringify(state));
     }
-  }, [mapVisible, activeTab, selectedSection, gpsState.active, routeId, loading]);
+  }, [mapVisible, activeTab, selectedSection, gpsState.active, gpsInterval, minWindow, maxWindow, routeId, loading]);
 
   if (loading && !dataset) {
     return <div className="min-h-screen flex items-center justify-center text-lime-400 bg-slate-900">Loading Wyrypa Engine...</div>;

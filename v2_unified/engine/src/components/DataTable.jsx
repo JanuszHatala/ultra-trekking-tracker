@@ -122,29 +122,97 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4 flex-shrink-0 bg-slate-800 p-3 rounded-xl border border-slate-700">
-        <h2 className="text-xl font-bold text-slate-100">{lang === 'en' ? 'Data Table' : 'Tabela Danych'}</h2>
-        
-        <div className="flex gap-4">
-          <label className="flex items-center gap-2">
-            <span className="text-[10px] md:text-xs text-slate-400">{lang === 'en' ? 'Min Window (km)' : 'Min Okno (km)'}</span>
-            <input 
-              type="number" 
-              value={minWindow} 
-              onChange={e => setMinWindow(Number(e.target.value))}
-              className="bg-slate-900 border border-slate-700 rounded p-1.5 md:p-2 text-xs md:text-sm text-white focus:border-lime-500 focus:outline-none w-16"
-            />
-          </label>
-          <label className="flex items-center gap-2">
-            <span className="text-[10px] md:text-xs text-slate-400">{lang === 'en' ? 'Max Window (km)' : 'Max Okno (km)'}</span>
-            <input 
-              type="number" 
-              value={maxWindow} 
-              onChange={e => setMaxWindow(Number(e.target.value))}
-              className="bg-slate-900 border border-slate-700 rounded p-1.5 md:p-2 text-xs md:text-sm text-white focus:border-lime-500 focus:outline-none w-16"
-            />
-          </label>
+      <div className="flex flex-col gap-3 mb-4 flex-shrink-0 bg-slate-800 p-3 rounded-xl border border-slate-700">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold text-slate-100">{lang === 'en' ? 'Data Table' : 'Tabela Danych'}</h2>
+          <button
+            onClick={() => setShowSettings(!showSettings)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
+              showSettings 
+                ? 'bg-lime-950/40 text-lime-400 border-lime-800 shadow-[0_0_8px_rgba(132,204,22,0.15)]' 
+                : 'bg-slate-700 hover:bg-slate-600 text-slate-200 border-slate-600'
+            }`}
+          >
+            ⚙️ {lang === 'en' ? 'Window Settings' : 'Ustawienia okna'}
+          </button>
         </div>
+
+        {showSettings && (
+          <div className="flex flex-col pt-2 border-t border-slate-700">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-xs font-bold text-slate-300">
+                {lang === 'en' ? 'Settings' : 'Ustawienia'}
+              </span>
+              <button
+                onClick={() => {
+                  setMinWindow(5);
+                  setMaxWindow(10);
+                }}
+                className="px-2 py-1 bg-red-950/40 hover:bg-red-900 text-red-400 border border-red-800 rounded text-[10px] md:text-xs font-bold transition-colors cursor-pointer"
+              >
+                {lang === 'en' ? 'Reset Settings' : 'Resetuj Ustawienia'}
+              </button>
+            </div>
+            
+            <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col gap-1 select-none">
+                <span className="text-[10px] md:text-xs text-slate-400 font-medium">
+                  {lang === 'en' ? 'Min Window (km)' : 'Minimalne okno (km)'}
+                </span>
+                <div className="flex items-center bg-slate-900 border border-slate-700 rounded overflow-hidden h-[32px] w-28">
+                  <button
+                    type="button"
+                    onClick={() => setMinWindow(Math.max(1, minWindow - 1))}
+                    className="w-8 h-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border-r border-slate-700 transition-colors cursor-pointer"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value={minWindow}
+                    onChange={e => setMinWindow(Math.max(1, Number(e.target.value)))}
+                    className="w-12 text-center bg-transparent text-white font-mono text-xs md:text-sm focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setMinWindow(Math.min(50, minWindow + 1))}
+                    className="w-8 h-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border-l border-slate-700 transition-colors cursor-pointer"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1 select-none">
+                <span className="text-[10px] md:text-xs text-slate-400 font-medium">
+                  {lang === 'en' ? 'Max Window (km)' : 'Maksymalne okno (km)'}
+                </span>
+                <div className="flex items-center bg-slate-900 border border-slate-700 rounded overflow-hidden h-[32px] w-28">
+                  <button
+                    type="button"
+                    onClick={() => setMaxWindow(Math.max(1, maxWindow - 1))}
+                    className="w-8 h-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border-r border-slate-700 transition-colors cursor-pointer"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value={maxWindow}
+                    onChange={e => setMaxWindow(Math.max(1, Number(e.target.value)))}
+                    className="w-12 text-center bg-transparent text-white font-mono text-xs md:text-sm focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setMaxWindow(Math.min(50, maxWindow + 1))}
+                    className="w-8 h-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border-l border-slate-700 transition-colors cursor-pointer"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="rounded-lg border border-slate-700 shadow-xl bg-slate-800/50 flex-1 overflow-y-auto">
