@@ -49,7 +49,7 @@ export const GpsEngine = {
    * Applies the Topological Checkpoint Algorithm (Anchored Sliding Window)
    * to chunk the track into logical sections based on peaks/valleys.
    */
-  generateTopologicalCheckpoints: (points, minWindowKm = 5, maxWindowKm = 10) => {
+  generateTopologicalCheckpoints: (points, minWindowKm = 5, maxWindowKm = 10, algorithm = 'strict') => {
     if (!points || points.length === 0) return [];
 
     const checkpoints = [];
@@ -102,10 +102,33 @@ export const GpsEngine = {
       let maxElePt = windowPoints[0];
       let minElePt = windowPoints[0];
 
-      windowPoints.forEach(pt => {
-        if (pt.ele > maxElePt.ele) maxElePt = pt;
-        if (pt.ele < minElePt.ele) minElePt = pt;
-      });
+      if (algorithm === 'balanced') {
+        const windowCenterDist = lastCpDist + minWindowKm + (Math.min(maxWindowKm, totalDistance - lastCpDist) - minWindowKm) / 2;
+        let bestMaxScore = -Infinity;
+        let bestMinScore = Infinity;
+
+        windowPoints.forEach(pt => {
+          const distError = Math.abs(pt.dist - windowCenterDist);
+          const penalty = distError * 100; // 100m prominence penalty per 1km distance error
+          
+          const peakScore = pt.ele - penalty;
+          const valleyScore = pt.ele + penalty;
+          
+          if (peakScore > bestMaxScore) {
+            bestMaxScore = peakScore;
+            maxElePt = pt;
+          }
+          if (valleyScore < bestMinScore) {
+            bestMinScore = valleyScore;
+            minElePt = pt;
+          }
+        });
+      } else {
+        windowPoints.forEach(pt => {
+          if (pt.ele > maxElePt.ele) maxElePt = pt;
+          if (pt.ele < minElePt.ele) minElePt = pt;
+        });
+      }
 
       const eleVariance = maxElePt.ele - minElePt.ele;
       

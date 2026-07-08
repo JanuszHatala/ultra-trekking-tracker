@@ -130,6 +130,17 @@ function App() {
     } catch (e) {}
     return 5;
   });
+  const [cpAlgorithm, setCpAlgorithm] = useState(() => {
+      try {
+        const saved = localStorage.getItem(`ultra_state_${routeId}`);
+        if (saved) {
+            const state = JSON.parse(saved);
+            if (state.cpAlgorithm !== undefined) return state.cpAlgorithm;
+        }
+      } catch (err) {}
+      return 'strict';
+  });
+
   const [maxWindow, setMaxWindow] = useState(() => {
     try {
       const searchParams = new URLSearchParams(window.location.search);
@@ -154,10 +165,12 @@ function App() {
         if (state.gpsInterval !== undefined) setGpsInterval(state.gpsInterval);
         if (state.minWindow !== undefined) setMinWindow(state.minWindow);
         if (state.maxWindow !== undefined) setMaxWindow(state.maxWindow);
+        if (state.cpAlgorithm !== undefined) setCpAlgorithm(state.cpAlgorithm);
       } else {
         setGpsInterval(15000);
         setMinWindow(5);
         setMaxWindow(10);
+        setCpAlgorithm('strict');
       }
     } catch (e) {
       console.warn('Failed to parse route state', e);
@@ -250,14 +263,14 @@ function App() {
 
     const processCheckpoints = async () => {
       setLoading(true);
-      const cacheKey = StorageEngine.getCacheKey(routeId, minWindow, maxWindow);
+      const cacheKey = StorageEngine.getCacheKey(routeId, minWindow, maxWindow, cpAlgorithm);
       
       let cached = await StorageEngine.getCheckpoints(cacheKey);
       let loadedCheckpoints = [];
       if (cached) {
         loadedCheckpoints = cached;
       } else {
-        loadedCheckpoints = GpsEngine.generateTopologicalCheckpoints(gpxPoints, minWindow, maxWindow);
+        loadedCheckpoints = GpsEngine.generateTopologicalCheckpoints(gpxPoints, minWindow, maxWindow, cpAlgorithm);
         await StorageEngine.cacheCheckpoints(cacheKey, loadedCheckpoints);
       }
       setCheckpoints(loadedCheckpoints);
@@ -285,7 +298,7 @@ function App() {
     };
 
     processCheckpoints();
-  }, [gpxPoints, routeId, gpxRouteId, minWindow, maxWindow]);
+  }, [gpxPoints, routeId, gpxRouteId, minWindow, maxWindow, cpAlgorithm]);
 
   const toggleLanguage = () => {
     setLang(prev => prev === 'en' ? 'pl' : 'en');
@@ -327,7 +340,7 @@ function App() {
   // State persistence saver
   useEffect(() => {
     if (!loading && routeId && routeInitializedRef.current[routeId]) {
-       const state = {
+       const stateObj = {
           mapVisible,
           activeTab,
           selectedSectionId: selectedSection ? selectedSection.id : null,
@@ -335,11 +348,12 @@ function App() {
           gpsInterval,
           minWindow,
           maxWindow,
+          cpAlgorithm,
           fontScale
        };
-       localStorage.setItem(`ultra_state_${routeId}`, JSON.stringify(state));
+       localStorage.setItem(`ultra_state_${routeId}`, JSON.stringify(stateObj));
     }
-  }, [mapVisible, activeTab, selectedSection, gpsState.active, gpsInterval, minWindow, maxWindow, fontScale, routeId, loading]);
+  }, [mapVisible, activeTab, selectedSection, gpsState.active, gpsInterval, minWindow, maxWindow, cpAlgorithm, fontScale, routeId, loading]);
 
   if (loading && !dataset) {
     return <div className="min-h-screen flex items-center justify-center text-lime-400 bg-slate-900">Loading Wyrypa Engine...</div>;
@@ -462,13 +476,15 @@ function App() {
                 maxWindow={maxWindow}
                 setMinWindow={setMinWindow}
                 setMaxWindow={setMaxWindow}
-               lang={lang}
-               activeSection={activeSection}
-               selectedSection={selectedSection}
-               setSelectedSection={setSelectedSection}
-               setHoveredSection={setHoveredSection}
-               mapVisible={mapVisible}
-               setMapVisible={setMapVisible}
+                cpAlgorithm={cpAlgorithm}
+                setCpAlgorithm={setCpAlgorithm}
+                lang={lang}
+                activeSection={activeSection}
+                selectedSection={selectedSection}
+                setSelectedSection={setSelectedSection}
+                setHoveredSection={setHoveredSection}
+                mapVisible={mapVisible}
+                setMapVisible={setMapVisible}
              />
           )}
 
