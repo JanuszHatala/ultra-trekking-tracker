@@ -138,7 +138,7 @@ function App() {
         setSelectedSection(null);
         setHoveredSection(null);
     }
-  }, [gpsState.lat, gpsState.lon, gpsState.active]);
+  }, [gpsState.lat, gpsState.lon, gpsState.timestamp, gpsState.active]);
 
   // Resizer state
   const [leftWidth, setLeftWidth] = useState(45); // percentage
