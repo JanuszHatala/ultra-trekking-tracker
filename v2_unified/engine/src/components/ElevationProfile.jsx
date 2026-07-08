@@ -145,14 +145,22 @@ export function ElevationProfile({ points, checkpoints, height = 200, hoverPoint
        if (tooltipX < 10) tooltipX = 10;
        if (tooltipX + textWidth + 20 > width) tooltipX = width - textWidth - 20;
 
+       let tooltipY = y - 35;
+       let textY = y - 18;
+       
+       if (tooltipY < 5) {
+           tooltipY = y + 15;
+           textY = y + 32;
+       }
+
        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)'; // slate-900
-       ctx.fillRect(tooltipX - 5, y - 35, textWidth + 10, 24);
+       ctx.fillRect(tooltipX - 5, tooltipY, textWidth + 10, 24);
        
        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-       ctx.strokeRect(tooltipX - 5, y - 35, textWidth + 10, 24);
+       ctx.strokeRect(tooltipX - 5, tooltipY, textWidth + 10, 24);
        
        ctx.fillStyle = '#ffffff';
-       ctx.fillText(text, tooltipX, y - 18);
+       ctx.fillText(text, tooltipX, textY);
     }
 
   }, [points, checkpoints, height, localHover, hoverPoint]);
