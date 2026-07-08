@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap, useMapEvents, ZoomControl, Circle, CircleMarker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Crosshair, EyeOff, Maximize, Navigation, ZoomIn, X, Expand } from 'lucide-react';
+import { Crosshair, EyeOff, Maximize, Navigation, ZoomIn, X, Expand, Shrink } from 'lucide-react';
 import { GpsTrackingService } from '../services/GpsTrackingService';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -167,6 +167,15 @@ function MapResetButton({ bounds }) {
 function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracking, bounds, gpsState, setGpsState, activeSection }) {
   const map = useMap();
   const [isSmallHeight, setIsSmallHeight] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   useEffect(() => {
     const container = map.getContainer();
@@ -207,9 +216,9 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
             }
           }}
           className="w-[34px] h-[34px] bg-slate-800 border-2 border-slate-600 text-slate-300 hover:text-lime-400 rounded flex items-center justify-center shadow-lg transition-colors leaflet-control"
-          title="Fullscreen Map"
+          title={isFullscreen ? "Exit Fullscreen" : "Fullscreen Map"}
         >
-          <Expand size={18} />
+          {isFullscreen ? <Shrink size={18} /> : <Expand size={18} />}
         </button>
         <button 
           onClick={async (e) => {
@@ -293,12 +302,18 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
   });
 
   const [showOverlay, setShowOverlay] = useState(false);
+  const prevSectionId = useRef(null);
 
   useEffect(() => {
     if (!activeSection) {
       setShowOverlay(false);
-    } else if (autoOpenDetails) {
-      setShowOverlay(true);
+      prevSectionId.current = null;
+    } else if (activeSection.id !== prevSectionId.current) {
+      // Only auto-open if the actual section changed
+      if (autoOpenDetails) {
+        setShowOverlay(true);
+      }
+      prevSectionId.current = activeSection.id;
     }
   }, [activeSection, autoOpenDetails]);
 
