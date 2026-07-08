@@ -546,9 +546,11 @@ function App() {
           ref={resizerRef}
           onMouseDown={handleDragStart}
           onTouchStart={handleDragStart}
-          className="bg-slate-700 hover:bg-lime-500 flex items-center justify-center cursor-row-resize md:cursor-col-resize h-6 w-full md:h-full md:w-3 z-50 transition-colors flex-shrink-0 border-y border-slate-800 md:border-y-0 md:border-x flex touch-none select-none"
+          className="flex items-center justify-center cursor-row-resize md:cursor-col-resize h-12 w-full md:h-full md:w-6 z-50 flex-shrink-0 touch-none select-none group bg-slate-950"
         >
-          <div className="bg-slate-400 w-8 h-1 rounded md:h-8 md:w-1 pointer-events-none"></div>
+          <div className="bg-slate-700 group-hover:bg-lime-500 group-active:bg-lime-500 flex items-center justify-center h-4 w-full md:h-full md:w-2 transition-colors rounded-sm shadow-md border border-slate-800">
+            <div className="bg-slate-400 group-active:bg-slate-900 group-hover:bg-slate-900 w-16 h-1.5 rounded-full md:h-16 md:w-1.5 pointer-events-none"></div>
+          </div>
         </div>
       )}
 
