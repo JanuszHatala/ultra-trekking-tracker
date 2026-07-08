@@ -122,7 +122,7 @@ function App() {
                          (aEnd >= startHrs && aEnd <= endHrs) ||
                          (aStart <= startHrs && aEnd >= endHrs);
               });
-              actionText = overlapping.map(a => `- [${a.kmRange}] ${a[`action_${lang}`] || a.action_en}`).join('\n');
+              actionText = overlapping.map(a => `- ${a[`action_${lang}`] || a.action_en}`).join('\n');
           }
           currentGpsSection = { ...cp, sectionDist, actionText };
       } else {
