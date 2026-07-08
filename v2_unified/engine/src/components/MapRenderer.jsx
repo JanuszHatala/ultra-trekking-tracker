@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap, useMapEvents, ZoomControl, Circle, CircleMarker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Crosshair, EyeOff, Maximize, Navigation, MapPin, X, Expand } from 'lucide-react';
+import { Crosshair, EyeOff, Maximize, Navigation, ZoomIn, X, Expand } from 'lucide-react';
 import { GpsTrackingService } from '../services/GpsTrackingService';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -236,7 +236,7 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
             className="w-[34px] h-[34px] bg-slate-800 border-2 border-cyan-500 text-cyan-400 hover:text-cyan-300 rounded flex items-center justify-center shadow-lg transition-colors leaflet-control"
             title="Fit selected section to view"
           >
-            <MapPin size={18} />
+            <ZoomIn size={18} />
           </button>
         )}
         <button 
