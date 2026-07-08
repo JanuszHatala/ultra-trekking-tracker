@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom';
 import { Capacitor } from '@capacitor/core';
 import { ElevationProfile } from './ElevationProfile';
 import { MapOfflineService } from '../services/MapOfflineService';
-import { Expand, Signal } from 'lucide-react';
+import { Expand, Shrink, Signal } from 'lucide-react';
+import { CustomSelect } from './CustomSelect';
 
 export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, selectedSection, onHoverPoint, autoOpenDetails, setAutoOpenDetails, gpsState, gpsInterval, setGpsInterval, fontScale, setFontScale, keepScreenOn, setKeepScreenOn }) {
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -17,10 +18,19 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
   const [startTime, setStartTime] = useState('05:00');
   const [challengeDate, setChallengeDate] = useState('2026-07-10');
   const [showResetModal, setShowResetModal] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const autoKeepScreenOnRef = useRef(false);
   const lastIsDownloadingRef = useRef(false);
   const trackingRef = useRef(null);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   const handleKeepScreenOnToggle = (e) => {
     setKeepScreenOn(e.target.checked);
@@ -237,35 +247,37 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
             <label className="text-xs md:text-sm font-bold text-slate-300 whitespace-nowrap">
               {lang === 'en' ? 'GPS Interval:' : 'Interwał GPS:'}
             </label>
-            <select 
+            <CustomSelect 
               value={gpsInterval}
-              onChange={(e) => {
-                const val = parseInt(e.target.value);
-                setGpsInterval(val);
-                try { localStorage.setItem('ultra_gps_interval', val); } catch(err) {}
+              onChange={(val) => {
+                const numVal = parseInt(val);
+                setGpsInterval(numVal);
+                try { localStorage.setItem('ultra_gps_interval', numVal); } catch(err) {}
               }}
-              className="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1 md:px-2 text-xs md:text-sm outline-none h-[20px] md:h-[26px]"
-            >
-              <option value="15000">15 s</option>
-              <option value="30000">30 s</option>
-              <option value="60000">1 min</option>
-            </select>
+              options={[
+                { value: "15000", label: "15 s" },
+                { value: "30000", label: "30 s" },
+                { value: "60000", label: "1 min" }
+              ]}
+              className="w-[80px] h-[20px] md:h-[26px]"
+            />
           </div>
 
           <div className="flex items-center space-x-2 bg-slate-800 p-1.5 md:p-2 px-2 md:px-3 rounded border border-slate-600 shadow-sm h-[28px] md:h-[38px]">
             <label className="text-xs md:text-sm font-bold text-slate-300 whitespace-nowrap">
               {lang === 'en' ? 'Font Scale:' : 'Wielkość czcionki:'}
             </label>
-            <select 
+            <CustomSelect 
               value={fontScale || '100%'}
-              onChange={(e) => setFontScale(e.target.value)}
-              className="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1 md:px-2 text-xs md:text-sm outline-none h-[20px] md:h-[26px]"
-            >
-              <option value="85%">85%</option>
-              <option value="100%">100%</option>
-              <option value="115%">115%</option>
-              <option value="130%">130%</option>
-            </select>
+              onChange={(val) => setFontScale(val)}
+              options={[
+                { value: "85%", label: "85%" },
+                { value: "100%", label: "100%" },
+                { value: "115%", label: "115%" },
+                { value: "130%", label: "130%" }
+              ]}
+              className="w-[80px] h-[20px] md:h-[26px]"
+            />
           </div>
           {showDeleteConfirm ? (
             <div className="flex items-center space-x-2 bg-slate-800 p-1 px-2.5 rounded border border-red-950 shadow-sm h-[28px] md:h-[38px]">
@@ -528,9 +540,9 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
                      }
                    }}
                    className="p-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-slate-300 transition-colors"
-                   title="Fullscreen"
+                   title={isFullscreen ? (lang === 'en' ? "Exit Fullscreen" : "Zamknij pełny ekran") : "Fullscreen"}
                  >
-                   <Expand size={14} />
+                   {isFullscreen ? <Shrink size={14} /> : <Expand size={14} />}
                  </button>
                  {gpsAccuracy !== null && (
                    <div className="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded flex items-center gap-1 text-[10px] text-slate-300 font-bold">

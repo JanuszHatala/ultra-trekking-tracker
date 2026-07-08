@@ -10,6 +10,7 @@ import { MapRenderer } from './components/MapRenderer';
 import { Overview } from './components/Overview';
 import { Tests } from './components/Tests';
 import { Training } from './components/Training';
+import { CustomSelect } from './components/CustomSelect';
 
 function App() {
   const [routesList, setRoutesList] = useState([]);
@@ -427,17 +428,12 @@ function App() {
             <div className="flex items-center justify-between sm:justify-end gap-2 mt-2 sm:mt-0">
               {/* Route Selector Dropdown */}
               {routesList.length > 0 && (
-                <select
+                <CustomSelect
                   value={routeId || 'msb-134k'}
-                  onChange={(e) => handleRouteChange(e.target.value)}
-                  className="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-1 text-xs font-semibold focus:outline-none focus:border-lime-400 cursor-pointer"
-                >
-                  {routesList.map(r => (
-                    <option key={r.id} value={r.id}>
-                      {r.name}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(val) => handleRouteChange(val)}
+                  options={routesList.map(r => ({ value: r.id, label: r.name }))}
+                  className="w-[180px] h-[28px] md:h-[32px]"
+                />
               )}
 
               <button onClick={toggleLanguage} className="h-[24px] md:h-[28px] flex items-center bg-slate-800 rounded shadow border border-slate-600 font-bold text-[10px] sm:text-xs overflow-hidden cursor-pointer">

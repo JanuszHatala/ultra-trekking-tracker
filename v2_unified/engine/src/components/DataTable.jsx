@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Settings2, MapPin, X, Expand, Navigation } from 'lucide-react';
+import { Settings2, MapPin, X, Expand, Shrink, Navigation } from 'lucide-react';
 
 // Tiny inline canvas for section profile
 function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) {
@@ -82,7 +82,16 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const tableRef = useRef(null);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   const getActionForETA = (startHrs, endHrs) => {
     if (!actionTimeline) return null;
@@ -137,10 +146,10 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                 }
               }}
               className="p-1.5 md:px-3 md:py-1.5 bg-slate-700 hover:bg-slate-600 rounded-lg border border-slate-600 text-slate-200 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold"
-              title="Fullscreen"
+              title={isFullscreen ? (lang === 'en' ? 'Exit Fullscreen' : 'Zamknij pełny ekran') : "Fullscreen"}
             >
-              <Expand size={16} />
-              <span className="hidden md:inline">{lang === 'en' ? 'Fullscreen' : 'Pełny ekran'}</span>
+              {isFullscreen ? <Shrink size={16} /> : <Expand size={16} />}
+              <span className="hidden md:inline">{isFullscreen ? (lang === 'en' ? 'Exit' : 'Zamknij') : (lang === 'en' ? 'Fullscreen' : 'Pełny ekran')}</span>
             </button>
             <button
               onClick={() => setShowSettings(!showSettings)}
