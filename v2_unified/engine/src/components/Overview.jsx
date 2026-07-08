@@ -426,8 +426,8 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
         let activeKm = 0;
         let expectedElapsed = 0;
         let sectionName = "";
-        let gpsAccuracy = null;
-        let isOffRoute = false;
+        let gpsAccuracy = (gpsState && gpsState.active) ? gpsState.accuracy : null;
+        let isOffRoute = (gpsState && gpsState.active) ? gpsState.offRoute : false;
         const lastCp = checkpoints[checkpoints.length - 1];
         
         if (selectedSection) {
@@ -436,8 +436,6 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
             sectionName = selectedSection.name;
         } else if (gpsState && gpsState.active && gpsState.lat !== null) {
             activeKm = gpsState.km;
-            gpsAccuracy = gpsState.accuracy;
-            isOffRoute = gpsState.offRoute;
             
             let prevCp = checkpoints[0];
             let nextCp = lastCp;
