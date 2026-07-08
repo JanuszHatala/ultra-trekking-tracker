@@ -482,6 +482,7 @@ function App() {
                 lang={lang}
                 activeSection={activeSection}
                 selectedSection={selectedSection}
+                gpsSection={currentGpsSection}
                 setSelectedSection={setSelectedSection}
                 setHoveredSection={setHoveredSection}
                 mapVisible={mapVisible}
