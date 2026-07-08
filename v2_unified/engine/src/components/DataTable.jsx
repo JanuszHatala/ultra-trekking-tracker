@@ -292,28 +292,44 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                   onMouseEnter={() => setHoveredSection({...cp, actionText, sectionDist})}
                   onMouseLeave={() => setHoveredSection(null)}
                   onClick={() => {
-                    if (selectedSection?.id === cp.id) {
-                      setSelectedSection(null);
-                      setHoveredSection(null);
-                    }
-                    else setSelectedSection({...cp, actionText, sectionDist});
+                    setHoveredSection(prev => prev?.id === cp.id ? null : {...cp, actionText, sectionDist});
                   }}
                 >
-                  <td className="p-2 md:p-3 border-r border-slate-700/30 align-middle">
-                    <div className="w-6 h-6 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-[10px] font-bold text-lime-400">
-                      {realIdx}
+                  <td 
+                    className="p-2 md:p-3 border-r border-slate-700/30 align-middle cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (selectedSection?.id === cp.id) {
+                        setSelectedSection(null);
+                      } else {
+                        setSelectedSection({...cp, actionText, sectionDist});
+                      }
+                    }}
+                  >
+                    <div className="relative inline-flex items-center justify-center">
+                      {isSelected && (
+                        <div className="absolute -top-3 -right-2 text-cyan-400 drop-shadow-[0_0_3px_rgba(34,211,238,0.8)] z-10">
+                          <MapPin size={16} weight="fill" />
+                        </div>
+                      )}
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold transition-all ${
+                        isSelected 
+                          ? 'bg-cyan-900 border-2 border-cyan-400 text-cyan-100 shadow-[0_0_8px_rgba(34,211,238,0.4)] scale-110' 
+                          : 'bg-slate-800 border border-slate-600 text-lime-400 group-hover:border-lime-500'
+                      }`}>
+                        {realIdx}
+                      </div>
                     </div>
                   </td>
                   
                   <td className="p-2 md:p-3 border-r border-slate-700/30">
                     <div className="flex items-center gap-1.5 font-bold text-slate-200">
-                      <MapPin size={14} className={`${isSelected ? 'text-cyan-400 opacity-100' : 'text-slate-500 opacity-50 group-hover:opacity-100'}`} />
                       {cp.km.toFixed(1)}
                     </div>
-                    <div className="text-[10px] text-cyan-500 ml-5">+{sectionDist.toFixed(1)} km section</div>
-                    <div className="text-[10px] text-slate-500 ml-5 truncate max-w-[180px]" title={cp.name}>{cp.name}</div>
+                    <div className="text-[10px] text-cyan-500">+{sectionDist.toFixed(1)} km section</div>
+                    <div className="text-[10px] text-slate-500 truncate max-w-[180px]" title={cp.name}>{cp.name}</div>
                     {cp.type && (
-                      <div className="ml-5 mt-1 select-none">
+                      <div className="mt-1 select-none">
                         <span className={`inline-block text-[8px] font-bold px-1.5 py-0.5 rounded ${
                           cp.type === 'Peak' ? 'bg-red-950/60 text-red-400 border border-red-800/40' :
                           cp.type === 'Valley' ? 'bg-blue-950/60 text-blue-400 border border-blue-800/40' :
