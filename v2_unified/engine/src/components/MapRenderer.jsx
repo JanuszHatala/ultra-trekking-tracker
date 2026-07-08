@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap, useMapEvents, ZoomControl, Circle, CircleMarker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Crosshair, EyeOff, Maximize, Navigation, MapPin, X } from 'lucide-react';
+import { Crosshair, EyeOff, Maximize, Navigation, MapPin, X, Expand } from 'lucide-react';
 import { GpsTrackingService } from '../services/GpsTrackingService';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -152,7 +152,7 @@ function MapResetButton({ bounds }) {
 }
 
 // Component to handle overlay buttons (must be inside MapContainer for useMap context)
-function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracking, bounds, setGpsState, activeSection }) {
+function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracking, bounds, gpsState, setGpsState, activeSection }) {
   const map = useMap();
   
   if (!mapVisible) return null;
@@ -175,6 +175,11 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
           onClick={async (e) => {
             e.preventDefault();
             e.stopPropagation();
+            if (gpsState && gpsState.active && gpsState.lat !== null && gpsState.lon !== null) {
+              // If tracking is ON and we have coordinates, just pan to current pos without requesting again
+              map.setView([gpsState.lat, gpsState.lon], map.getZoom(), { animate: true });
+              return;
+            }
             try {
               const permStatus = await Geolocation.checkPermissions();
               if (permStatus.location !== 'granted') {
@@ -231,6 +236,22 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
           title="Toggle GPS Tracking"
         >
           <Navigation size={18} />
+        </button>
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const container = map.getContainer();
+            if (!document.fullscreenElement) {
+              container.requestFullscreen().catch(err => console.warn(err));
+            } else {
+              document.exitFullscreen();
+            }
+          }}
+          className="w-[34px] h-[34px] bg-slate-800 border-2 border-slate-600 text-slate-300 hover:text-lime-400 rounded flex items-center justify-center shadow-lg transition-colors leaflet-control mt-4"
+          title="Fullscreen Map"
+        >
+          <Expand size={18} />
         </button>
       </div>
     </>
@@ -434,6 +455,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
              isTracking={isTracking} 
              setIsTracking={setIsTracking} 
              bounds={bounds} 
+             gpsState={gpsState}
              setGpsState={setGpsState} 
              activeSection={activeSection}
           />

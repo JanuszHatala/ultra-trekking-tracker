@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Settings2, MapPin, X } from 'lucide-react';
+import { Settings2, MapPin, X, Expand } from 'lucide-react';
 
 // Tiny inline canvas for section profile
 function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) {
@@ -81,6 +81,8 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) 
 export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, lang = 'en', activeSection, selectedSection, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
+  const [actionModal, setActionModal] = useState(null);
+  const tableRef = useRef(null);
 
   const getActionForETA = (startHrs, endHrs) => {
     if (!actionTimeline) return null;
@@ -121,20 +123,36 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
   });
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-slate-900" ref={tableRef}>
       <div className="flex flex-col gap-3 mb-4 flex-shrink-0 bg-slate-800 p-3 rounded-xl border border-slate-700">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold text-slate-100">{lang === 'en' ? 'Data Table' : 'Tabela Danych'}</h2>
-          <button
-            onClick={() => setShowSettings(!showSettings)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
-              showSettings 
-                ? 'bg-lime-950/40 text-lime-400 border-lime-800 shadow-[0_0_8px_rgba(132,204,22,0.15)]' 
-                : 'bg-slate-700 hover:bg-slate-600 text-slate-200 border-slate-600'
-            }`}
-          >
-            ⚙️ {lang === 'en' ? 'Window Settings' : 'Ustawienia okna'}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                if (!document.fullscreenElement) {
+                  tableRef.current?.requestFullscreen().catch(e => console.warn(e));
+                } else {
+                  document.exitFullscreen();
+                }
+              }}
+              className="p-1.5 md:px-3 md:py-1.5 bg-slate-700 hover:bg-slate-600 rounded-lg border border-slate-600 text-slate-200 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              title="Fullscreen"
+            >
+              <Expand size={16} />
+              <span className="hidden md:inline">{lang === 'en' ? 'Fullscreen' : 'Pełny ekran'}</span>
+            </button>
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
+                showSettings 
+                  ? 'bg-lime-950/40 text-lime-400 border-lime-800 shadow-[0_0_8px_rgba(132,204,22,0.15)]' 
+                  : 'bg-slate-700 hover:bg-slate-600 text-slate-200 border-slate-600'
+              }`}
+            >
+              ⚙️ <span className="hidden md:inline">{lang === 'en' ? 'Window Settings' : 'Ustawienia okna'}</span>
+            </button>
+          </div>
         </div>
 
         {showSettings && (
@@ -311,7 +329,15 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                     </div>
                   </td>
                   
-                  <td className="p-2 md:p-3 border-r border-slate-700/30">
+                  <td 
+                    className={`p-2 md:p-3 border-r border-slate-700/30 ${actionText ? 'cursor-pointer hover:bg-slate-800/80 transition-colors' : ''}`}
+                    onClick={(e) => {
+                      if (actionText) {
+                        e.stopPropagation();
+                        setActionModal({ text: actionText, cp: cp });
+                      }
+                    }}
+                  >
                     <div className="text-[10px] md:text-xs text-slate-400 whitespace-pre-wrap break-words max-w-[250px] leading-tight">
                       {actionText || '-'}
                     </div>
@@ -377,8 +403,8 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
 
       {/* Profile Modal */}
       {profileModal && createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-8 bg-slate-950/80 backdrop-blur-sm pointer-events-auto">
-          <div className="bg-slate-900 border border-slate-700 shadow-2xl rounded-xl overflow-hidden w-full max-w-4xl max-h-full flex flex-col pointer-events-auto">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-8 bg-slate-950/80 backdrop-blur-sm pointer-events-auto" onClick={() => setProfileModal(null)}>
+          <div className="bg-slate-900 border border-slate-700 shadow-2xl rounded-xl overflow-hidden w-full max-w-4xl max-h-full flex flex-col pointer-events-auto" onClick={e => e.stopPropagation()}>
             <div className="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
               <h3 className="text-xl font-bold text-slate-100">Section Profile: {profileModal.name}</h3>
               <button onClick={() => setProfileModal(null)} className="text-slate-400 hover:text-white bg-slate-800 p-2 rounded-lg"><X size={20} /></button>
@@ -391,6 +417,27 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                 <div>Start: <span className="text-lime-400">{Math.round(profileModal.sectionPoints[0].ele)}m</span></div>
                 <div>Gain: <span className="text-lime-400">+{Math.round(profileModal.sectionAscent)}m</span> / <span className="text-red-400">-{Math.round(profileModal.sectionDescent)}m</span></div>
                 <div>End: <span className="text-pink-400">{Math.round(profileModal.sectionPoints[profileModal.sectionPoints.length - 1].ele)}m</span></div>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {actionModal && createPortal(
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setActionModal(null)}>
+          <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center p-4 border-b border-slate-700/50 bg-slate-800/50 rounded-t-xl">
+              <h3 className="text-lg md:text-xl font-bold text-slate-100 flex items-center gap-2">
+                {lang === 'en' ? 'Actions for' : 'Akcje dla'} <span className="text-lime-400">{actionModal.cp.name}</span>
+              </h3>
+              <button onClick={() => setActionModal(null)} className="p-2 hover:bg-slate-700 rounded-full transition-colors text-slate-400 hover:text-white cursor-pointer">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="p-6 overflow-auto">
+              <div className="text-base md:text-xl text-slate-200 whitespace-pre-wrap leading-relaxed font-medium">
+                {actionModal.text}
               </div>
             </div>
           </div>

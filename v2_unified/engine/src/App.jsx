@@ -58,6 +58,26 @@ function App() {
   const [autoOpenDetails, setAutoOpenDetails] = useState(window.innerWidth >= 768);
 
   const [gpsState, setGpsState] = useState({ active: false, lat: null, lon: null, accuracy: null, km: 0, offRoute: false, timestamp: 0 });
+  const [fontScale, setFontScale] = useState(() => {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const initialId = searchParams.get('route') || localStorage.getItem('ultra_last_route_id') || 'msb-134k';
+      const saved = localStorage.getItem(`ultra_state_${initialId}`);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.fontScale) return state.fontScale;
+      }
+    } catch (e) {}
+    return '100%';
+  });
+
+  useEffect(() => {
+    let size = '16px';
+    if (fontScale === '115%') size = '18.4px';
+    else if (fontScale === '130%') size = '20.8px';
+    document.documentElement.style.fontSize = size;
+  }, [fontScale]);
+
   const [gpsInterval, setGpsInterval] = useState(() => {
     try {
       const searchParams = new URLSearchParams(window.location.search);
@@ -245,6 +265,7 @@ function App() {
               if (state.mapVisible !== undefined) setMapVisible(state.mapVisible);
               if (state.activeTab !== undefined) setActiveTab(state.activeTab);
               if (state.isTracking !== undefined) setGpsState(prev => ({ ...prev, active: state.isTracking }));
+              if (state.fontScale !== undefined) setFontScale(state.fontScale);
               if (state.selectedSectionId) {
                  const sec = loadedCheckpoints.find(c => c.id === state.selectedSectionId);
                  if (sec) setSelectedSection(sec);
@@ -306,11 +327,12 @@ function App() {
           isTracking: gpsState.active,
           gpsInterval,
           minWindow,
-          maxWindow
+          maxWindow,
+          fontScale
        };
        localStorage.setItem(`ultra_state_${routeId}`, JSON.stringify(state));
     }
-  }, [mapVisible, activeTab, selectedSection, gpsState.active, gpsInterval, minWindow, maxWindow, routeId, loading]);
+  }, [mapVisible, activeTab, selectedSection, gpsState.active, gpsInterval, minWindow, maxWindow, fontScale, routeId, loading]);
 
   if (loading && !dataset) {
     return <div className="min-h-screen flex items-center justify-center text-lime-400 bg-slate-900">Loading Wyrypa Engine...</div>;
@@ -323,81 +345,44 @@ function App() {
   return (
     <div className="bg-slate-900 text-slate-200 font-sans antialiased h-[100dvh] w-full overflow-hidden flex flex-col md:flex-row">
       
-      {/* Map Section */}
-      <div 
-        id="map-container" 
-        className={`md:h-screen flex-shrink-0 z-0 relative transition-none md:transition-all duration-300 ${!mapVisible ? 'h-0 w-0 hidden' : 'w-full md:w-auto'}`}
-        style={{ 
-          width: mapVisible && window.innerWidth >= 768 ? `${leftWidth}%` : '100%',
-          height: mapVisible && window.innerWidth < 768 ? `${leftWidth}vh` : undefined
-        }}
-      >
-        <MapRenderer 
-           gpxPoints={gpxPoints} 
-           checkpoints={checkpoints} 
-           actionTimeline={dataset?.actionTimeline}
-           activeSection={activeSection}
-           setSelectedSection={setSelectedSection}
-           profileHoverPoint={profileHoverPoint}
-           mapVisible={mapVisible}
-           setMapVisible={setMapVisible}
-           autoOpenDetails={autoOpenDetails}
-           gpsState={gpsState}
-           setGpsState={setGpsState}
-           gpsInterval={gpsInterval}
-           lang={lang} 
-        />
-      </div>
-
-      {/* Resizer */}
-      {mapVisible && (
-        <div 
-          id="resizer" 
-          ref={resizerRef}
-          onMouseDown={handleDragStart}
-          onTouchStart={handleDragStart}
-          className="bg-slate-700 hover:bg-lime-500 flex items-center justify-center cursor-row-resize md:cursor-col-resize h-4 w-full md:h-full md:w-3 z-50 transition-colors flex-shrink-0 border-y border-slate-800 md:border-y-0 md:border-x flex"
-        >
-          <div className="bg-slate-400 w-8 h-1 rounded md:h-8 md:w-1 pointer-events-none"></div>
-        </div>
-      )}
-
-      {/* Right Panel */}
+      {/* Content Container (Left/Top) */}
       <div 
         id="content-container" 
-        className="flex-1 flex flex-col min-w-0 bg-slate-900 z-10 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.5)] md:h-screen overflow-hidden transition-none md:transition-all duration-300"
-        style={{ width: mapVisible ? (window.innerWidth >= 768 ? `${100 - leftWidth}%` : '100%') : '100%' }}
+        className={`flex flex-col min-w-0 bg-slate-900 z-10 shadow-[10px_0_15px_-3px_rgba(0,0,0,0.5)] md:h-screen overflow-hidden transition-none md:transition-all duration-300 ${!mapVisible ? 'w-full h-full flex-1' : ''}`}
+        style={{ 
+          width: mapVisible && window.innerWidth >= 768 ? `${leftWidth}%` : (!mapVisible ? '100%' : '100%'),
+          height: mapVisible && window.innerWidth < 768 ? `${leftWidth}vh` : (!mapVisible ? '100%' : undefined)
+        }}
       >
-        
         {/* Header & Tabs */}
         <div className="p-3 md:p-6 pb-0 flex-shrink-0 bg-slate-900 z-20 border-b border-slate-700">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 w-full pb-3 sm:pb-0">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 w-full pb-2 sm:pb-0">
+            <div className="flex items-center gap-2">
               <div>
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 mb-0.5">
-                  Wyrypa Tracker <span style={{ fontSize: '0.5em', color: 'white' }}>{version}</span>
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 to-cyan-400 leading-none">
+                  Wyrypa Tracker <span style={{ fontSize: '0.6em', color: 'white' }}>{version}</span>
                 </h1>
-                <p className="text-[10px] md:text-xs text-slate-400 italic mb-0">
-                  {title} - {subtitle}
+                <p className="text-[9px] md:text-[10px] text-slate-400 italic leading-tight mt-0.5 mb-0">
+                  {title} {subtitle ? `- ${subtitle}` : ''}
                 </p>
               </div>
               {!mapVisible && (
                 <button 
                   onClick={() => setMapVisible(true)}
-                  className="bg-slate-800 text-lime-400 border border-lime-500/30 px-3 py-1 rounded shadow text-xs font-bold hover:bg-slate-700 transition-colors"
+                  className="bg-slate-800 text-lime-400 border border-lime-500/30 px-2 py-0.5 md:px-3 md:py-1 rounded shadow text-[10px] md:text-xs font-bold hover:bg-slate-700 transition-colors"
                 >
                   {lang === 'en' ? 'Show Map' : 'Pokaż Mapę'}
                 </button>
               )}
             </div>
             
-            <div className="flex items-center justify-between sm:justify-end gap-2">
+            <div className="flex items-center justify-between sm:justify-end gap-2 mt-2 sm:mt-0">
               {/* Route Selector Dropdown */}
               {routesList.length > 0 && (
                 <select
                   value={routeId || 'msb-134k'}
                   onChange={(e) => handleRouteChange(e.target.value)}
-                  className="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2.5 py-1 text-xs md:text-sm font-semibold focus:outline-none focus:border-lime-400 cursor-pointer"
+                  className="bg-slate-800 text-slate-200 border border-slate-700 rounded px-2 py-1 text-xs font-semibold focus:outline-none focus:border-lime-400 cursor-pointer"
                 >
                   {routesList.map(r => (
                     <option key={r.id} value={r.id}>
@@ -407,7 +392,7 @@ function App() {
                 </select>
               )}
 
-              <button onClick={toggleLanguage} className="h-[28px] flex items-center bg-slate-800 rounded shadow border border-slate-600 font-bold text-[10px] sm:text-xs overflow-hidden cursor-pointer">
+              <button onClick={toggleLanguage} className="h-[24px] md:h-[28px] flex items-center bg-slate-800 rounded shadow border border-slate-600 font-bold text-[10px] sm:text-xs overflow-hidden cursor-pointer">
                 <span className={`px-2 md:px-3 h-full flex items-center justify-center transition-colors ${lang === 'en' ? 'bg-lime-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}>EN</span>
                 <span className={`px-2 md:px-3 h-full flex items-center justify-center transition-colors ${lang === 'pl' ? 'bg-lime-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}>PL</span>
               </button>
@@ -455,6 +440,8 @@ function App() {
               gpsState={gpsState}
               gpsInterval={gpsInterval}
               setGpsInterval={setGpsInterval}
+              fontScale={fontScale}
+              setFontScale={setFontScale}
               keepScreenOn={keepScreenOn}
               setKeepScreenOn={setKeepScreenOn}
             />
@@ -499,6 +486,46 @@ function App() {
           )}
         </div>
       </div>
+
+      {/* Resizer */}
+      {mapVisible && (
+        <div 
+          id="resizer" 
+          ref={resizerRef}
+          onMouseDown={handleDragStart}
+          onTouchStart={handleDragStart}
+          className="bg-slate-700 hover:bg-lime-500 flex items-center justify-center cursor-row-resize md:cursor-col-resize h-4 w-full md:h-full md:w-3 z-50 transition-colors flex-shrink-0 border-y border-slate-800 md:border-y-0 md:border-x flex"
+        >
+          <div className="bg-slate-400 w-8 h-1 rounded md:h-8 md:w-1 pointer-events-none"></div>
+        </div>
+      )}
+
+      {/* Map Section (Right/Bottom) */}
+      <div 
+        id="map-container" 
+        className={`flex-shrink-0 z-0 relative transition-none md:transition-all duration-300 ${!mapVisible ? 'h-0 w-0 hidden' : 'w-full md:w-auto flex-1'}`}
+        style={{ 
+          width: mapVisible && window.innerWidth >= 768 ? `${100 - leftWidth}%` : '100%',
+          height: mapVisible && window.innerWidth < 768 ? `${100 - leftWidth}vh` : undefined
+        }}
+      >
+        <MapRenderer 
+           gpxPoints={gpxPoints} 
+           checkpoints={checkpoints} 
+           actionTimeline={dataset?.actionTimeline}
+           activeSection={activeSection}
+           setSelectedSection={setSelectedSection}
+           profileHoverPoint={profileHoverPoint}
+           mapVisible={mapVisible}
+           setMapVisible={setMapVisible}
+           autoOpenDetails={autoOpenDetails}
+           gpsState={gpsState}
+           setGpsState={setGpsState}
+           gpsInterval={gpsInterval}
+           lang={lang} 
+        />
+      </div>
+
     </div>
   );
 }
