@@ -3,8 +3,9 @@ import { createPortal } from 'react-dom';
 import { Capacitor } from '@capacitor/core';
 import { ElevationProfile } from './ElevationProfile';
 import { MapOfflineService } from '../services/MapOfflineService';
+import { Expand, Signal } from 'lucide-react';
 
-export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, selectedSection, onHoverPoint, autoOpenDetails, setAutoOpenDetails, gpsState, gpsInterval, setGpsInterval, keepScreenOn, setKeepScreenOn }) {
+export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, selectedSection, onHoverPoint, autoOpenDetails, setAutoOpenDetails, gpsState, gpsInterval, setGpsInterval, fontScale, setFontScale, keepScreenOn, setKeepScreenOn }) {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -19,6 +20,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
 
   const autoKeepScreenOnRef = useRef(false);
   const lastIsDownloadingRef = useRef(false);
+  const trackingRef = useRef(null);
 
   const handleKeepScreenOnToggle = (e) => {
     setKeepScreenOn(e.target.checked);
@@ -247,6 +249,21 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
               <option value="15000">15 s</option>
               <option value="30000">30 s</option>
               <option value="60000">1 min</option>
+            </select>
+          </div>
+
+          <div className="flex items-center space-x-2 bg-slate-800 p-1.5 md:p-2 px-2 md:px-3 rounded border border-slate-600 shadow-sm h-[28px] md:h-[38px]">
+            <label className="text-xs md:text-sm font-bold text-slate-300 whitespace-nowrap">
+              {lang === 'en' ? 'Font Scale:' : 'Wielkość czcionki:'}
+            </label>
+            <select 
+              value={fontScale || '100%'}
+              onChange={(e) => setFontScale(e.target.value)}
+              className="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1 md:px-2 text-xs md:text-sm outline-none h-[20px] md:h-[26px]"
+            >
+              <option value="100%">100%</option>
+              <option value="115%">115%</option>
+              <option value="130%">130%</option>
             </select>
           </div>
           {showDeleteConfirm ? (
@@ -494,7 +511,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
         const etaStr = dayPrefix + timeStr;
 
         return (
-          <div className="bg-slate-900 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl relative overflow-hidden">
+          <div ref={trackingRef} className="bg-slate-900 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-cyan-400"></div>
             
             <div className="flex justify-between items-center mb-4">
@@ -502,9 +519,26 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
                  📍 {lang === 'en' ? 'My Position' : 'Moja Pozycja'}
               </h2>
               <div className="flex gap-2">
+                 <button
+                   onClick={() => {
+                     if (!document.fullscreenElement) {
+                       trackingRef.current?.requestFullscreen().catch(e => console.warn(e));
+                     } else {
+                       document.exitFullscreen();
+                     }
+                   }}
+                   className="p-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-700 text-slate-300 transition-colors"
+                   title="Fullscreen"
+                 >
+                   <Expand size={14} />
+                 </button>
                  {gpsAccuracy !== null && (
-                   <div className="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-[10px] text-cyan-400 font-bold">
-                     GPS: ±{Math.round(gpsAccuracy)}m
+                   <div className="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded flex items-center gap-1 text-[10px] text-slate-300 font-bold">
+                     <Signal 
+                       size={12} 
+                       className={gpsAccuracy < 20 ? 'text-lime-500' : (gpsAccuracy < 50 ? 'text-orange-400' : 'text-red-500')} 
+                     />
+                     <span>±{Math.round(gpsAccuracy)}m</span>
                    </div>
                  )}
               </div>
