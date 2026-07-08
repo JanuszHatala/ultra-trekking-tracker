@@ -73,7 +73,8 @@ function App() {
 
   useEffect(() => {
     let size = '16px';
-    if (fontScale === '115%') size = '18.4px';
+    if (fontScale === '85%') size = '13.6px';
+    else if (fontScale === '115%') size = '18.4px';
     else if (fontScale === '130%') size = '20.8px';
     document.documentElement.style.fontSize = size;
   }, [fontScale]);

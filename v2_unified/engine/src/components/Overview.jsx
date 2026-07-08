@@ -261,6 +261,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
               onChange={(e) => setFontScale(e.target.value)}
               className="bg-slate-900 border border-slate-600 text-lime-400 font-bold rounded px-1 md:px-2 text-xs md:text-sm outline-none h-[20px] md:h-[26px]"
             >
+              <option value="85%">85%</option>
               <option value="100%">100%</option>
               <option value="115%">115%</option>
               <option value="130%">130%</option>
