@@ -131,6 +131,19 @@ function MapBounds({ bounds }) {
   return null;
 }
 
+// Component to handle map container size invalidation
+function MapResizeObserver() {
+  const map = useMap();
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    resizeObserver.observe(map.getContainer());
+    return () => resizeObserver.disconnect();
+  }, [map]);
+  return null;
+}
+
 // Component to handle the reset button
 function MapResetButton({ bounds }) {
   const map = useMap();
@@ -449,6 +462,7 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
           <ProfileHoverSync profileHoverPoint={profileHoverPoint} />
 
           {bounds && <MapBounds bounds={bounds} />}
+          <MapResizeObserver />
           <MapOverlayControls 
              mapVisible={mapVisible} 
              setMapVisible={setMapVisible} 
