@@ -78,7 +78,7 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) 
   return <canvas ref={canvasRef} width={width} height={height} className="bg-slate-900/50 rounded shadow-inner max-w-full" />;
 }
 
-export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, lang = 'en', activeSection, selectedSection, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
+export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
@@ -225,6 +225,28 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                     className="w-8 h-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center border-l border-slate-700 transition-colors cursor-pointer"
                   >
                     +
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-1 select-none">
+                <span className="text-[10px] md:text-xs text-slate-400 font-medium">
+                  {lang === 'en' ? 'Algorithm' : 'Algorytm'}
+                </span>
+                <div className="flex items-center bg-slate-900 border border-slate-700 rounded overflow-hidden h-[32px]">
+                  <button
+                    type="button"
+                    onClick={() => setCpAlgorithm('strict')}
+                    className={`px-3 h-full text-xs font-bold transition-colors cursor-pointer ${cpAlgorithm === 'strict' ? 'bg-sky-900 text-sky-100' : 'bg-slate-800 hover:bg-slate-700 text-slate-400'}`}
+                  >
+                    {lang === 'en' ? 'Strict' : 'Ścisły'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCpAlgorithm('balanced')}
+                    className={`px-3 h-full text-xs font-bold transition-colors cursor-pointer ${cpAlgorithm === 'balanced' ? 'bg-sky-900 text-sky-100' : 'bg-slate-800 hover:bg-slate-700 text-slate-400'}`}
+                  >
+                    {lang === 'en' ? 'Balanced' : 'Zbalansowany'}
                   </button>
                 </div>
               </div>
