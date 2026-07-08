@@ -101,7 +101,6 @@ export const GpsEngine = {
       // Topological analysis in this window
       let maxElePt = windowPoints[0];
       let minElePt = windowPoints[0];
-      const windowStartEle = windowPoints[0].ele;
 
       windowPoints.forEach(pt => {
         if (pt.ele > maxElePt.ele) maxElePt = pt;
@@ -109,15 +108,28 @@ export const GpsEngine = {
       });
 
       const eleVariance = maxElePt.ele - minElePt.ele;
-      const deltaUp = maxElePt.ele - windowStartEle;
-      const deltaDown = windowStartEle - minElePt.ele;
+      
+      // Calculate TrueClimb: Max prominence of the peak from the lowest point preceding it
+      let localMinBeforePeak = points[lastCpIndex].ele;
+      for (let i = lastCpIndex; i <= maxElePt.index; i++) {
+         if (points[i].ele < localMinBeforePeak) localMinBeforePeak = points[i].ele;
+      }
+      const trueClimb = maxElePt.ele - localMinBeforePeak;
+
+      // Calculate TrueDrop: Max depth of the valley from the highest point preceding it
+      let localMaxBeforeValley = points[lastCpIndex].ele;
+      for (let i = lastCpIndex; i <= minElePt.index; i++) {
+         if (points[i].ele > localMaxBeforeValley) localMaxBeforeValley = points[i].ele;
+      }
+      const trueDrop = localMaxBeforeValley - minElePt.ele;
       
       let selectedPt;
       let cpName = '';
 
       let cpType = 'Flat';
       if (eleVariance > 40) { // If there is significant topology (>40m variance)
-        if (deltaUp > deltaDown) {
+        // Bias towards peaks in trekking: pick Peak if its true climb is at least half as significant as the true drop
+        if (trueClimb > trueDrop * 0.5) {
           selectedPt = maxElePt;
           cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)}) (Peak)`;
           cpType = 'Peak';
