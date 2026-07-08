@@ -420,6 +420,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
         )}
       </div>
 
+      <div ref={trackingRef} className="flex flex-col gap-4 md:gap-6 bg-slate-900 md:bg-transparent overflow-y-auto overflow-x-hidden p-2 md:p-0 rounded-lg h-full max-h-full">
       {/* GPS Status Card (Pinned Section or Live Tracking) */}
       {((gpsState && gpsState.active && gpsState.lat !== null) || selectedSection) && (() => {
         let activeKm = 0;
@@ -511,8 +512,8 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
         const etaStr = dayPrefix + timeStr;
 
         return (
-          <div ref={trackingRef} className="bg-slate-900 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-cyan-400"></div>
+            <div className="bg-slate-900 p-3 md:p-5 rounded-lg border border-slate-700 shadow-xl relative overflow-hidden flex-shrink-0">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-cyan-400"></div>
             
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-sm md:text-base font-bold text-lime-400 flex items-center gap-2">
@@ -605,6 +606,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
            <div className="flex items-center"><span className="w-2.5 h-2.5 bg-green-700 inline-block mr-1.5 rounded-full"></span>{lang === 'en' ? 'Down (-15 to -5%)' : 'W dół (-15 do -5%)'}</div>
            <div className="flex items-center"><span className="w-2.5 h-2.5 bg-blue-500 inline-block mr-1.5 rounded-full"></span>{lang === 'en' ? 'Steep Down (<-15%)' : 'Stromo w dół (<-15%)'}</div>
         </div>
+      </div>
       </div>
       
       {/* Reset Confirmation Modal */}
