@@ -1,11 +1,12 @@
 // GpsTrackingService.js
-// Handles geolocation watch, throttling, and GPX snapping
+// Handles geolocation watch, consistent interval ticks, and GPX snapping
 
 import { Geolocation } from '@capacitor/geolocation';
 
 export class GpsTrackingService {
   static watcherId = null;
-  static lastUpdateTime = 0;
+  static timerId = null;
+  static lastKnownPosition = null;
   static lastMatchedIndex = parseInt(localStorage.getItem('gps_last_matched_index')) || null;
   
   // Calculate distance between two lat/lon points using Haversine
@@ -24,7 +25,7 @@ export class GpsTrackingService {
   }
 
   static async startTracking(gpxPoints, intervalMs, onUpdate, onError) {
-    if (this.watcherId !== null) {
+    if (this.watcherId !== null || this.timerId !== null) {
       await this.stopTracking();
     }
     
@@ -40,7 +41,88 @@ export class GpsTrackingService {
       console.warn("Could not check/request permissions. Proceeding anyway.", e);
     }
 
+    const processPosition = () => {
+        if (!this.lastKnownPosition) return;
+        const pos = this.lastKnownPosition;
+        const now = Date.now();
+        
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        const accuracy = pos.coords.accuracy;
+        
+        let minDistanceMetres = Infinity;
+        let closestTrackPt = null;
+        let closestIdx = -1;
+        
+        if (gpxPoints && gpxPoints.length > 0) {
+          let searchStart = 0;
+          let searchEnd = gpxPoints.length - 1;
+          let usingRestricted = false;
+          
+          if (this.lastMatchedIndex !== null) {
+              searchStart = Math.max(0, this.lastMatchedIndex - 150);
+              searchEnd = Math.min(gpxPoints.length - 1, this.lastMatchedIndex + 600);
+              usingRestricted = true;
+          }
+          
+          for (let i = searchStart; i <= searchEnd; i++) {
+              const d = this.distanceTo(lat, lon, gpxPoints[i].lat, gpxPoints[i].lon);
+              if (d < minDistanceMetres) {
+                  minDistanceMetres = d;
+                  closestTrackPt = gpxPoints[i];
+                  closestIdx = i;
+              }
+          }
+          
+          // Fallback to global search if restricted search fails (distance > 200m)
+          if (usingRestricted && minDistanceMetres > 200) {
+              let globalMinDistance = Infinity;
+              let globalClosestPt = null;
+              let globalClosestIdx = -1;
+              for (let i = 0; i < gpxPoints.length; i++) {
+                  const d = this.distanceTo(lat, lon, gpxPoints[i].lat, gpxPoints[i].lon);
+                  if (d < globalMinDistance) {
+                      globalMinDistance = d;
+                      globalClosestPt = gpxPoints[i];
+                      globalClosestIdx = i;
+                  }
+              }
+              minDistanceMetres = globalMinDistance;
+              closestTrackPt = globalClosestPt;
+              closestIdx = globalClosestIdx;
+          }
+          
+          if (closestIdx !== -1) {
+              this.lastMatchedIndex = closestIdx;
+              try { localStorage.setItem('gps_last_matched_index', closestIdx); } catch(e) {}
+          }
+        }
+        
+        const isOffRoute = minDistanceMetres > 200;
+        const currentKm = closestTrackPt ? closestTrackPt.dist : 0;
+        
+        if (onUpdate) {
+          onUpdate({
+            lat,
+            lon,
+            accuracy,
+            km: currentKm,
+            offRoute: isOffRoute,
+            timestamp: now
+          });
+        }
+    };
+
     try {
+      // 1. Initial immediate fetch
+      try {
+        this.lastKnownPosition = await Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 10000 });
+        processPosition();
+      } catch (err) {
+        console.warn("Initial position fetch failed", err);
+      }
+
+      // 2. Start OS watcher to continuously update lastKnownPosition
       this.watcherId = await Geolocation.watchPosition(
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 },
         (pos, err) => {
@@ -48,81 +130,15 @@ export class GpsTrackingService {
             if (onError) onError(err);
             return;
           }
-          if (!pos) return;
-          
-          const now = Date.now();
-          if (this.lastUpdateTime !== 0 && (now - this.lastUpdateTime < intervalMs)) {
-            return; // Throttled
-          }
-          this.lastUpdateTime = now;
-          
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          const accuracy = pos.coords.accuracy;
-          
-          let minDistanceMetres = Infinity;
-          let closestTrackPt = null;
-          let closestIdx = -1;
-          
-          if (gpxPoints && gpxPoints.length > 0) {
-            let searchStart = 0;
-            let searchEnd = gpxPoints.length - 1;
-            let usingRestricted = false;
-            
-            if (this.lastMatchedIndex !== null) {
-                searchStart = Math.max(0, this.lastMatchedIndex - 150);
-                searchEnd = Math.min(gpxPoints.length - 1, this.lastMatchedIndex + 600);
-                usingRestricted = true;
-            }
-            
-            for (let i = searchStart; i <= searchEnd; i++) {
-                const d = this.distanceTo(lat, lon, gpxPoints[i].lat, gpxPoints[i].lon);
-                if (d < minDistanceMetres) {
-                    minDistanceMetres = d;
-                    closestTrackPt = gpxPoints[i];
-                    closestIdx = i;
-                }
-            }
-            
-            // Fallback to global search if restricted search fails (distance > 200m)
-            if (usingRestricted && minDistanceMetres > 200) {
-                let globalMinDistance = Infinity;
-                let globalClosestPt = null;
-                let globalClosestIdx = -1;
-                for (let i = 0; i < gpxPoints.length; i++) {
-                    const d = this.distanceTo(lat, lon, gpxPoints[i].lat, gpxPoints[i].lon);
-                    if (d < globalMinDistance) {
-                        globalMinDistance = d;
-                        globalClosestPt = gpxPoints[i];
-                        globalClosestIdx = i;
-                    }
-                }
-                minDistanceMetres = globalMinDistance;
-                closestTrackPt = globalClosestPt;
-                closestIdx = globalClosestIdx;
-            }
-            
-            if (closestIdx !== -1) {
-                this.lastMatchedIndex = closestIdx;
-                try { localStorage.setItem('gps_last_matched_index', closestIdx); } catch(e) {}
-            }
-          }
-          
-          const isOffRoute = minDistanceMetres > 200;
-          const currentKm = closestTrackPt ? closestTrackPt.dist : 0;
-          
-          if (onUpdate) {
-            onUpdate({
-              lat,
-              lon,
-              accuracy,
-              km: currentKm,
-              offRoute: isOffRoute,
-              timestamp: now
-            });
+          if (pos) {
+            this.lastKnownPosition = pos;
           }
         }
       );
+
+      // 3. Setup consistent tick interval to dispatch updates
+      this.timerId = setInterval(processPosition, intervalMs);
+      
     } catch (err) {
       if (onError) onError(err);
     }
@@ -136,7 +152,11 @@ export class GpsTrackingService {
         console.warn("Error clearing watch", e);
       }
       this.watcherId = null;
-      this.lastUpdateTime = 0;
     }
+    if (this.timerId !== null) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
+    this.lastKnownPosition = null;
   }
 }
