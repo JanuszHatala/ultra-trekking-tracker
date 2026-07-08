@@ -421,7 +421,7 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
             </div>
           </div>
         </div>,
-        document.body
+        document.fullscreenElement || document.body
       )}
 
       {actionModal && createPortal(
@@ -442,7 +442,7 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
             </div>
           </div>
         </div>,
-        document.body
+        document.fullscreenElement || document.body
       )}
     </div>
   );
