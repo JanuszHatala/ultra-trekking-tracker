@@ -270,7 +270,10 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                   onMouseEnter={() => setHoveredSection({...cp, actionText, sectionDist})}
                   onMouseLeave={() => setHoveredSection(null)}
                   onClick={() => {
-                    if (selectedSection?.id === cp.id) setSelectedSection(null);
+                    if (selectedSection?.id === cp.id) {
+                      setSelectedSection(null);
+                      setHoveredSection(null);
+                    }
                     else setSelectedSection({...cp, actionText, sectionDist});
                   }}
                 >

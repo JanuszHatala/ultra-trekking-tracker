@@ -105,6 +105,13 @@ function App() {
 
   const activeSection = selectedSection || hoveredSection || currentGpsSection;
 
+  useEffect(() => {
+    if (gpsState && gpsState.active && gpsState.lat !== null) {
+        setSelectedSection(null);
+        setHoveredSection(null);
+    }
+  }, [gpsState.lat, gpsState.lon, gpsState.active]);
+
   // Resizer state
   const [leftWidth, setLeftWidth] = useState(45); // percentage
   const resizerRef = useRef(null);
