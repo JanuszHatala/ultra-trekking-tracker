@@ -78,7 +78,7 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) 
   return <canvas ref={canvasRef} width={width} height={height} className="bg-slate-900/50 rounded shadow-inner max-w-full" />;
 }
 
-export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
+export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, isTracking, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
@@ -291,9 +291,16 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                 <tr 
                   key={cp.id} 
                   className={`transition-colors cursor-pointer group ${isRowActive ? 'bg-cyan-900/20 ring-1 ring-cyan-500/30 z-10 relative' : 'hover:bg-slate-700/50'}`}
-                  onMouseEnter={() => setHoveredSection({...cp, actionText, sectionDist})}
-                  onMouseLeave={() => setHoveredSection(null)}
+                  onMouseEnter={() => {
+                    if (isTracking) return;
+                    setHoveredSection({...cp, actionText, sectionDist});
+                  }}
+                  onMouseLeave={() => {
+                    if (isTracking) return;
+                    setHoveredSection(null);
+                  }}
                   onClick={() => {
+                    if (isTracking) return;
                     setHoveredSection(prev => prev?.id === cp.id ? null : {...cp, actionText, sectionDist});
                   }}
                 >
