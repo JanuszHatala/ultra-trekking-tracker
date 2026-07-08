@@ -95,13 +95,39 @@ function App() {
   let currentGpsSection = null;
   if (gpsState && gpsState.active && gpsState.lat !== null && checkpoints.length > 0) {
       let activeKm = gpsState.km || 0;
+      let targetIdx = 0;
       for (let i = 0; i < checkpoints.length - 1; i++) {
          if (activeKm >= checkpoints[i].km && activeKm <= checkpoints[i+1].km) {
-             currentGpsSection = checkpoints[i+1];
+             targetIdx = i + 1;
              break;
          }
       }
-      if (!currentGpsSection) currentGpsSection = checkpoints[checkpoints.length - 1];
+      if (targetIdx === 0 && activeKm > checkpoints[checkpoints.length - 1].km) {
+         targetIdx = checkpoints.length - 1;
+      }
+      
+      if (targetIdx > 0) {
+          const cp = checkpoints[targetIdx];
+          const prevCp = checkpoints[targetIdx - 1];
+          const sectionDist = cp.km - prevCp.km;
+          let actionText = '';
+          const timeline = dataset?.actionTimeline;
+          if (timeline && timeline.length > 0) {
+              const startHrs = prevCp.etaHrs;
+              const endHrs = cp.etaHrs;
+              const overlapping = timeline.filter(a => {
+                  const aStart = a.etaHrs;
+                  const aEnd = a.etaEndHrs || a.etaHrs;
+                  return (aStart >= startHrs && aStart <= endHrs) || 
+                         (aEnd >= startHrs && aEnd <= endHrs) ||
+                         (aStart <= startHrs && aEnd >= endHrs);
+              });
+              actionText = overlapping.map(a => `- [${a.kmRange}] ${a[`action_${lang}`] || a.action_en}`).join('\n');
+          }
+          currentGpsSection = { ...cp, sectionDist, actionText };
+      } else {
+          currentGpsSection = checkpoints[0];
+      }
   }
 
   const activeSection = selectedSection || hoveredSection || currentGpsSection;
@@ -483,6 +509,7 @@ function App() {
                 activeSection={activeSection}
                 selectedSection={selectedSection}
                 gpsSection={currentGpsSection}
+                isTracking={gpsState?.active}
                 setSelectedSection={setSelectedSection}
                 setHoveredSection={setHoveredSection}
                 mapVisible={mapVisible}
