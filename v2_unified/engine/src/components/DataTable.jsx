@@ -291,14 +291,6 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                 <tr 
                   key={cp.id} 
                   className={`transition-colors cursor-pointer group ${isRowActive ? 'bg-cyan-900/20 ring-1 ring-cyan-500/30 z-10 relative' : 'hover:bg-slate-700/50'}`}
-                  onMouseEnter={() => {
-                    if (isTracking) return;
-                    setHoveredSection({...cp, actionText, sectionDist});
-                  }}
-                  onMouseLeave={() => {
-                    if (isTracking) return;
-                    setHoveredSection(null);
-                  }}
                   onClick={() => {
                     if (isTracking) return;
                     setHoveredSection(prev => prev?.id === cp.id ? null : {...cp, actionText, sectionDist});

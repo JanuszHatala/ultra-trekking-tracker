@@ -164,15 +164,26 @@ function MapResetButton({ bounds }) {
   );
 }
 
-// Component to handle overlay buttons (must be inside MapContainer for useMap context)
 function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracking, bounds, gpsState, setGpsState, activeSection }) {
   const map = useMap();
+  const [isSmallHeight, setIsSmallHeight] = useState(false);
+
+  useEffect(() => {
+    const container = map.getContainer();
+    const checkHeight = () => {
+      setIsSmallHeight(container.clientHeight < 350);
+    };
+    checkHeight();
+    const ro = new ResizeObserver(checkHeight);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, [map]);
   
   if (!mapVisible) return null;
   
   return (
     <>
-      <div className="absolute top-[80px] left-[10px] z-[650] flex flex-col gap-2">
+      <div className={`absolute z-[650] flex ${isSmallHeight ? 'top-[10px] left-[50px] flex-row flex-wrap max-w-[calc(100%-60px)] gap-2' : 'top-[80px] left-[10px] flex-col gap-2'}`}>
         <button 
           onClick={(e) => {
             e.preventDefault();
@@ -185,11 +196,26 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
           <EyeOff size={18} />
         </button>
         <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const container = map.getContainer();
+            if (!document.fullscreenElement) {
+              container.requestFullscreen().catch(err => console.warn(err));
+            } else {
+              document.exitFullscreen();
+            }
+          }}
+          className="w-[34px] h-[34px] bg-slate-800 border-2 border-slate-600 text-slate-300 hover:text-lime-400 rounded flex items-center justify-center shadow-lg transition-colors leaflet-control"
+          title="Fullscreen Map"
+        >
+          <Expand size={18} />
+        </button>
+        <button 
           onClick={async (e) => {
             e.preventDefault();
             e.stopPropagation();
             if (gpsState && gpsState.active && gpsState.lat !== null && gpsState.lon !== null) {
-              // If tracking is ON and we have coordinates, just pan to current pos without requesting again
               map.setView([gpsState.lat, gpsState.lon], map.getZoom(), { animate: true });
               return;
             }
@@ -225,6 +251,17 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
         >
           <Maximize size={18} />
         </button>
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsTracking(!isTracking);
+          }}
+          className={`w-[34px] h-[34px] rounded flex items-center justify-center shadow-lg border-2 transition-colors leaflet-control ${isTracking ? 'bg-lime-500 border-lime-400 text-slate-900' : 'bg-slate-800 border-slate-600 text-slate-300 hover:text-lime-400'}`}
+          title="Toggle GPS Tracking"
+        >
+          <Navigation size={18} />
+        </button>
         {activeSection && activeSection.sectionPoints && activeSection.sectionPoints.length > 0 && (
           <button 
             onClick={(e) => {
@@ -239,33 +276,6 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
             <ZoomIn size={18} />
           </button>
         )}
-        <button 
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setIsTracking(!isTracking);
-          }}
-          className={`w-[34px] h-[34px] rounded flex items-center justify-center shadow-lg border-2 transition-colors leaflet-control ${isTracking ? 'bg-lime-500 border-lime-400 text-slate-900' : 'bg-slate-800 border-slate-600 text-slate-300 hover:text-lime-400'}`}
-          title="Toggle GPS Tracking"
-        >
-          <Navigation size={18} />
-        </button>
-        <button 
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const container = map.getContainer();
-            if (!document.fullscreenElement) {
-              container.requestFullscreen().catch(err => console.warn(err));
-            } else {
-              document.exitFullscreen();
-            }
-          }}
-          className="w-[34px] h-[34px] bg-slate-800 border-2 border-slate-600 text-slate-300 hover:text-lime-400 rounded flex items-center justify-center shadow-lg transition-colors leaflet-control mt-4"
-          title="Fullscreen Map"
-        >
-          <Expand size={18} />
-        </button>
       </div>
     </>
   );
