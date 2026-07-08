@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Settings2, MapPin, X, Expand } from 'lucide-react';
+import { Settings2, MapPin, X, Expand, Navigation } from 'lucide-react';
 
 // Tiny inline canvas for section profile
 function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) {
@@ -78,7 +78,7 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) 
   return <canvas ref={canvasRef} width={width} height={height} className="bg-slate-900/50 rounded shadow-inner max-w-full" />;
 }
 
-export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
+export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
@@ -283,12 +283,14 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
               const sectionPace = sectionDist > 0 ? (sectionTime / sectionDist) : 0;
               const sectionSpeed = sectionTime > 0 ? (sectionDist / sectionTime) : 0;
               
-              const isSelected = activeSection?.id === cp.id;
+              const isExplicitlySelected = selectedSection?.id === cp.id;
+              const isGpsActive = (!selectedSection && gpsSection?.id === cp.id);
+              const isRowActive = activeSection?.id === cp.id; // Used for row background
 
               return (
                 <tr 
                   key={cp.id} 
-                  className={`transition-colors cursor-pointer group ${isSelected ? 'bg-cyan-900/30 ring-1 ring-cyan-500/50 z-10 relative' : 'hover:bg-slate-700/50'}`}
+                  className={`transition-colors cursor-pointer group ${isRowActive ? 'bg-cyan-900/20 ring-1 ring-cyan-500/30 z-10 relative' : 'hover:bg-slate-700/50'}`}
                   onMouseEnter={() => setHoveredSection({...cp, actionText, sectionDist})}
                   onMouseLeave={() => setHoveredSection(null)}
                   onClick={() => {
@@ -307,15 +309,22 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                     }}
                   >
                     <div className="relative inline-flex items-center justify-center">
-                      {isSelected && (
+                      {isExplicitlySelected && (
                         <div className="absolute -top-3 -right-2 text-cyan-400 drop-shadow-[0_0_3px_rgba(34,211,238,0.8)] z-10">
                           <MapPin size={16} weight="fill" />
                         </div>
                       )}
+                      {!isExplicitlySelected && isGpsActive && (
+                        <div className="absolute -top-3 -right-2 text-lime-400 drop-shadow-[0_0_3px_rgba(132,204,22,0.8)] z-10">
+                          <Navigation size={16} weight="fill" />
+                        </div>
+                      )}
                       <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold transition-all ${
-                        isSelected 
+                        isExplicitlySelected 
                           ? 'bg-cyan-900 border-2 border-cyan-400 text-cyan-100 shadow-[0_0_8px_rgba(34,211,238,0.4)] scale-110' 
-                          : 'bg-slate-800 border border-slate-600 text-lime-400 group-hover:border-lime-500'
+                          : isGpsActive
+                            ? 'bg-lime-900 border-2 border-lime-400 text-lime-100 shadow-[0_0_8px_rgba(132,204,22,0.4)] scale-110'
+                            : 'bg-slate-800 border border-slate-600 text-lime-400 group-hover:border-lime-500'
                       }`}>
                         {realIdx}
                       </div>
