@@ -116,8 +116,8 @@ function App() {
               const startHrs = prevCp.etaHrs;
               const endHrs = cp.etaHrs;
               const overlapping = timeline.filter(a => {
-                  const aStart = a.etaHrs;
-                  const aEnd = a.etaEndHrs || a.etaHrs;
+                  const aStart = a.startElapsedHours;
+                  const aEnd = a.endElapsedHours || a.startElapsedHours;
                   return (aStart >= startHrs && aStart <= endHrs) || 
                          (aEnd >= startHrs && aEnd <= endHrs) ||
                          (aStart <= startHrs && aEnd >= endHrs);
