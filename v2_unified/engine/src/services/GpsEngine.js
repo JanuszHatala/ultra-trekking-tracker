@@ -101,7 +101,7 @@ export const GpsEngine = {
       // Topological analysis in this window
       let maxElePt = windowPoints[0];
       let minElePt = windowPoints[0];
-      const startEle = points[lastCpIndex].ele;
+      const windowStartEle = windowPoints[0].ele;
 
       windowPoints.forEach(pt => {
         if (pt.ele > maxElePt.ele) maxElePt = pt;
@@ -109,8 +109,8 @@ export const GpsEngine = {
       });
 
       const eleVariance = maxElePt.ele - minElePt.ele;
-      const deltaUp = maxElePt.ele - startEle;
-      const deltaDown = startEle - minElePt.ele;
+      const deltaUp = maxElePt.ele - windowStartEle;
+      const deltaDown = windowStartEle - minElePt.ele;
       
       let selectedPt;
       let cpName = '';
