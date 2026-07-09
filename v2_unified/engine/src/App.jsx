@@ -469,7 +469,7 @@ function App() {
           </div>
             
           {/* Tab Bar */}
-          <div className="flex border-b border-slate-700 mt-2 md:mt-4 mb-0 overflow-x-auto hide-scrollbar text-sm md:text-base">
+          <div className="flex border-b border-slate-700 mt-2 md:mt-4 mb-0 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] text-sm md:text-base">
             <button onClick={() => setActiveTab('overview')} className={`px-3 md:px-4 py-1.5 md:py-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'overview' ? 'border-lime-400 text-lime-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-300 font-medium'}`}>
               {lang === 'en' ? 'Overview' : 'Przegląd'}
             </button>
@@ -531,7 +531,7 @@ function App() {
                 selectedSection={selectedSection}
                 gpsSection={currentGpsSection}
                 isTracking={gpsState?.active}
-                currentDistance={gpsState?.distance}
+                currentDistance={gpsState?.km}
                 setSelectedSection={setSelectedSection}
                 setHoveredSection={setHoveredSection}
                 mapVisible={mapVisible}

@@ -431,7 +431,7 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                     onClick={(e) => {
                       if (actionText) {
                         e.stopPropagation();
-                        setActionModal({ text: actionText, cp: cp });
+                        setActionModal({ text: actionText, cp: cp, startKm: prevCp.km });
                       }
                     }}
                   >
@@ -547,7 +547,7 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                     currentDistance={currentDistance}
                   />
                   <div className="flex justify-between w-full max-w-[400px] text-slate-500 text-xs mt-1 px-1">
-                    <div>{actionModal.cp.startKm.toFixed(1)} km</div>
+                    <div>{actionModal.startKm.toFixed(1)} km</div>
                     <div>{actionModal.cp.km.toFixed(1)} km</div>
                   </div>
                 </div>
