@@ -285,8 +285,8 @@
     {
       "startKm": 0,
       "endKm": 15,
-      "description_en": "Continuous march. The start from Bielsko-Biała is flat, then a sharp climb to Hrobacza Łąka. Keep HR < 130 bpm. Do not let the initial adrenaline ruin your pacing.",
-      "description_pl": "Ciągły marsz. Start z Bielska-Białej jest płaski, potem ostre podejście na Hrobaczą Łąkę. Trzymaj tętno < 130 bpm. Nie pozwól, by początkowa adrenalina zepsuła twoje tempo.",
+      "description_en": "Continuous march. The start is flat, then a sharp climb. Keep HR < 130 bpm. Do not let the initial adrenaline ruin your pacing.",
+      "description_pl": "Ciągły marsz. Start jest płaski, potem ostre podejście. Trzymaj tętno < 130 bpm. Nie pozwól, by początkowa adrenalina zepsuła twoje tempo.",
       "dotColor": "gray"
     },
     {
@@ -305,8 +305,8 @@
     {
       "startKm": 15,
       "endKm": 35,
-      "description_en": "Descent towards Żar and subsequent rolling hills. Conserve quads on the downhills. Switch to early solid food (first sandwich) while stomach is fresh.",
-      "description_pl": "Zejście w stronę Żaru i kolejne mniejsze wzniesienia. Oszczędzaj czworogłowe na zejściach. Zjedz wczesny stały pokarm (pierwsza kanapka), póki żołądek dobrze pracuje.",
+      "description_en": "Descent and subsequent rolling hills. Conserve quads on the downhills. Switch to early solid food (first sandwich) while stomach is fresh.",
+      "description_pl": "Zejście i kolejne mniejsze wzniesienia. Oszczędzaj czworogłowe na zejściach. Zjedz wczesny stały pokarm (pierwsza kanapka), póki żołądek dobrze pracuje.",
       "dotColor": "gray"
     },
     {
@@ -353,8 +353,8 @@
     {
       "startKm": 65,
       "endKm": 85,
-      "description_en": "Morning grind. The sun comes up, bringing false energy. Babia Góra massif approach. The hardest climbing of the entire route. Short, aggressive steps. Do not look at the peak, look 2 meters ahead.",
-      "description_pl": "Poranna orka. Wschodzi słońce, dając fałszywą energię. Podejście pod masyw Babiej Góry. Najtrudniejsza wspinaczka na całej trasie. Krótkie, agresywne kroki. Nie patrz na szczyt, patrz 2 metry przed siebie.",
+      "description_en": "Morning grind. The sun comes up, bringing false energy. The hardest climbing of the entire route. Short, aggressive steps. Do not look at the peak, look 2 meters ahead.",
+      "description_pl": "Poranna orka. Wschodzi słońce, dając fałszywą energię. Najtrudniejsza wspinaczka na całej trasie. Krótkie, agresywne kroki. Nie patrz na szczyt, patrz 2 metry przed siebie.",
       "dotColor": "gray"
     },
     {
@@ -397,8 +397,8 @@
     {
       "startKm": 115,
       "endKm": 134,
-      "description_en": "Time trial march to Luboń Wielki. Pure zombie mode. Stop only in case of a complete bonk. Use poles aggressively to drag yourself forward. The pain won't get worse, it just stays at max.",
-      "description_pl": "Marsz na czas na Luboń Wielki. Czysty tryb zombie. Zatrzymuj się tylko w przypadku całkowitego odcięcia. Używaj kijków agresywnie, by ciągnąć się naprzód. Ból nie będzie gorszy, utrzyma się na maxie.",
+      "description_en": "Time trial march to the finish. Pure zombie mode. Stop only in case of a complete bonk. Use poles aggressively to drag yourself forward. The pain won't get worse, it just stays at max.",
+      "description_pl": "Marsz na czas do mety. Czysty tryb zombie. Zatrzymuj się tylko w przypadku całkowitego odcięcia. Używaj kijków agresywnie, by ciągnąć się naprzód. Ból nie będzie gorszy, utrzyma się na maxie.",
       "dotColor": "red"
     }
   ],

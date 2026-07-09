@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Settings2, MapPin, X, Expand, Shrink, Navigation } from 'lucide-react';
 
 // Tiny inline canvas for section profile
-function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) {
+function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40, currentDistance = null }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -59,6 +59,45 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) 
       ctx.stroke();
     }
 
+    // Draw current distance marker if within range
+    if (currentDistance !== null) {
+      const sectionStart = points[0].dist;
+      const sectionEnd = points[points.length - 1].dist;
+      if (currentDistance >= sectionStart && currentDistance <= sectionEnd) {
+        const x = ((currentDistance - sectionStart) / maxDist) * width;
+        
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.setLineDash([]); // reset
+
+        // Draw dot on the surface
+        let exactY = height;
+        for (let i = 1; i < points.length; i++) {
+          if (currentDistance >= points[i-1].dist && currentDistance <= points[i].dist) {
+            const p1 = points[i-1];
+            const p2 = points[i];
+            const segmentRatio = (currentDistance - p1.dist) / (p2.dist - p1.dist);
+            const interpEle = p1.ele + segmentRatio * (p2.ele - p1.ele);
+            exactY = height - ((interpEle - minEle) / range) * height;
+            break;
+          }
+        }
+        
+        ctx.beginPath();
+        ctx.arc(x, exactY, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        ctx.strokeStyle = '#0ea5e9';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
     // Start/End dots
     const firstY = height - ((points[0].ele - minEle) / range) * height;
     const lastY = height - ((points[points.length - 1].ele - minEle) / range) * height;
@@ -73,12 +112,12 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40 }) 
     ctx.fillStyle = '#ec4899';
     ctx.fill();
 
-  }, [points, minEle, maxEle, width, height]);
+  }, [points, minEle, maxEle, width, height, currentDistance]);
 
   return <canvas ref={canvasRef} width={width} height={height} className="bg-slate-900/50 rounded shadow-inner max-w-full" />;
 }
 
-export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, isTracking, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
+export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, isTracking, currentDistance, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
@@ -423,7 +462,7 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                const totalDescent = enrichedCheckpoints.reduce((sum, cp) => sum + (cp.sectionDescent || 0), 0);
                
                return (
-                 <tr className="bg-slate-900 border-t-2 border-slate-700 text-slate-300 font-bold shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
+                 <tr className="bg-slate-800 border-t-2 border-slate-700 text-slate-300 font-bold shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
                    <td className="p-2 md:p-3 text-center border-r border-slate-700/50">
                      <span className="text-lime-400">Σ</span>
                    </td>
@@ -439,7 +478,7 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                      <div className="text-slate-200">{formatPace(avgPace)}</div>
                      <div className="text-[10px] text-slate-500 font-normal">{avgSpeed.toFixed(1)} km/h</div>
                    </td>
-                   <td className="p-2 md:p-3 border-r border-slate-700/50 bg-slate-900">
+                   <td className="p-2 md:p-3 border-r border-slate-700/50 bg-slate-800">
                      {/* empty */}
                    </td>
                    <td className="p-2 md:p-3 border-r border-slate-700/50">
@@ -469,7 +508,7 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
             </div>
             <div className="p-6 flex flex-col items-center">
               <div className="w-full flex justify-center mb-4 overflow-hidden">
-                <SparklineProfile points={profileModal.sectionPoints} minEle={globalMinEle} maxEle={globalMaxEle} width={800} height={300} />
+                <SparklineProfile points={profileModal.sectionPoints} minEle={globalMinEle} maxEle={globalMaxEle} width={800} height={300} currentDistance={currentDistance} />
               </div>
               <div className="flex justify-between w-full text-slate-400 text-sm">
                 <div>Start: <span className="text-lime-400">{Math.round(profileModal.sectionPoints[0].ele)}m</span></div>
@@ -497,6 +536,22 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
               <div className="text-base md:text-xl text-slate-200 whitespace-pre-wrap leading-relaxed font-medium">
                 {actionModal.text}
               </div>
+              {actionModal.cp.sectionPoints && actionModal.cp.sectionPoints.length > 0 && (
+                <div className="mt-6 flex flex-col items-center border-t border-slate-700/50 pt-4">
+                  <SparklineProfile 
+                    points={actionModal.cp.sectionPoints} 
+                    minEle={globalMinEle} 
+                    maxEle={globalMaxEle} 
+                    width={400} 
+                    height={100} 
+                    currentDistance={currentDistance}
+                  />
+                  <div className="flex justify-between w-full max-w-[400px] text-slate-500 text-xs mt-1 px-1">
+                    <div>{actionModal.cp.startKm.toFixed(1)} km</div>
+                    <div>{actionModal.cp.km.toFixed(1)} km</div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>,

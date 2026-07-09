@@ -141,7 +141,18 @@ function App() {
   }, [gpsState.lat, gpsState.lon, gpsState.timestamp, gpsState.active]);
 
   // Resizer state
-  const [leftWidth, setLeftWidth] = useState(45); // percentage
+  const [leftWidth, setLeftWidth] = useState(() => {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const initialId = searchParams.get('route') || localStorage.getItem('ultra_last_route_id') || 'msb-134k';
+      const saved = localStorage.getItem(`ultra_state_${initialId}`);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.leftWidth !== undefined) return state.leftWidth;
+      }
+    } catch (e) {}
+    return 45;
+  });
   const resizerRef = useRef(null);
   const routeInitializedRef = useRef({});
 
@@ -194,6 +205,18 @@ function App() {
         if (state.minWindow !== undefined) setMinWindow(state.minWindow);
         if (state.maxWindow !== undefined) setMaxWindow(state.maxWindow);
         if (state.cpAlgorithm !== undefined) setCpAlgorithm(state.cpAlgorithm);
+        if (state.leftWidth !== undefined) setLeftWidth(state.leftWidth);
+        
+        // Auto-restore fullscreen on first interaction
+        if (state.wantsFullscreen && !document.fullscreenElement) {
+          const tryFullscreen = () => {
+            document.documentElement.requestFullscreen().catch(() => {});
+            document.removeEventListener('click', tryFullscreen);
+            document.removeEventListener('touchstart', tryFullscreen);
+          };
+          document.addEventListener('click', tryFullscreen);
+          document.addEventListener('touchstart', tryFullscreen);
+        }
       } else {
         setGpsInterval(15000);
         setMinWindow(5);
@@ -377,11 +400,13 @@ function App() {
           minWindow,
           maxWindow,
           cpAlgorithm,
-          fontScale
+          fontScale,
+          leftWidth,
+          wantsFullscreen: !!document.fullscreenElement
        };
        localStorage.setItem(`ultra_state_${routeId}`, JSON.stringify(stateObj));
     }
-  }, [mapVisible, activeTab, selectedSection, gpsState.active, gpsInterval, minWindow, maxWindow, cpAlgorithm, fontScale, routeId, loading]);
+  }, [mapVisible, activeTab, selectedSection, gpsState.active, gpsInterval, minWindow, maxWindow, cpAlgorithm, fontScale, leftWidth, routeId, loading]);
 
   if (loading && !dataset) {
     return <div className="min-h-screen flex items-center justify-center text-lime-400 bg-slate-900">Loading Wyrypa Engine...</div>;
@@ -506,6 +531,7 @@ function App() {
                 selectedSection={selectedSection}
                 gpsSection={currentGpsSection}
                 isTracking={gpsState?.active}
+                currentDistance={gpsState?.distance}
                 setSelectedSection={setSelectedSection}
                 setHoveredSection={setHoveredSection}
                 mapVisible={mapVisible}
