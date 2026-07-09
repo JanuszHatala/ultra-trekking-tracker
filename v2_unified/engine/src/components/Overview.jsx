@@ -356,19 +356,26 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
 
         {/* Offline Cache Stats Display */}
         <div className="text-[10px] md:text-xs text-slate-500 font-mono flex flex-col ml-1 space-y-1 mb-4 md:mb-6">
-          {cacheStats.total > 0 && (
-            <div>
-               {lang === 'en' ? 'Global tile cache:' : 'Globalna pamięć map:'} {cacheStats.total} kafelków 
-               ({Object.entries(cacheStats.zooms).map(([k,v]) => `${k}:${v}`).join(', ')})
+          <details className="group">
+            <summary className="cursor-pointer text-slate-400 hover:text-slate-300 flex items-center mb-1">
+              {lang === 'en' ? 'Show Tile Cache Info' : 'Pokaż statystyki pamięci kafelków'}
+            </summary>
+            <div className="pl-2 border-l border-slate-700 space-y-1 mt-1">
+              {cacheStats.total > 0 && (
+                <div>
+                  {lang === 'en' ? 'Global tile cache:' : 'Globalna pamięć map:'} {cacheStats.total} kafelków 
+                  ({Object.entries(cacheStats.zooms).map(([k,v]) => `${k}:${v}`).join(', ')})
+                </div>
+              )}
+              {offlineStatus.total > 0 && (
+                <div className="text-lime-500/80">
+                  {lang === 'en' 
+                    ? `Route status: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} tiles)` 
+                    : `Status trasy: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} kafelków)`}
+                </div>
+              )}
             </div>
-          )}
-          {offlineStatus.total > 0 && (
-            <div className="text-lime-500/80">
-               {lang === 'en' 
-                 ? `Route status: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} tiles)` 
-                 : `Status trasy: ${offlineStatus.percent}% offline (${offlineStatus.cached}/${offlineStatus.total} kafelków)`}
-            </div>
-          )}
+          </details>
         </div>
 
         <div className="flex flex-wrap gap-2 md:gap-3 items-center mb-4 md:mb-6">

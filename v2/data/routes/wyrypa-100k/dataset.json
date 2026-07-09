@@ -325,8 +325,8 @@
     {
       "startKm": 0,
       "endKm": 25,
-      "description_pl": "Faza otwarcia. Start w świetle wieczoru. Długi, stromy podjazd na Hrobaczą Łąkę. Trzymaj tętno strictly < 130 bpm na płaskim i < 145 bpm na podejściu. Zadbaj o regularne popijanie Hyper-Mixu.",
-      "description_en": "Opening phase. Evening start. Long, steep climb to Hrobacza Łąka. Keep HR strictly < 130 bpm on flats and < 145 bpm on climbs. Maintain regular Hyper-Mix intake.",
+      "description_pl": "Faza otwarcia. Start w świetle wieczoru. Długi, stromy podjazd. Trzymaj tętno strictly < 130 bpm na płaskim i < 145 bpm na podejściu. Zadbaj o regularne popijanie Hyper-Mixu.",
+      "description_en": "Opening phase. Evening start. Long, steep climb. Keep HR strictly < 130 bpm on flats and < 145 bpm on climbs. Maintain regular Hyper-Mix intake.",
       "dotColor": "gray"
     },
     {
