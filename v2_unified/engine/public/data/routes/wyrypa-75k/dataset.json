@@ -23,92 +23,92 @@
     {
       "startElapsedHours": 0.0,
       "endElapsedHours": 1.0,
-      "action_pl": "[0.0 - 2.8km | Strome Podejście] Start. Wejście w noc. Adaptacja do najcięższego plecaka (pełna woda na starcie). Trzymaj tętno strictly < 130 bpm. Pij równe 100ml płynów co 15 min.",
+      "action_pl": "[0.0 - 2.8km | Strome Podejście] Start. Wejście w noc. Adaptacja do najcięższego plecaka (pełna woda na starcie). Trzymaj tętno kategorycznie < 130 bpm. Pij równe 100ml płynów co 15 min.",
       "action_en": "[0.0 - 2.8km | Steep Climb] Start. Entering the night. Adapting to the heaviest pack (full water). Keep HR strictly < 130 bpm. Drink exactly 100ml fluids every 15 min."
     },
     {
       "startElapsedHours": 1.0,
       "endElapsedHours": 2.0,
-      "action_pl": "[2.8 - 7.8km | Stromy Zbieg] pod strome wzniesienie (+500m). Zwolnij tempo do ok. 3.75 km/h. - weź mały łyk wody i zjedz baton energetyczny.",
-      "action_en": "[2.8 - 7.8km | Steep Descent] Steep (+500m). Slow down to ~3.75 km/h. - take a small sip of water and eat an energy bar."
+      "action_pl": "[2.8 - 7.8km | Stromy Zbieg] Zbieg po stromym wzniesieniu. Zwolnij tempo do ok. 3.75 km/h. Weź mały łyk wody i zjedz baton energetyczny.",
+      "action_en": "[2.8 - 7.8km | Steep Descent] Descending after steep climb. Slow down to ~3.75 km/h. Take a small sip of water and eat an energy bar."
     },
     {
       "startElapsedHours": 2.0,
       "endElapsedHours": 3.0,
-      "action_pl": "[7.8 - 10.8km | Strome Podejście] Grzbiet górski i łagodny. - weź szczyptę soli (lub Litorsal) i kabanosa na sód. aj ostrożnie, max 4.4 km/h dla kolan.",
-      "action_en": "[7.8 - 10.8km | Steep Climb] Ridge and gentle. - take a pinch of salt (or Litorsal) and a kabanos for sodium. Descend cautiously, max 4.4 km/h for knees."
+      "action_pl": "[7.8 - 10.8km | Strome Podejście] Marsz w umiarkowanym terenie górskim. Weź szczyptę soli (lub Litorsal) i kabanosa dla uzupełnienia sodu. Zbiegaj ostrożnie, max 4.4 km/h dla ochrony kolan.",
+      "action_en": "[7.8 - 10.8km | Steep Climb] Marching on moderate mountain terrain. Take a pinch of salt (or Litorsal) and a kabanos for sodium. Descend cautiously, max 4.4 km/h for knee protection."
     },
     {
       "startElapsedHours": 3.0,
       "endElapsedHours": 4.0,
-      "action_pl": "[10.8 - 14.7km | Podejście] Kolejne (+405m). - zjedz kanapkę. Pij ostrożnie, zachowaj rytm popijania z bukłaka i flaska.",
-      "action_en": "[10.8 - 14.7km | Climb] Next (+405m). - eat a sandwich. Drink carefully, maintain the bladder and flask sipping rhythm."
+      "action_pl": "[10.8 - 14.7km | Podejście] Kolejne wymagające podejście. Zjedz kanapkę. Pij ostrożnie, zachowaj rytm popijania z bukłaka i flasków.",
+      "action_en": "[10.8 - 14.7km | Climb] Next demanding ascent. Eat a sandwich. Drink carefully, maintain the bladder and flask sipping rhythm."
     },
     {
       "startElapsedHours": 4.0,
       "endElapsedHours": 5.0,
-      "action_pl": "[14.7 - 18.5km | Zbieg] Trudny techniczny odcinek w głębokiej nocy. - powinieneś zużyć już 1 pełny flask Hyper-Mixu.",
-      "action_en": "[14.7 - 18.5km | Descent] Tough technical section in deep night. - you should have finished 1 full flask of Hyper-Mix."
+      "action_pl": "[14.7 - 18.5km | Zbieg] Trudny techniczny odcinek w głębokiej nocy. Na tym etapie powinieneś zużyć już 1 pełny flask Hyper-Mixu.",
+      "action_en": "[14.7 - 18.5km | Descent] Tough technical section in deep night. At this stage, you should have finished 1 full flask of Hyper-Mix."
     },
     {
       "startElapsedHours": 5.0,
       "endElapsedHours": 6.5,
       "action_pl": "[18.5 - 22.0km | Podejście] POSTÓJ 5 MIN. Obowiązkowa zmiana skarpet na suche i smarowanie stóp wazeliną. Zjedz kabanosa. Przygotuj się psychicznie na najtrudniejszą fazę senności.",
-      "action_en": "[18.5 - 22.0km | Climb] 5 MIN BREAK. Mandatory change to dry socks and apply vaseline. Eat a kabanos. Prepare mentally for the toughest sleep phase."
+      "action_en": "[18.5 - 22.0km | Climb] 5 MIN BREAK. Mandatory change to dry socks and apply vaseline. Eat a kabanos. Prepare mentally for the toughest sleepiness phase."
     },
     {
       "startElapsedHours": 6.5,
       "endElapsedHours": 7.5,
-      "action_pl": "[22.0 - 26.1km | Zbieg] 6.5-7.5h: (+475m). - zjedz żel energetyczny. Wykorzystaj siłę ramion na podejściu, odciąż nogi.",
-      "action_en": "[22.0 - 26.1km | Descent] 6.5-7.5h: (+475m). - eat an energy gel. Use arm strength on poles to offload legs."
+      "action_pl": "[22.0 - 26.1km | Zbieg] Wejście w fazę Godziny Wilka. Zjedz żel energetyczny. Wykorzystaj siłę ramion i kijów na podejściach, aby odciążyć nogi.",
+      "action_en": "[22.0 - 26.1km | Descent] Entering the Witching Hour phase. Eat an energy gel. Use arm strength on poles during climbs to offload legs."
     },
     {
       "startElapsedHours": 7.5,
       "endElapsedHours": 8.5,
-      "action_pl": "[26.1 - 29.4km | Strome Podejście] 7.5-8.5h: Kryzys nocny (Godzina Wilka). Zjedz kanapkę. Wypij Red Bull #1 + Glukoza 1WW, aby zwalczyć senność.",
-      "action_en": "[26.1 - 29.4km | Steep Climb] 7.5-8.5h: Night crisis (Witching Hour). Eat a sandwich. Drink Red Bull #1 + Glucose 1WW to fight sleepiness."
+      "action_pl": "[26.1 - 29.4km | Strome Podejście] Szczyt nocnego kryzysu. Zjedz kanapkę. Wypij pierwszego Red Bulla i weź glukozę, aby stanowczo zwalczyć senność.",
+      "action_en": "[26.1 - 29.4km | Steep Climb] Peak of night crisis. Eat a sandwich. Drink 1st Red Bull and take glucose to strictly fight sleepiness."
     },
     {
       "startElapsedHours": 8.5,
       "endElapsedHours": 10.0,
-      "action_pl": "[29.4 - 34.9km | Stromy Zbieg] 8.5-10h: (+427m). Zgnieć puszkę po Red Bullu i schowaj śmieć. Wschód słońca, robi się jaśniej. Zdejmij czołówkę.",
-      "action_en": "[29.4 - 34.9km | Steep Descent] 8.5-10h: (+427m). Crush the Red Bull can and pack the trash. Sunrise, it gets lighter. Pack your headlamp."
+      "action_pl": "[29.4 - 34.9km | Stromy Zbieg] Zgnieć puszkę po Red Bullu i schowaj śmieć. Wschód słońca, robi się jaśniej. Zdejmij i schowaj czołówkę.",
+      "action_en": "[29.4 - 34.9km | Steep Descent] Crush the empty Red Bull can and pack the trash. Sunrise, it gets lighter. Remove and pack your headlamp."
     },
     {
       "startElapsedHours": 10.0,
       "endElapsedHours": 11.0,
-      "action_pl": "[37.7 - 42.4km | Zbieg] Zjedz baton energetyczny. Ciało odzyskuje siły w świetle dnia. Zdejmij kurtkę przeciwwiatrową.",
-      "action_en": "[37.7 - 42.4km | Descent] Eat an energy bar. Body regains strength in daylight. Remove wind jacket."
+      "action_pl": "[37.7 - 42.4km | Zbieg] Zjedz baton energetyczny. Ciało odzyskuje siły w świetle dnia. Zdejmij kurtkę przeciwwiatrową w miarę wzrostu temperatury.",
+      "action_en": "[37.7 - 42.4km | Descent] Eat an energy bar. Body regains strength in daylight. Remove wind jacket as temperature rises."
     },
     {
       "startElapsedHours": 11.0,
       "endElapsedHours": 12.0,
-      "action_pl": "[42.4 - 46.6km | Podejście] POSTÓJ 10 MIN. Druga konserwacja stóp. Przelej gotowy Hyper-Mix z dużych butelek PET w plecaku do flasków na klatce.",
-      "action_en": "[42.4 - 46.6km | Climb] 10 MIN BREAK. Second foot maintenance. Decant ready Hyper-Mix from large PET bottles in pack to chest flasks."
+      "action_pl": "[42.4 - 46.6km | Podejście] POSTÓJ 10 MIN. Druga konserwacja stóp. Przelej gotowy Hyper-Mix z dużych butelek w plecaku do flasków na klatce.",
+      "action_en": "[42.4 - 46.6km | Climb] 10 MIN BREAK. Second foot maintenance. Decant ready Hyper-Mix from large bottles in pack to chest flasks."
     },
     {
       "startElapsedHours": 12.0,
       "endElapsedHours": 13.0,
-      "action_pl": "[46.6 - 53.0km | Stromy Zbieg] (+292m). - zjedz słoną przekąskę lub weź szczyptę soli. Temperatura rośnie. Popijaj regularnie.",
-      "action_en": "[46.6 - 53.0km | Steep Descent] (+292m). - eat a salty snack or take a pinch of salt. Temperature is rising. Sip regularly."
+      "action_pl": "[46.6 - 53.0km | Stromy Zbieg] Zjedz słoną przekąskę lub weź szczyptę soli. Temperatura wyraźnie rośnie. Popijaj regularnie izotonik.",
+      "action_en": "[46.6 - 53.0km | Steep Descent] Eat a salty snack or take a pinch of salt. Temperature is noticeably rising. Sip isotonic regularly."
     },
     {
       "startElapsedHours": 13.0,
       "endElapsedHours": 14.5,
-      "action_pl": "[53.0 - 55.6km | Strome Podejście] Faza upału. - żołądek zmęczony, przejdź wyłącznie na żele. - wypij Red Bull #2 przed finałową wspinaczką.",
-      "action_en": "[53.0 - 55.6km | Steep Climb] Heat phase. - stomach fatigued, switch entirely to gels. - drink Red Bull #2 before the final."
+      "action_pl": "[53.0 - 55.6km | Strome Podejście] Faza upału. Żołądek zmęczony wysiłkiem - przejdź wyłącznie na żele energetyczne. Wypij drugiego Red Bulla przed finałową wspinaczką.",
+      "action_en": "[53.0 - 55.6km | Steep Climb] Heat phase. Stomach is fatigued - switch entirely to energy gels. Drink 2nd Red Bull before the final climb."
     },
     {
       "startElapsedHours": 14.5,
       "endElapsedHours": 16.5,
-      "action_pl": "[55.6 - 60.1km | Zbieg] 14.5-16.5h: Ostatnia stroma ściana (+510m). Zaakceptuj spadek tempa do 3.5 km/h. Skup się wyłącznie na oddechu i tętnie < 140 bpm.",
-      "action_en": "[55.6 - 60.1km | Descent] 14.5-16.5h: Last steep wall (+510m). Accept pace drop to 3.5 km/h. Focus solely on breathing and HR < 140 bpm."
+      "action_pl": "[55.6 - 60.1km | Zbieg] Ostatnia stroma ściana. Zaakceptuj spadek tempa do 3.5 km/h. Skup się wyłącznie na oddechu i utrzymaniu tętna < 140 bpm.",
+      "action_en": "[55.6 - 60.1km | Descent] Last steep wall. Accept pace drop down to 3.5 km/h. Focus solely on breathing and keeping HR < 140 bpm."
     },
     {
       "startElapsedHours": 16.5,
       "endElapsedHours": 18.5,
-      "action_pl": "[64.8 - 67.7km | Strome Podejście] 16.5-18.5h: do mety. Ląduj na śródstopiu. Meta testu! Wyrzuć nagromadzone śmieci.",
-      "action_en": "[64.8 - 67.7km | Steep Climb] 16.5-18.5h: to finish. Land on midfoot. Finish! Dispose of accumulated trash."
+      "action_pl": "[64.8 - 67.7km | Strome Podejście] Zejście do mety. Ląduj ostrożnie na śródstopiu. Meta! Wyrzuć nagromadzone śmieci i rozpocznij regenerację.",
+      "action_en": "[64.8 - 67.7km | Steep Climb] Descent to the finish line. Land carefully on midfoot. Finish! Dispose of accumulated trash and start recovery."
     }
   ],
   "tactics": [

@@ -40,19 +40,42 @@ Only after I approve your strategy, you will generate the final output. The outp
 
 **Rules for JSON Generation:**
 - `tactics`: Must be deeply tailored to my historical data and the specific route. No generic advice.
-- `waypoints[].notes`: Must be actionable, specific, and based on the approved strategy (e.g., "Drink 300ml isotonic, prepare poles for 20% gradient climb").
+- `actionTimeline`: Must contain actionable, deeply tactical advice based strictly on physiological requirements, gear strategy, and the GPX terrain gradients (e.g. "Drink 300ml isotonic, prepare poles for 20% gradient climb").
+- **CRITICAL RESTRICTION 1**: DO NOT use empty parentheses `()` or placeholders anywhere in the text.
+- **CRITICAL RESTRICTION 2**: DO NOT hallucinate geographical names, peaks, or locations that were not explicitly mentioned in my notes. Keep the tactical advice geographically agnostic (focus entirely on elevation, distance, gradients, and physiology).
+- **CRITICAL RESTRICTION 3**: DO NOT truncate words or leave sentences unfinished.
 - `trainingSchedule` and `testResults`: You will generate a tailored 12-week training schedule based on the deficits you found in Phase 1.
 
 ```json
 {
-  "id": "unique-route-id",
-  "title": "Route Name",
-  "subtitle": "Location / Event Name",
+  "route_id": "unique-route-id",
+  "title_pl": "Nazwa Trasy PL",
+  "title_en": "Route Name EN",
+  "subtitle_pl": "Lokalizacja PL",
+  "subtitle_en": "Location EN",
+  "themeColor": "lime",
+  "version": "v2.0",
   "metadata": {
     "totalDistanceKm": 100.5,
     "totalAscendM": 3200,
-    "timeLimitHours": 24
+    "timeLimitHours": 24,
+    "difficulty": "extreme"
   },
+  "challengeParameters": {
+    "date": "2026-07-10",
+    "startTime": "19:00",
+    "weightKg": "87 (75 body + 12 pack)",
+    "targetBpm": "125-140",
+    "goalTime": "< 24h"
+  },
+  "actionTimeline": [
+    {
+      "startElapsedHours": 0.0,
+      "endElapsedHours": 1.0,
+      "action_pl": "[0.0 - 3.1km | Strome Podejście] Trzymaj tętno < 130 bpm. Pij małe łyki wody co 15 min.",
+      "action_en": "[0.0 - 3.1km | Steep Climb] Keep HR < 130 bpm. Sip water every 15 min."
+    }
+  ],
   "tactics": [
     "Specific tactical paragraph 1.",
     "Specific tactical paragraph 2."
@@ -68,16 +91,6 @@ Only after I approve your strategy, you will generate the final output. The outp
   ],
   "testResults": [
     { "date": "2024-06-01", "testName": "Cooper Test", "result": "2800m" }
-  ],
-  "waypoints": [
-    {
-      "km": 0.0,
-      "name": "Start",
-      "expectedPaceMinKm": 10.5,
-      "isCheckpoint": true,
-      "cutOffTime": null,
-      "notes": "Specific instruction."
-    }
   ]
 }
 ```
