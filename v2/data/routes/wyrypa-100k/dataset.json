@@ -23,140 +23,140 @@
     {
       "startElapsedHours": 0.0,
       "endElapsedHours": 1.0,
-      "action_pl": "[0.0 - 3.1km | Strome Podejście] Start. Płaski odcinek wyjściowy z Bielska-Białej. Kontroluj emocje i adrenalinę. Tętno strictly < 130 bpm. Pij małe łyki wody z bukłaka co 15 min.",
-      "action_en": "[0.0 - 3.1km | Steep Climb] Start. Flat exit section from Bielsko-Biała. Control excitement and adrenaline. HR strictly < 130 bpm. Sip water from bladder every 15 min."
+      "action_pl": "[0.0 - 3.1km | Strome Podejście] Start. Płaski odcinek wyjściowy. Kontroluj emocje i adrenalinę. Tętno kategorycznie < 130 bpm. Pij małe łyki wody z bukłaka co 15 min.",
+      "action_en": "[0.0 - 3.1km | Steep Climb] Start. Flat exit section. Control excitement and adrenaline. HR strictly < 130 bpm. Sip water from bladder every 15 min."
     },
     {
       "startElapsedHours": 1.0,
       "endElapsedHours": 2.0,
-      "action_pl": "[3.1 - 6.5km | Strome Podejście] Początek podejścia na Hrobaczą Łąkę. Opróżnij 1. bidon Hyper-Mix. Wspinaczka z obciążeniem 12 kg wymaga krótkiego kroku i mocnej pracy kijów. Kontrola HR < 145 bpm.",
-      "action_en": "[3.1 - 6.5km | Steep Climb] Start of to Hrobacza Łąka. Empty 1st Hyper-Mix flask. ing with a 12kg pack requires short steps and active pole drive. Keep HR < 145 bpm."
+      "action_pl": "[3.1 - 6.5km | Strome Podejście] Początek stromego podejścia. Opróżnij 1. bidon Hyper-Mix. Wspinaczka z obciążeniem 12 kg wymaga krótkiego kroku i mocnej pracy kijów. Kontrola HR < 145 bpm.",
+      "action_en": "[3.1 - 6.5km | Steep Climb] Start of steep ascent. Empty 1st Hyper-Mix flask. Climbing with a 12kg pack requires short steps and active pole drive. Keep HR < 145 bpm."
     },
     {
       "startElapsedHours": 2.0,
       "endElapsedHours": 3.0,
-      "action_pl": "[6.5 - 12.4km | Stromy Zbieg] Hrobaczej Łąki (). Przejście do u. Weź 2 kapsułki SaltStick (). Pamiętaj o limicie prędkości na ach do 13.5 min/km dla ochrony kolan.",
-      "action_en": "[6.5 - 12.4km | Steep Descent] Hrobacza Łąka summit (). Transition to. Take 2 SaltStick caps (). Keep speed capped at 13.5 min/km for knee protection."
+      "action_pl": "[6.5 - 12.4km | Stromy Zbieg] Osiągnięto szczyt. Przejście do technicznego zbiegu. Weź 2 kapsułki SaltStick. Pamiętaj o limicie prędkości na zbiegach do 13.5 min/km dla ochrony kolan.",
+      "action_en": "[6.5 - 12.4km | Steep Descent] Reached the summit. Transition to technical descent. Take 2 SaltStick caps. Keep speed capped at 13.5 min/km for knee protection."
     },
     {
       "startElapsedHours": 3.0,
       "endElapsedHours": 4.0,
-      "action_pl": "[12.4 - 14.7km | Strome Podejście] Łagodny, techniczny w ciemności. Zjedz 1 kanapkę () na trawienie w fazie wczesnej, póki żołądek jest świeży. Popijaj obficie wodą.",
-      "action_en": "[12.4 - 14.7km | Steep Climb] Moderate technical in the dark. Eat 1 sandwich () for early digestion while the stomach is fresh. Wash down with plenty of water."
+      "action_pl": "[12.4 - 14.7km | Strome Podejście] Łagodny, techniczny marsz w ciemności. Zjedz 1 kanapkę na trawienie w fazie wczesnej, póki żołądek jest świeży. Popijaj obficie wodą.",
+      "action_en": "[12.4 - 14.7km | Steep Climb] Moderate technical march in the dark. Eat 1 sandwich for early digestion while the stomach is fresh. Wash down with plenty of water."
     },
     {
       "startElapsedHours": 4.0,
       "endElapsedHours": 5.0,
-      "action_pl": "[14.7 - 18.7km | Strome Podejście] pod kolejny grzbiet. Pop 1 kostka Dextro Energy (). Utrzymuj równy rytm oddechowy, nie forsuj podbiegów. Oszczędzaj energię.",
-      "action_en": "[14.7 - 18.7km | Steep Climb] ing the next ridge. Pop 1 Dextro Energy cube (). Maintain a steady breathing rhythm, do not push on uphills. Conserve energy."
+      "action_pl": "[14.7 - 18.7km | Strome Podejście] Wspinaczka pod kolejny grzbiet. Weź 1 kostkę Dextro Energy. Utrzymuj równy rytm oddechowy, nie forsuj podbiegów. Oszczędzaj energię.",
+      "action_en": "[14.7 - 18.7km | Steep Climb] Climbing the next ridge. Pop 1 Dextro Energy cube. Maintain a steady breathing rhythm, do not push on uphills. Conserve energy."
     },
     {
       "startElapsedHours": 5.0,
       "endElapsedHours": 6.0,
-      "action_pl": "[18.7 - 23.7km | Zbieg] POSTÓJ 5 MIN. Przełęcz. Zmiana skarpet na suche (kluczowe zabezpieczenie stóp przed pęcherzami), nałóż wazelinę. Weź 2 kaps. SaltStick + 1 Baton.",
-      "action_en": "[18.7 - 23.7km | Descent] 5 MIN BREAK. Pass. Change socks to dry ones (critical blister protection), apply vaseline. Take 2 SaltStick caps + 1 energy bar."
+      "action_pl": "[18.7 - 23.7km | Zbieg] POSTÓJ 5 MIN na przełęczy. Zmiana skarpet na suche (kluczowe zabezpieczenie stóp przed pęcherzami), nałóż wazelinę. Weź 2 kaps. SaltStick i 1 baton energetyczny.",
+      "action_en": "[18.7 - 23.7km | Descent] 5 MIN BREAK at the pass. Change socks to dry ones (critical blister protection), apply vaseline. Take 2 SaltStick caps and 1 energy bar."
     },
     {
       "startElapsedHours": 6.0,
       "endElapsedHours": 7.0,
-      "action_pl": "[23.7 - 27.9km | Zbieg] Wejście w głęboką noc. Temperatura spada, załóż kurtkę wiatroodporną. Opróżnij 3. bidon Hyper-Mix (). Skup się na wiązce czołówki.",
-      "action_en": "[23.7 - 27.9km | Descent] Entering deep night. Temperature drops, put on wind jacket. Empty 3rd Hyper-Mix flask (). Focus on the headlamp beam."
+      "action_pl": "[23.7 - 27.9km | Zbieg] Wejście w głęboką noc. Temperatura spada, załóż kurtkę wiatroodporną. Opróżnij 3. bidon Hyper-Mix. Skup się na wiązce czołówki.",
+      "action_en": "[23.7 - 27.9km | Descent] Entering deep night. Temperature drops, put on wind jacket. Empty 3rd Hyper-Mix flask. Focus on the headlamp beam."
     },
     {
       "startElapsedHours": 7.0,
       "endElapsedHours": 8.0,
-      "action_pl": "[27.9 - 33.6km | Stromy Zbieg] Marsz w umiarkowanym terenie. Zjedz 1 kanapkę + Banan () na podtrzymanie glikogenu. Trzymaj kadencję i regularnie popijaj czystą wodę.",
-      "action_en": "[27.9 - 33.6km | Steep Descent] Marching on moderate terrain. Eat 1 sandwich + Banana () to sustain glycogen level. Keep cadence and sip clean water regularly."
+      "action_pl": "[27.9 - 33.6km | Stromy Zbieg] Marsz w umiarkowanym terenie. Zjedz 1 kanapkę i banana na podtrzymanie glikogenu. Trzymaj kadencję i regularnie popijaj czystą wodę.",
+      "action_en": "[27.9 - 33.6km | Steep Descent] Marching on moderate terrain. Eat 1 sandwich and a banana to sustain glycogen level. Keep cadence and sip clean water regularly."
     },
     {
       "startElapsedHours": 8.0,
       "endElapsedHours": 9.0,
-      "action_pl": "[33.6 - 37.2km | Strome Podejście] pod stromy w ciemności. Weź 2 kaps. SaltStick. Wykorzystaj siłę ramion na kijach (odciążenie nóg o 20%). HR strictly < 140 bpm.",
-      "action_en": "[33.6 - 37.2km | Steep Climb] ing a steep in the dark. Take 2 SaltStick caps. Use arm power on poles (saving 20% leg load). Keep HR strictly < 140 bpm."
+      "action_pl": "[33.6 - 37.2km | Strome Podejście] Podejście pod stromy odcinek w ciemności. Weź 2 kaps. SaltStick. Wykorzystaj siłę ramion na kijach (odciążenie nóg o 20%). HR kategorycznie < 140 bpm.",
+      "action_en": "[33.6 - 37.2km | Steep Climb] Climbing a steep section in the dark. Take 2 SaltStick caps. Use arm power on poles (saving 20% leg load). Keep HR strictly < 140 bpm."
     },
     {
       "startElapsedHours": 9.0,
       "endElapsedHours": 10.0,
-      "action_pl": "[37.2 - 40.0km | Strome Podejście] Trudna faza techniczna. Zgnieć puszkę Red Bulla i schowaj śmieć. Obserwuj stopy pod kątem gorących punktów ucisku.",
-      "action_en": "[37.2 - 40.0km | Steep Climb] Tough technical phase. Crush Red Bull can and pack trash. Monitor feet for hot pressure points."
+      "action_pl": "[37.2 - 40.0km | Strome Podejście] Trudna faza techniczna. Zgnieć puszkę po Red Bullu i schowaj śmieć. Obserwuj stopy pod kątem gorących punktów ucisku.",
+      "action_en": "[37.2 - 40.0km | Steep Climb] Tough technical phase. Crush empty Red Bull can and pack trash. Monitor feet for hot pressure points."
     },
     {
       "startElapsedHours": 10.0,
       "endElapsedHours": 11.0,
-      "action_pl": "[40.0 - 44.3km | Podejście] KRYZYS NOCNY (Godzina Wilka). Uruchom Protokół Ratunkowy: wypij Red Bull #1 + Glukoza 1WW pod język. Maszeruj powoli przez 10 min.",
-      "action_en": "[40.0 - 44.3km | Climb] NIGHT CRISIS (Witching Hour). Run Rescue Protocol: drink Red Bull #1 + Glucose 1WW under tongue. March slowly for 10 mins."
+      "action_pl": "[40.0 - 44.3km | Podejście] KRYZYS NOCNY (Godzina Wilka). Uruchom Protokół Ratunkowy: wypij 1 Red Bulla i weź glukozę pod język. Maszeruj powoli przez 10 minut.",
+      "action_en": "[40.0 - 44.3km | Climb] NIGHT CRISIS (Witching Hour). Run Rescue Protocol: drink 1 Red Bull and take glucose under the tongue. March slowly for 10 mins."
     },
     {
       "startElapsedHours": 11.0,
       "endElapsedHours": 12.0,
-      "action_pl": "[44.3 - 48.2km | Podejście] Powrót energii po cukrze. Zbliżasz się do Opróżnij 5. bidon Hyper-Mix. Przygotuj się na postój regeneracyjny.",
-      "action_en": "[44.3 - 48.2km | Climb] Energy return post-sugar. Approaching Empty 5th Hyper-Mix flask. Prepare for recovery break."
+      "action_pl": "[44.3 - 48.2km | Podejście] Powrót energii po węglowodanach. Zbliżasz się do szczytu. Opróżnij 5. bidon Hyper-Mix. Przygotuj się na postój regeneracyjny.",
+      "action_en": "[44.3 - 48.2km | Climb] Energy return post-carbs. Approaching the summit. Empty 5th Hyper-Mix flask. Prepare for recovery break."
     },
     {
       "startElapsedHours": 12.0,
       "endElapsedHours": 13.0,
-      "action_pl": "[48.2 - 54.4km | Stromy Zbieg] POSTÓJ 5 MIN. Druga inspekcja stóp, zmiana skarpet jeśli wilgotne, ponowna wazelina. Weź 2 kaps. SaltStick. Świt - zdejmij czołówkę.",
+      "action_pl": "[48.2 - 54.4km | Stromy Zbieg] POSTÓJ 5 MIN. Druga inspekcja stóp, zmiana skarpet jeśli wilgotne, ponowna aplikacja wazeliny. Weź 2 kaps. SaltStick. Świt - zdejmij czołówkę.",
       "action_en": "[48.2 - 54.4km | Steep Descent] 5 MIN BREAK. Second foot check, change socks if damp, reapply vaseline. Take 2 SaltStick caps. Dawn - pack headlamp."
     },
     {
       "startElapsedHours": 13.0,
       "endElapsedHours": 14.0,
-      "action_pl": "[54.4 - 57.3km | Strome Podejście] pod kolejną przełęcz. Rozpocznij powolne przechodzenie na żele węglowodanowe. Żołądek zaczyna gorzej absorbować stałe jedzenie.",
-      "action_en": "[54.4 - 57.3km | Steep Climb] ing to the next pass. Start transitioning slowly to carb gels. Stomach begins to struggle with solid absorption."
+      "action_pl": "[54.4 - 57.3km | Strome Podejście] Podejście pod kolejną przełęcz. Rozpocznij powolne przechodzenie na żele węglowodanowe. Żołądek zaczyna gorzej absorbować stałe jedzenie.",
+      "action_en": "[54.4 - 57.3km | Steep Climb] Climbing to the next pass. Start transitioning slowly to carb gels. Stomach begins to struggle with solid absorption."
     },
     {
       "startElapsedHours": 14.0,
       "endElapsedHours": 15.0,
-      "action_pl": "[57.3 - 59.9km | Strome Podejście] PRZEPAK (30 MIN). Obowiązkowa zmiana butów na drugą parę, suche skarpety, Sudocrem. Zjedz ciepłą zupę. Załaduj depozyt Hyper-Mix i żeli.",
-      "action_en": "[57.3 - 59.9km | Steep Climb] DROP BAG (30 MIN). Mandatory shoe change to second pair, dry socks, Sudocrem. Eat warm soup. Load drop bag Hyper-Mix and gels."
+      "action_pl": "[57.3 - 59.9km | Strome Podejście] PRZEPAK (30 MIN). Obowiązkowa zmiana butów na drugą parę, suche skarpety, nałóż Sudocrem. Zjedz ciepłą zupę. Załaduj depozyt Hyper-Mix i żeli.",
+      "action_en": "[57.3 - 59.9km | Steep Climb] DROP BAG (30 MIN). Mandatory shoe change to second pair, dry socks, apply Sudocrem. Eat warm soup. Load drop bag Hyper-Mix and gels."
     },
     {
       "startElapsedHours": 15.0,
       "endElapsedHours": 16.0,
-      "action_pl": "[59.9 - 65.0km | Stromy Zbieg] Wyjście z przepaku (). Brzuch pełny - zacznij bardzo powoli, nie przekraczaj 120 bpm przez pierwsze 2 km. Pij tylko świeży, czysty Hyper-Mix.",
-      "action_en": "[59.9 - 65.0km | Steep Descent] Leaving drop bag (). Full stomach - start very slowly, do not exceed 120 bpm for first 2 km. Drink only fresh, clean Hyper-Mix."
+      "action_pl": "[59.9 - 65.0km | Stromy Zbieg] Wyjście z przepaku. Brzuch pełny - zacznij bardzo powoli, nie przekraczaj 120 bpm przez pierwsze 2 km. Pij tylko świeży, czysty Hyper-Mix.",
+      "action_en": "[59.9 - 65.0km | Steep Descent] Leaving drop bag. Full stomach - start very slowly, do not exceed 120 bpm for first 2 km. Drink only fresh, clean Hyper-Mix."
     },
     {
       "startElapsedHours": 16.0,
       "endElapsedHours": 17.0,
-      "action_pl": "[65.0 - 68.9km | Podejście] Ustabilizowanie tempa. Marsz po płaskim grzbiecie. Zjedz żel + Banan + 2 kaps. SaltStick. Temperatura powietrza zaczyna mocno rosnąć.",
-      "action_en": "[65.0 - 68.9km | Climb] Pace stabilization. Marching flat ridge. Eat 1 gel + Banana + 2 SaltStick caps. Air temperature starts rising rapidly."
+      "action_pl": "[65.0 - 68.9km | Podejście] Ustabilizowanie tempa. Marsz po płaskim grzbiecie. Zjedz żel, banana i 2 kaps. SaltStick. Temperatura powietrza zaczyna rosnąć.",
+      "action_en": "[65.0 - 68.9km | Climb] Pace stabilization. Marching on a flat ridge. Eat 1 gel, a banana and 2 SaltStick caps. Air temperature starts rising."
     },
     {
       "startElapsedHours": 17.0,
       "endElapsedHours": 18.0,
-      "action_pl": "[68.9 - 74.3km | Stromy Zbieg] POSTÓJ 5 MIN. Kontrola otarć w pachwinach, nałóż Sudocrem. Zjedz 1 kostkę Dextro Energy. Polej kark chłodną wodą. Zapnij paski plecaka.",
-      "action_en": "[68.9 - 74.3km | Steep Descent] 5 MIN BREAK. Check groin chafing, apply Sudocrem. Eat 1 Dextro Energy cube. Pour cool water on neck. Tighten pack straps."
+      "action_pl": "[68.9 - 74.3km | Stromy Zbieg] POSTÓJ 5 MIN. Kontrola otarć, nałóż Sudocrem. Zjedz 1 kostkę Dextro Energy. Polej kark chłodną wodą. Zapnij mocniej paski plecaka.",
+      "action_en": "[68.9 - 74.3km | Steep Descent] 5 MIN BREAK. Check for chafing, apply Sudocrem. Eat 1 Dextro Energy cube. Pour cool water on neck. Tighten pack straps."
     },
     {
       "startElapsedHours": 18.0,
       "endElapsedHours": 19.5,
-      "action_pl": "[74.3 - 78.2km | Zbieg] KRYZYS UPAŁU. Uruchom protokół awaryjny na gorąco: wypij Red Bull #2 + maksymalna dawka SaltStick (2 kaps.). Zwolnij tempo na podejściach.",
-      "action_en": "[74.3 - 78.2km | Descent] HEAT CRISIS. Run hot emergency protocol: drink Red Bull #2 + max SaltStick dose (2 caps). Slow down on uphills."
+      "action_pl": "[74.3 - 78.2km | Zbieg] KRYZYS UPAŁU. Uruchom protokół awaryjny na gorąco: wypij Red Bulla i weź maksymalną dawkę SaltStick (2 kaps.). Zwolnij tempo na podejściach.",
+      "action_en": "[74.3 - 78.2km | Descent] HEAT CRISIS. Run hot emergency protocol: drink a Red Bull and take max SaltStick dose (2 caps). Slow down on uphills."
     },
     {
       "startElapsedHours": 19.5,
       "endElapsedHours": 20.5,
-      "action_pl": "[78.2 - 81.4km | Strome Podejście] 19.5-20.5h: pod przedostatni. Zjedz żel energetyczny. Bezwzględny koniec jedzenia stałego - trawienie jest zablokowane.",
-      "action_en": "[78.2 - 81.4km | Steep Climb] 19.5-20.5h: ing penultimate. Eat energy gel. Strict end of solid food - digestion is shut down."
+      "action_pl": "[78.2 - 81.4km | Strome Podejście] Podejście pod przedostatni grzbiet. Zjedz żel energetyczny. Bezwzględny koniec jedzenia stałego - trawienie jest zablokowane.",
+      "action_en": "[78.2 - 81.4km | Steep Climb] Climbing the penultimate ridge. Eat energy gel. Strict end of solid food - digestion is shut down."
     },
     {
       "startElapsedHours": 20.5,
       "endElapsedHours": 21.5,
-      "action_pl": "[81.4 - 84.9km | Strome Podejście] 20.5-21.5h: Opróżnij ostatni bidon Hyper-Mix. Marsz w trybie automatycznym. Skup się wyłącznie na wbijaniu kijów i rytmie oddechu.",
-      "action_en": "[81.4 - 84.9km | Steep Climb] 20.5-21.5h: Empty last Hyper-Mix flask. Marching in automatic mode. Focus solely on pole plants and breathing rhythm."
+      "action_pl": "[81.4 - 84.9km | Strome Podejście] Opróżnij ostatni bidon Hyper-Mix. Marsz w trybie automatycznym. Skup się wyłącznie na wbijaniu kijów i rytmie oddechu.",
+      "action_en": "[81.4 - 84.9km | Steep Climb] Empty last Hyper-Mix flask. Marching in automatic mode. Focus solely on pole plants and breathing rhythm."
     },
     {
       "startElapsedHours": 21.5,
       "endElapsedHours": 22.5,
-      "action_pl": "[84.9 - 91.2km | Stromy Zbieg] 21.5-22.5h: FINISZ.. Wypij Red Bull #3 + Glukoza 1WW. Zignoruj ból kolan i stóp, to gra mentalna.",
-      "action_en": "[84.9 - 91.2km | Steep Descent] 21.5-22.5h: FINISH.. Drink Red Bull #3 + Glucose 1WW. Ignore knee/foot pain, this is a mental game."
+      "action_pl": "[84.9 - 91.2km | Stromy Zbieg] FAZA FINAŁOWA. Wypij Red Bulla i weź glukozę. Zignoruj ból kolan i stóp, to teraz wyłącznie gra mentalna.",
+      "action_en": "[84.9 - 91.2km | Steep Descent] FINAL PHASE. Drink a Red Bull and take glucose. Ignore knee and foot pain, this is purely a mental game now."
     },
     {
       "startElapsedHours": 22.5,
       "endElapsedHours": 24.0,
-      "action_pl": "[91.2 - 96.5km | Zbieg] 22.5-24h: do mety. Ląduj na śródstopiu, amortyzuj kijami. Utrzymaj skupienie do samego końca. META (100 km).",
-      "action_en": "[91.2 - 96.5km | Descent] 22.5-24h: to finish. Land on midfoot, absorb impact with poles. Keep focus until the very end. FINISH (100 km)."
+      "action_pl": "[91.2 - 96.5km | Zbieg] Zejście do mety. Ląduj na śródstopiu, amortyzuj kijami. Utrzymaj skupienie do samego końca. META.",
+      "action_en": "[91.2 - 96.5km | Descent] Descent to finish line. Land on midfoot, absorb impact with poles. Keep focus until the very end. FINISH."
     }
   ],
   "tactics": [
