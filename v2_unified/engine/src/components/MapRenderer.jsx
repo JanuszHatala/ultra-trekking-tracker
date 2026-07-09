@@ -427,10 +427,12 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
           
           <ZoomControl position="topleft" />
           
-          {/* GPX Track (RED as requested) */}
-          <Polyline positions={positions} color="#ef4444" weight={4} opacity={0.8} />
+          {/* GPX Track (RED as requested) - Fallback if no checkpoints yet */}
+          {(!checkpoints || checkpoints.length === 0) && (
+            <Polyline positions={positions} color="#ef4444" weight={4} opacity={0.8} />
+          )}
           
-          {/* Checkpoints */}
+          {/* Checkpoints and Track Segments */}
           {checkpoints && checkpoints.map((cp, i) => {
             let actionText = null;
             let sectionDist = 0;
@@ -446,19 +448,29 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
                 }
             }
             const isActive = activeSection && (activeSection.id === cp.id || activeSection.name === cp.name);
+            const clickHandler = () => { 
+                if (setSelectedSection) setSelectedSection({ ...cp, actionText, sectionDist }); 
+                setShowOverlay(true);
+            };
+
             return (
-              <Marker 
-                key={i} 
-                position={[cp.lat, cp.lon]} 
-                icon={createNumberedIcon(i === 0 ? 'S' : i)}
-                zIndexOffset={isActive ? 1000 : 0}
-                eventHandlers={{ 
-                  click: () => { 
-                    if (setSelectedSection) setSelectedSection({ ...cp, actionText, sectionDist }); 
-                    setShowOverlay(true);
-                  } 
-                }}
-              />
+              <React.Fragment key={i}>
+                {cp.sectionPoints && cp.sectionPoints.length > 0 && (
+                   <Polyline 
+                     positions={cp.sectionPoints.map(p => [p.lat, p.lon])} 
+                     color="#ef4444" 
+                     weight={4} 
+                     opacity={0.8}
+                     eventHandlers={{ click: clickHandler }}
+                   />
+                )}
+                <Marker 
+                  position={[cp.lat, cp.lon]} 
+                  icon={createNumberedIcon(i === 0 ? 'S' : i)}
+                  zIndexOffset={isActive ? 1000 : 0}
+                  eventHandlers={{ click: clickHandler }}
+                />
+              </React.Fragment>
             );
           })}
 
