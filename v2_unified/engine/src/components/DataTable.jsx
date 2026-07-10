@@ -117,7 +117,7 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40, cu
   return <canvas ref={canvasRef} width={width} height={height} className="bg-slate-900/50 rounded shadow-inner max-w-full" />;
 }
 
-export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, isTracking, currentDistance, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
+export function DataTable({ routeId, startTime, checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, isTracking, currentDistance, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
@@ -125,6 +125,24 @@ export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, max
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [customComments, setCustomComments] = useState({});
   const tableRef = useRef(null);
+
+  const getClockTime = (startStr, hrs) => {
+    if (!startStr) return null;
+    const parts = startStr.split(':');
+    if (parts.length !== 2) return null;
+    const h = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    if (isNaN(h) || isNaN(m)) return null;
+    
+    const totalMinutes = h * 60 + m + Math.round(hrs * 60);
+    const resultDays = Math.floor(totalMinutes / (24 * 60));
+    const resultH = Math.floor((totalMinutes % (24 * 60)) / 60);
+    const resultM = totalMinutes % 60;
+    
+    const timeStr = `${resultH.toString().padStart(2, '0')}:${resultM.toString().padStart(2, '0')}`;
+    if (resultDays > 0) return `${timeStr} (+${resultDays}d)`;
+    return timeStr;
+  };
 
   useEffect(() => {
     if (routeId) {
@@ -430,6 +448,11 @@ export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, max
                   <td className="p-2 md:p-3 border-r border-slate-700/30">
                     <div className="font-bold text-orange-400">{formatTime(cp.etaHrs)}</div>
                     <div className="text-[10px] text-slate-500">+{formatTime(sectionTime)}</div>
+                    {startTime && (
+                      <div className="text-[10px] text-cyan-400 font-mono mt-1">
+                        ETA {getClockTime(startTime, cp.etaHrs)}
+                      </div>
+                    )}
                   </td>
                   
                   <td className="p-2 md:p-3 border-r border-slate-700/30">
@@ -498,6 +521,11 @@ export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, max
                    <td className="p-2 md:p-3 border-r border-slate-700/50">
                      <div className="text-orange-400">{formatTime(totalTime)}</div>
                      <div className="text-[10px] text-slate-500 font-normal">{lang === 'en' ? 'Total ETA' : 'Całkowity ETA'}</div>
+                     {startTime && (
+                       <div className="text-[10px] text-cyan-400 font-mono font-bold mt-1">
+                         ETA {getClockTime(startTime, totalTime)}
+                       </div>
+                     )}
                    </td>
                    <td className="p-2 md:p-3 border-r border-slate-700/50">
                      <div className="text-slate-200">{formatPace(avgPace)}</div>
