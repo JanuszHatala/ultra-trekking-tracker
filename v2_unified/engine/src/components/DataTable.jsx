@@ -117,12 +117,35 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40, cu
   return <canvas ref={canvasRef} width={width} height={height} className="bg-slate-900/50 rounded shadow-inner max-w-full" />;
 }
 
-export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, isTracking, currentDistance, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
+export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, maxWindow, setMinWindow, setMaxWindow, cpAlgorithm, setCpAlgorithm, lang = 'en', activeSection, selectedSection, gpsSection, isTracking, currentDistance, setSelectedSection, setHoveredSection, mapVisible, setMapVisible }) {
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [customComments, setCustomComments] = useState({});
   const tableRef = useRef(null);
+
+  useEffect(() => {
+    if (routeId) {
+      try {
+        const saved = localStorage.getItem(`ultra_comments_${routeId}`);
+        if (saved) setCustomComments(JSON.parse(saved));
+        else setCustomComments({});
+      } catch (e) {
+        setCustomComments({});
+      }
+    }
+  }, [routeId]);
+
+  const updateComment = (cpId, text) => {
+    const nextState = { ...customComments, [cpId]: text };
+    setCustomComments(nextState);
+    if (routeId) {
+      try {
+        localStorage.setItem(`ultra_comments_${routeId}`, JSON.stringify(nextState));
+      } catch (e) {}
+    }
+  };
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -427,16 +450,16 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                   </td>
                   
                   <td 
-                    className={`p-2 md:p-3 border-r border-slate-700/30 ${actionText ? 'cursor-pointer hover:bg-slate-800/80 transition-colors' : ''}`}
+                    className={`p-2 md:p-3 border-r border-slate-700/30 cursor-pointer hover:bg-slate-800/80 transition-colors`}
                     onClick={(e) => {
-                      if (actionText) {
-                        e.stopPropagation();
-                        setActionModal({ text: actionText, cp: cp, startKm: prevCp.km });
-                      }
+                      e.stopPropagation();
+                      setActionModal({ text: actionText, cp: cp, startKm: prevCp.km });
                     }}
                   >
-                    <div className="text-[10px] md:text-xs text-slate-400 whitespace-pre-wrap break-words max-w-[250px] leading-tight">
-                      {actionText || '-'}
+                    <div className="text-[10px] md:text-xs text-slate-400 whitespace-pre-wrap break-words max-w-[250px] leading-tight flex flex-col gap-1">
+                      {actionText && <div>{actionText}</div>}
+                      {customComments[cp.id] && <div className="text-amber-400 font-medium italic">{customComments[cp.id]}</div>}
+                      {!actionText && !customComments[cp.id] && <span>-</span>}
                     </div>
                   </td>
                   
@@ -532,10 +555,25 @@ export function DataTable({ checkpoints, actionTimeline, minWindow, maxWindow, s
                 <X size={24} />
               </button>
             </div>
-            <div className="p-6 overflow-auto">
-              <div className="text-base md:text-xl text-slate-200 whitespace-pre-wrap leading-relaxed font-medium">
-                {actionModal.text}
+            <div className="p-6 flex flex-col gap-4 overflow-auto">
+              {actionModal.text && (
+                <div className="text-base md:text-lg text-slate-200 whitespace-pre-wrap leading-relaxed font-medium bg-slate-800/50 p-4 rounded-lg border border-slate-700/50">
+                  {actionModal.text}
+                </div>
+              )}
+              
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-slate-400">
+                  {lang === 'en' ? 'Custom Note / Action:' : 'Własna Notatka / Akcja:'}
+                </label>
+                <textarea
+                  value={customComments[actionModal.cp.id] || ''}
+                  onChange={(e) => updateComment(actionModal.cp.id, e.target.value)}
+                  placeholder={lang === 'en' ? 'Add your custom action notes here (e.g. eat gel, refill water)...' : 'Dodaj własną notatkę tutaj (np. zjedz żel, nalej wody)...'}
+                  className="w-full h-32 bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"
+                />
               </div>
+
               {actionModal.cp.sectionPoints && actionModal.cp.sectionPoints.length > 0 && (
                 <div className="mt-6 flex flex-col items-center border-t border-slate-700/50 pt-4">
                   <SparklineProfile 

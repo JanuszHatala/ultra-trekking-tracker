@@ -26,6 +26,8 @@ export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
   const [checkedItems, setCheckedItems] = useState({});
   const [customInventoryItems, setCustomInventoryItems] = useState([]);
   const [newCustomItemName, setNewCustomItemName] = useState('');
+  const [editingCustomItem, setEditingCustomItem] = useState(null);
+  const [editingCustomItemName, setEditingCustomItemName] = useState('');
 
   useEffect(() => {
     if (type === 'inventory' && routeId) {
@@ -85,6 +87,38 @@ export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
         localStorage.setItem(`ultra_inventory_${routeId}`, JSON.stringify(nextState));
       }
     }
+  };
+
+  const startEditingCustomItem = (itemName) => {
+    setEditingCustomItem(itemName);
+    setEditingCustomItemName(itemName);
+  };
+
+  const saveEditedCustomItem = (oldName) => {
+    if (!editingCustomItemName.trim() || editingCustomItemName.trim() === oldName) {
+      setEditingCustomItem(null);
+      return;
+    }
+    const newName = editingCustomItemName.trim();
+    const nextItems = customInventoryItems.map(i => i === oldName ? newName : i);
+    setCustomInventoryItems(nextItems);
+    if (routeId) {
+      try {
+        localStorage.setItem(`ultra_inventory_custom_${routeId}`, JSON.stringify(nextItems));
+      } catch (e) {}
+    }
+    
+    const oldId = `Custom Items-${oldName}`;
+    const newId = `Custom Items-${newName}`;
+    if (checkedItems[oldId]) {
+      const nextState = { ...checkedItems, [newId]: true };
+      delete nextState[oldId];
+      setCheckedItems(nextState);
+      if (routeId) {
+        localStorage.setItem(`ultra_inventory_${routeId}`, JSON.stringify(nextState));
+      }
+    }
+    setEditingCustomItem(null);
   };
 
   if (!data) return <div className="text-slate-500 text-center p-8">{lang === 'en' ? 'No data available' : 'Brak danych'}</div>;
@@ -177,7 +211,7 @@ export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
                   return (
                   <li 
                     key={i} 
-                    onClick={() => toggleCheck(itemId)}
+                    onClick={() => { if(editingCustomItem !== item.text_en) toggleCheck(itemId); }}
                     className={`group relative flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all ${isChecked ? 'bg-slate-800/40 border-slate-700/50 opacity-50' : (item.isCritical ? THEME_MAP.red : (THEME_MAP[cat.themeColor] || THEME_MAP.gray))}`}
                   >
                     <div className="mt-0.5 flex-shrink-0 flex items-center justify-center">
@@ -190,15 +224,45 @@ export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
                        )}
                     </div>
                     <span className={`mt-0.5 text-lg transition-all ${isChecked ? 'grayscale scale-90' : 'scale-100'}`}>{item.icon}</span>
-                    <span className={`text-sm transition-all ${isChecked ? 'line-through text-slate-400' : ''}`}>{t(item, 'text')}</span>
                     
-                    {cat.category_en === 'Custom Items' && (
-                       <button
-                         onClick={(e) => { e.stopPropagation(); removeCustomItem(item.text_en); }}
-                         className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                       >
-                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                       </button>
+                    {editingCustomItem === item.text_en ? (
+                      <div className="flex-1 flex gap-2" onClick={e => e.stopPropagation()}>
+                        <input
+                          type="text"
+                          value={editingCustomItemName}
+                          onChange={e => setEditingCustomItemName(e.target.value)}
+                          onKeyDown={e => {
+                            if(e.key === 'Enter') saveEditedCustomItem(item.text_en);
+                            if(e.key === 'Escape') setEditingCustomItem(null);
+                          }}
+                          autoFocus
+                          className="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-1 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                        />
+                        <button onClick={() => saveEditedCustomItem(item.text_en)} className="text-lime-500 hover:text-lime-400 p-1">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                      </div>
+                    ) : (
+                      <span className={`text-sm transition-all flex-1 ${isChecked ? 'line-through text-slate-400' : ''}`}>{t(item, 'text')}</span>
+                    )}
+                    
+                    {cat.category_en === 'Custom Items' && editingCustomItem !== item.text_en && (
+                       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <button
+                           onClick={(e) => { e.stopPropagation(); startEditingCustomItem(item.text_en); }}
+                           className="p-2 text-slate-500 hover:text-cyan-400"
+                           title={lang === 'en' ? 'Edit' : 'Edytuj'}
+                         >
+                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                         </button>
+                         <button
+                           onClick={(e) => { e.stopPropagation(); removeCustomItem(item.text_en); }}
+                           className="p-2 text-slate-500 hover:text-red-400"
+                           title={lang === 'en' ? 'Delete' : 'Usuń'}
+                         >
+                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                         </button>
+                       </div>
                     )}
                   </li>
                 )})}
