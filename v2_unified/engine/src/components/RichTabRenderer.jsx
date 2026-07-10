@@ -1,28 +1,92 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const THEME_MAP = {
-  cyan: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
-  emerald: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
-  red: 'text-red-400 border-red-500/30 bg-red-500/10',
-  orange: 'text-orange-400 border-orange-500/30 bg-orange-500/10',
-  lime: 'text-lime-400 border-lime-500/30 bg-lime-500/10',
-  blue: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
-  gray: 'text-slate-400 border-slate-500/30 bg-slate-500/10',
-  amber: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
+  cyan: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20',
+  emerald: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20',
+  red: 'text-red-400 border-red-500/30 bg-red-500/10 hover:bg-red-500/20',
+  orange: 'text-orange-400 border-orange-500/30 bg-orange-500/10 hover:bg-orange-500/20',
+  lime: 'text-lime-400 border-lime-500/30 bg-lime-500/10 hover:bg-lime-500/20',
+  blue: 'text-blue-400 border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20',
+  gray: 'text-slate-400 border-slate-500/30 bg-slate-500/10 hover:bg-slate-500/20',
+  amber: 'text-amber-400 border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20',
 };
 
 const PILL_MAP = {
-  cyan: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
-  emerald: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-  red: 'bg-red-500/20 text-red-300 border border-red-500/30',
-  orange: 'bg-orange-500/20 text-orange-300 border border-orange-500/30',
-  lime: 'bg-lime-500/20 text-lime-300 border border-lime-500/30',
-  blue: 'bg-blue-500/20 text-blue-300 border border-blue-500/30',
-  gray: 'bg-slate-500/20 text-slate-300 border border-slate-500/30',
-  amber: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
+  cyan: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/30',
+  emerald: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30',
+  red: 'bg-red-500/20 text-red-300 border border-red-500/30 hover:bg-red-500/30',
+  orange: 'bg-orange-500/20 text-orange-300 border border-orange-500/30 hover:bg-orange-500/30',
+  lime: 'bg-lime-500/20 text-lime-300 border border-lime-500/30 hover:bg-lime-500/30',
+  blue: 'bg-blue-500/20 text-blue-300 border border-blue-500/30 hover:bg-blue-500/30',
+  gray: 'bg-slate-500/20 text-slate-300 border border-slate-500/30 hover:bg-slate-500/30',
+  amber: 'bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30',
 };
 
-export function RichTabRenderer({ data, type, lang = 'en' }) {
+export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
+  const [checkedItems, setCheckedItems] = useState({});
+  const [customInventoryItems, setCustomInventoryItems] = useState([]);
+  const [newCustomItemName, setNewCustomItemName] = useState('');
+
+  useEffect(() => {
+    if (type === 'inventory' && routeId) {
+      try {
+        const saved = localStorage.getItem(`ultra_inventory_${routeId}`);
+        if (saved) setCheckedItems(JSON.parse(saved));
+        else setCheckedItems({});
+        
+        const savedCustom = localStorage.getItem(`ultra_inventory_custom_${routeId}`);
+        if (savedCustom) setCustomInventoryItems(JSON.parse(savedCustom));
+        else setCustomInventoryItems([]);
+      } catch (e) {
+        setCheckedItems({});
+        setCustomInventoryItems([]);
+      }
+    }
+  }, [type, routeId]);
+
+  const toggleCheck = (itemId) => {
+    const nextState = { ...checkedItems, [itemId]: !checkedItems[itemId] };
+    setCheckedItems(nextState);
+    if (routeId) {
+      try {
+        localStorage.setItem(`ultra_inventory_${routeId}`, JSON.stringify(nextState));
+      } catch (e) {}
+    }
+  };
+
+  const addCustomItem = (e) => {
+    e.preventDefault();
+    if (!newCustomItemName.trim()) return;
+    
+    const nextItems = [...customInventoryItems, newCustomItemName.trim()];
+    setCustomInventoryItems(nextItems);
+    setNewCustomItemName('');
+    if (routeId) {
+      try {
+        localStorage.setItem(`ultra_inventory_custom_${routeId}`, JSON.stringify(nextItems));
+      } catch (e) {}
+    }
+  };
+
+  const removeCustomItem = (itemName) => {
+    const nextItems = customInventoryItems.filter(i => i !== itemName);
+    setCustomInventoryItems(nextItems);
+    if (routeId) {
+      try {
+        localStorage.setItem(`ultra_inventory_custom_${routeId}`, JSON.stringify(nextItems));
+      } catch (e) {}
+    }
+    const itemId = `Custom Items-${itemName}`;
+    if (checkedItems[itemId]) {
+      const nextState = { ...checkedItems };
+      delete nextState[itemId];
+      setCheckedItems(nextState);
+      if (routeId) {
+        localStorage.setItem(`ultra_inventory_${routeId}`, JSON.stringify(nextState));
+      }
+    }
+  };
+
   if (!data) return <div className="text-slate-500 text-center p-8">{lang === 'en' ? 'No data available' : 'Brak danych'}</div>;
 
   const t = (item, key) => item[`${key}_${lang}`] || item[`${key}_en`];
@@ -45,33 +109,116 @@ export function RichTabRenderer({ data, type, lang = 'en' }) {
   }
 
   if (type === 'inventory') {
+    let displayData = [...data];
+    if (customInventoryItems.length > 0) {
+      displayData.push({
+        category_en: "Custom Items",
+        category_pl: "Własne Rzeczy",
+        displayMode: "list",
+        themeColor: "amber",
+        items: customInventoryItems.map(name => ({
+          icon: "📌",
+          text_en: name,
+          text_pl: name
+        }))
+      });
+    }
+
     return (
-      <div className="space-y-6">
-        <h2 className="text-xl font-bold text-slate-100 mb-6">{lang === 'en' ? 'Inventory' : 'Sprzęt'}</h2>
-        {data.map((cat, idx) => (
+      <div className="space-y-6 pb-8">
+        <div className="flex justify-between items-center mb-6 border-b border-slate-700 pb-2">
+          <h2 className="text-xl font-bold text-slate-100">{lang === 'en' ? 'Inventory' : 'Sprzęt'}</h2>
+          <button 
+            onClick={() => {
+              if(window.confirm(lang === 'en' ? 'Clear all checked items?' : 'Wyczyścić zaznaczenia?')) {
+                setCheckedItems({});
+                if(routeId) localStorage.removeItem(`ultra_inventory_${routeId}`);
+              }
+            }}
+            className="text-xs bg-slate-800 text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded border border-slate-700 transition-colors cursor-pointer"
+          >
+            {lang === 'en' ? 'Reset' : 'Resetuj'}
+          </button>
+        </div>
+        
+        {displayData.map((cat, idx) => {
+          const checkedCount = cat.items.filter(item => checkedItems[`${cat.category_en}-${item.text_en}`]).length;
+          const isAllChecked = checkedCount === cat.items.length && cat.items.length > 0;
+          
+          return (
           <div key={idx} className="space-y-3">
-            <h3 className="font-bold text-slate-200 border-b border-slate-700 pb-2">{t(cat, 'category')}</h3>
+            <div className="flex justify-between items-center border-b border-slate-700/50 pb-1">
+              <h3 className={`font-bold transition-colors ${isAllChecked ? 'text-lime-500' : 'text-slate-200'}`}>
+                {t(cat, 'category')}
+              </h3>
+              <span className="text-xs font-mono text-slate-500">{checkedCount}/{cat.items.length}</span>
+            </div>
             
             {cat.displayMode === 'pills' ? (
               <div className="flex flex-wrap gap-2">
-                {cat.items.map((item, i) => (
-                  <span key={i} className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-2 ${PILL_MAP[cat.themeColor] || PILL_MAP.gray}`}>
-                    {item.icon} {t(item, 'text')}
-                  </span>
-                ))}
+                {cat.items.map((item, i) => {
+                  const itemId = `${cat.category_en}-${item.text_en}`;
+                  const isChecked = checkedItems[itemId] || false;
+                  return (
+                  <button 
+                    key={i} 
+                    onClick={() => toggleCheck(itemId)}
+                    className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-2 cursor-pointer transition-colors ${isChecked ? 'bg-slate-800/80 text-slate-500 border-slate-700/50 opacity-60 line-through' : (PILL_MAP[cat.themeColor] || PILL_MAP.gray)}`}
+                  >
+                    <span className={isChecked ? 'grayscale' : ''}>{item.icon}</span> {t(item, 'text')}
+                  </button>
+                )})}
               </div>
             ) : (
               <ul className="space-y-2">
-                {cat.items.map((item, i) => (
-                  <li key={i} className={`flex items-start gap-3 p-3 rounded-lg border ${item.isCritical ? THEME_MAP.red : (THEME_MAP[cat.themeColor] || THEME_MAP.gray)}`}>
-                    <span className="mt-0.5">{item.icon}</span>
-                    <span className="text-sm">{t(item, 'text')}</span>
+                {cat.items.map((item, i) => {
+                  const itemId = `${cat.category_en}-${item.text_en}`;
+                  const isChecked = checkedItems[itemId] || false;
+                  return (
+                  <li 
+                    key={i} 
+                    onClick={() => toggleCheck(itemId)}
+                    className={`group relative flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all ${isChecked ? 'bg-slate-800/40 border-slate-700/50 opacity-50' : (item.isCritical ? THEME_MAP.red : (THEME_MAP[cat.themeColor] || THEME_MAP.gray))}`}
+                  >
+                    <div className="mt-0.5 flex-shrink-0 flex items-center justify-center">
+                       {isChecked ? (
+                          <div className="w-5 h-5 rounded bg-lime-500 flex items-center justify-center text-slate-900">
+                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                          </div>
+                       ) : (
+                          <div className={`w-5 h-5 rounded border-2 ${item.isCritical ? 'border-red-500/50' : 'border-slate-500/60'}`}></div>
+                       )}
+                    </div>
+                    <span className={`mt-0.5 text-lg transition-all ${isChecked ? 'grayscale scale-90' : 'scale-100'}`}>{item.icon}</span>
+                    <span className={`text-sm transition-all ${isChecked ? 'line-through text-slate-400' : ''}`}>{t(item, 'text')}</span>
+                    
+                    {cat.category_en === 'Custom Items' && (
+                       <button
+                         onClick={(e) => { e.stopPropagation(); removeCustomItem(item.text_en); }}
+                         className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                       >
+                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                       </button>
+                    )}
                   </li>
-                ))}
+                )})}
               </ul>
             )}
           </div>
-        ))}
+        )})}
+        
+        <form onSubmit={addCustomItem} className="mt-6 flex gap-2">
+           <input 
+             type="text" 
+             value={newCustomItemName}
+             onChange={e => setNewCustomItemName(e.target.value)}
+             placeholder={lang === 'en' ? 'Add custom item...' : 'Dodaj własną rzecz...'}
+             className="flex-1 bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
+           />
+           <button type="submit" className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded text-sm transition-colors border border-slate-600">
+             {lang === 'en' ? 'Add' : 'Dodaj'}
+           </button>
+        </form>
       </div>
     );
   }

@@ -540,15 +540,15 @@ function App() {
           )}
 
           {activeTab === 'tactics' && (
-             <RichTabRenderer data={dataset?.tactics} type="tactics" lang={lang} />
+             <RichTabRenderer data={dataset?.tactics} type="tactics" lang={lang} routeId={routeId} />
           )}
 
           {activeTab === 'inventory' && (
-            <RichTabRenderer data={dataset?.inventory} type="inventory" lang={lang} />
+            <RichTabRenderer data={dataset?.inventory} type="inventory" lang={lang} routeId={routeId} />
           )}
 
           {activeTab === 'schedule' && (
-            <RichTabRenderer data={dataset?.schedule} type="schedule" lang={lang} />
+            <RichTabRenderer data={dataset?.schedule} type="schedule" lang={lang} routeId={routeId} />
           )}
 
           {activeTab === 'tests' && (
