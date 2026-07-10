@@ -121,6 +121,7 @@ export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, max
   const [showSettings, setShowSettings] = useState(false);
   const [profileModal, setProfileModal] = useState(null);
   const [actionModal, setActionModal] = useState(null);
+  const [isEditingComment, setIsEditingComment] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [customComments, setCustomComments] = useState({});
   const tableRef = useRef(null);
@@ -453,6 +454,7 @@ export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, max
                     className={`p-2 md:p-3 border-r border-slate-700/30 cursor-pointer hover:bg-slate-800/80 transition-colors`}
                     onClick={(e) => {
                       e.stopPropagation();
+                      setIsEditingComment(false);
                       setActionModal({ text: actionText, cp: cp, startKm: prevCp.km });
                     }}
                   >
@@ -563,15 +565,50 @@ export function DataTable({ routeId, checkpoints, actionTimeline, minWindow, max
               )}
               
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-slate-400">
-                  {lang === 'en' ? 'Custom Note / Action:' : 'Własna Notatka / Akcja:'}
-                </label>
-                <textarea
-                  value={customComments[actionModal.cp.id] || ''}
-                  onChange={(e) => updateComment(actionModal.cp.id, e.target.value)}
-                  placeholder={lang === 'en' ? 'Add your custom action notes here (e.g. eat gel, refill water)...' : 'Dodaj własną notatkę tutaj (np. zjedz żel, nalej wody)...'}
-                  className="w-full h-32 bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"
-                />
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-bold text-slate-400">
+                    {lang === 'en' ? 'Custom Note / Action:' : 'Własna Notatka / Akcja:'}
+                  </label>
+                  {!isEditingComment && customComments[actionModal.cp.id] && (
+                     <button onClick={() => setIsEditingComment(true)} className="text-slate-400 hover:text-cyan-400 p-1 bg-slate-800 rounded">
+                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                     </button>
+                  )}
+                </div>
+                
+                {!customComments[actionModal.cp.id] && !isEditingComment ? (
+                  <button 
+                    onClick={() => setIsEditingComment(true)} 
+                    className="w-full text-center py-3 border border-dashed border-slate-700 text-slate-500 hover:text-cyan-400 hover:border-cyan-800 hover:bg-slate-800/50 rounded-lg text-sm transition-all"
+                  >
+                    + {lang === 'en' ? 'Add custom note' : 'Dodaj własną notatkę'}
+                  </button>
+                ) : isEditingComment ? (
+                  <div className="flex flex-col gap-2">
+                    <textarea
+                      value={customComments[actionModal.cp.id] || ''}
+                      onChange={(e) => updateComment(actionModal.cp.id, e.target.value)}
+                      autoFocus
+                      placeholder={lang === 'en' ? 'Add your custom action notes here (e.g. eat gel, refill water)...' : 'Dodaj własną notatkę tutaj (np. zjedz żel, nalej wody)...'}
+                      className="w-full h-32 bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"
+                    />
+                    <div className="flex justify-end">
+                      <button 
+                        onClick={() => setIsEditingComment(false)}
+                        className="px-4 py-1.5 bg-lime-950/40 hover:bg-lime-900 text-lime-400 border border-lime-800 rounded text-sm font-bold transition-colors"
+                      >
+                        {lang === 'en' ? 'Done' : 'Gotowe'}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div 
+                    className="w-full bg-slate-900/50 border border-slate-800 rounded-lg p-4 text-base md:text-lg text-amber-400 font-medium italic whitespace-pre-wrap cursor-pointer hover:bg-slate-800 transition-colors"
+                    onClick={() => setIsEditingComment(true)}
+                  >
+                    {customComments[actionModal.cp.id]}
+                  </div>
+                )}
               </div>
 
               {actionModal.cp.sectionPoints && actionModal.cp.sectionPoints.length > 0 && (
