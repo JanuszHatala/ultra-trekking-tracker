@@ -519,6 +519,7 @@ function App() {
           {activeTab === 'table' && (
               <DataTable 
                 routeId={routeId}
+                startTime={dataset?.challengeParameters?.startTime}
                 checkpoints={checkpoints} 
                 actionTimeline={dataset?.actionTimeline} 
                 minWindow={minWindow} 
