@@ -1,29 +1,30 @@
 {
   "routes": [
     {
-      "id": "100k",
-      "name": "Wyrypa 100km Ultra-Trekking",
-      "version": "1.6",
+      "id": "msb-134k",
+      "name": "Mały Szlak Beskidzki",
+      "version": "2.0",
       "files": [
-        "100k/index.html",
-        "100k/sw.js",
-        "100k/manifest.json",
-        "100k/icon-192.svg",
-        "100k/icon-512.svg",
-        "100k/wyrypa100km.gpx"
+        "data/routes/msb-134k/dataset.json",
+        "data/routes/msb-134k/route.gpx"
       ]
     },
     {
-      "id": "75k",
-      "name": "Wyrypa 75km Ultra-Trekking",
-      "version": "1.6",
+      "id": "wyrypa-100k",
+      "name": "Wyrypa 100km",
+      "version": "2.1.3",
       "files": [
-        "75k/index.html",
-        "75k/sw.js",
-        "75k/manifest.json",
-        "75k/icon-192.svg",
-        "75k/icon-512.svg",
-        "75k/wyrypa75km.gpx"
+        "data/routes/wyrypa-100k/dataset.json",
+        "data/routes/wyrypa-100k/route.gpx"
+      ]
+    },
+    {
+      "id": "wyrypa-75k",
+      "name": "Wyrypa 75km",
+      "version": "2.1.3",
+      "files": [
+        "data/routes/wyrypa-75k/dataset.json",
+        "data/routes/wyrypa-75k/route.gpx"
       ]
     }
   ]
