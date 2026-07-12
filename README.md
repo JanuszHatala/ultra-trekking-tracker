@@ -81,11 +81,11 @@ A modern, React-based (Vite) Unified Tracking Engine designed to replace the leg
 - **Modern UI**: Floating map modals (configurable for mobile), sticky tables, and responsive tracker cards.
 
 ### V2 Documentation
-All product requirements, architecture notes, and progress walkthroughs for the unified engine are tracked in the `/docs/v2/` directory:
-- [v2_prd.md](docs/v2/v2_prd.md)
-- [current_architecture.md](docs/v2/current_architecture.md)
-- [walkthrough.md](docs/v2/walkthrough.md)
-- [route_analysis_prompt.md](docs/v2/route_analysis_prompt.md)
+All product requirements, architecture notes, and progress walkthroughs for the unified engine are tracked in the `/docs/` directory:
+- [v2_prd.md](docs/v2_prd.md)
+- [current_architecture.md](docs/current_architecture.md)
+- [walkthrough.md](docs/walkthrough.md)
+- [route_analysis_prompt.md](docs/route_analysis_prompt.md)
 
 ### Build the Unified App
 ```bash

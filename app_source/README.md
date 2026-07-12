@@ -6,12 +6,12 @@ The goal of this engine is to replace the legacy statically generated Python scr
 
 ## Documentation
 
-Full architectural documentation, Product Requirements, and feature walkthroughs can be found in the root `docs/v2/` directory:
+Full architectural documentation, Product Requirements, and feature walkthroughs can be found in the root `docs/` directory:
 
-- [Product Requirements Document (PRD)](../../docs/v2/v2_prd.md)
-- [Current Architecture (Pre-V2 state)](../../docs/v2/current_architecture.md)
-- [V2 Walkthrough & Changelog](../../docs/v2/walkthrough.md)
-- [Route Analysis Prompt](../../docs/v2/route_analysis_prompt.md)
+- [Product Requirements Document (PRD)](../../docs/v2_prd.md)
+- [Current Architecture (Pre-V2 state)](../../docs/current_architecture.md)
+- [V2 Walkthrough & Changelog](../../docs/walkthrough.md)
+- [Route Analysis Prompt](../../docs/route_analysis_prompt.md)
 
 ## Tech Stack
 
