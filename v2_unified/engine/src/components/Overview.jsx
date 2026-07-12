@@ -483,14 +483,26 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
 
         const now = new Date();
         const startParts = startTime.split(':');
-        let startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(startParts[0] || 5), parseInt(startParts[1] || 0), 0);
-        let diffMs = now.getTime() - startDate.getTime();
-        if (diffMs < -12 * 60 * 60 * 1000) {
-            startDate.setDate(startDate.getDate() - 1);
-            diffMs = now.getTime() - startDate.getTime();
+        const startH = parseInt(startParts[0] || 5);
+        const startM = parseInt(startParts[1] || 0);
+        
+        // Find the 'approximate start time' by subtracting expected duration from current time
+        const approxStartMs = now.getTime() - (expectedElapsed || 0) * 60000;
+        let candidateStart = new Date(approxStartMs);
+        candidateStart.setHours(startH, startM, 0, 0);
+        
+        let candidateStartMs = candidateStart.getTime();
+        let diffMs = approxStartMs - candidateStartMs;
+        
+        // Snap to the closest start time (within +/- 12 hours)
+        if (diffMs > 12 * 3600 * 1000) {
+            candidateStartMs += 24 * 3600 * 1000;
+        } else if (diffMs < -12 * 3600 * 1000) {
+            candidateStartMs -= 24 * 3600 * 1000;
         }
-        const actualElapsedMinutes = diffMs / 60000;
-        const delta = actualElapsedMinutes - (expectedElapsed || 0);
+        
+        // The delta is simply the difference between the approx start and the snapped exact start
+        const delta = (approxStartMs - candidateStartMs) / 60000;
         const absDelta = isNaN(delta) ? 0 : Math.round(Math.abs(delta));
         
         let deltaText = "";
@@ -505,7 +517,6 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
             deltaColor = "text-orange-400";
             deltaText = lang === 'en' ? `▼ ${absDelta} min behind plan` : `▼ ${absDelta} min za planem`;
         } else {
-            deltaColor = "text-red-500";
             deltaColor = "text-red-500";
             deltaText = lang === 'en' ? `▼ ${absDelta} min behind plan` : `▼ ${absDelta} min za planem`;
         }
