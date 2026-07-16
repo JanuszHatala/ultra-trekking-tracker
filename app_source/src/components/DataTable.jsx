@@ -10,9 +10,17 @@ function SparklineProfile({ points, minEle, maxEle, width = 100, height = 40, cu
     if (!points || points.length === 0 || !canvasRef.current) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
+    const dpr = window.devicePixelRatio || 1;
     
+    // Physical pixels vs CSS pixels
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    
+    // Ensure CSS width/height remains unchanged so it fits layout
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+
+    ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, width, height);
     
     const range = maxEle - minEle || 1;
