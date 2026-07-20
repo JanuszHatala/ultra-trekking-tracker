@@ -1,5 +1,6 @@
 import packageJson from '../package.json';
 import React, { useState, useEffect, useRef } from 'react';
+import { Settings2, MapPin, X, Expand, Shrink, Navigation, Download } from 'lucide-react';
 import { KeepAwake } from '@capacitor-community/keep-awake';
 import { Capacitor } from '@capacitor/core';
 import { GpsEngine } from './services/GpsEngine';
@@ -459,6 +460,18 @@ function App() {
                   options={routesList.map(r => ({ value: r.id, label: r.name }))}
                   className="w-[180px] h-[28px] md:h-[32px]"
                 />
+              )}
+
+              {!Capacitor.isNativePlatform() && (
+                <a 
+                  href="/ultra-trekking-tracker/app-debug.apk" 
+                  download 
+                  className="h-[24px] md:h-[28px] flex items-center justify-center px-2 bg-slate-800 rounded shadow border border-slate-600 font-bold text-lime-400 hover:text-lime-300 hover:bg-slate-700 transition-colors" 
+                  title="Download Android App"
+                >
+                  <Download size={14} className="mr-1 hidden sm:block" />
+                  <span className="text-[10px] sm:text-xs">APK</span>
+                </a>
               )}
 
               <button onClick={toggleLanguage} className="h-[24px] md:h-[28px] flex items-center bg-slate-800 rounded shadow border border-slate-600 font-bold text-[10px] sm:text-xs overflow-hidden cursor-pointer">
