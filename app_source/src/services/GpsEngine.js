@@ -100,6 +100,44 @@ export const GpsEngine = {
         // Ensure strictly increasing order if waypoints are slightly misordered
         if (nearestPt.index <= lastCpIndex) return;
 
+        // Auto-discover middle points if the gap between waypoints is too large (> 1.5x maxWindow)
+        while (nearestPt.dist - lastCpDist > maxWindowKm * 1.5) {
+          const windowStartDist = lastCpDist + minWindowKm;
+          const windowEndDist = Math.min(lastCpDist + maxWindowKm, nearestPt.dist - minWindowKm);
+          if (windowStartDist >= windowEndDist) break;
+          
+          let maxElePt = null;
+          for (let i = lastCpIndex; i < nearestPt.index; i++) {
+            if (points[i].dist >= windowStartDist && points[i].dist <= windowEndDist) {
+              if (!maxElePt || points[i].ele > maxElePt.ele) {
+                maxElePt = { ...points[i], index: i };
+              }
+            }
+          }
+          if (!maxElePt) break;
+          
+          let sAsc = 0, sDesc = 0;
+          for (let i = lastCpIndex + 1; i <= maxElePt.index; i++) {
+            const diff = points[i].ele - points[i-1].ele;
+            if (diff > 0) sAsc += diff; else sDesc -= diff;
+          }
+          checkpoints.push({
+            id: cpId++,
+            name: 'Wzniesienie (Auto)',
+            type: 'Peak',
+            km: maxElePt.dist,
+            ele: maxElePt.ele,
+            lat: maxElePt.lat,
+            lon: maxElePt.lon,
+            pointIndex: maxElePt.index,
+            sectionAscent: Math.round(sAsc),
+            sectionDescent: Math.round(sDesc),
+            sectionPoints: points.slice(lastCpIndex, maxElePt.index + 1)
+          });
+          lastCpIndex = maxElePt.index;
+          lastCpDist = maxElePt.dist;
+        }
+
         let sectionAscent = 0;
         let sectionDescent = 0;
         for (let i = lastCpIndex + 1; i <= nearestPt.index; i++) {
@@ -239,6 +277,44 @@ export const GpsEngine = {
         lastCpIndex = selectedPt.index;
         lastCpDist = selectedPt.dist;
       }
+    }
+
+    // Auto-discover middle points for the final gap if too large
+    while (totalDistance - lastCpDist > maxWindowKm * 1.5) {
+      const windowStartDist = lastCpDist + minWindowKm;
+      const windowEndDist = Math.min(lastCpDist + maxWindowKm, totalDistance - minWindowKm);
+      if (windowStartDist >= windowEndDist) break;
+      
+      let maxElePt = null;
+      for (let i = lastCpIndex; i < points.length - 1; i++) {
+        if (points[i].dist >= windowStartDist && points[i].dist <= windowEndDist) {
+          if (!maxElePt || points[i].ele > maxElePt.ele) {
+            maxElePt = { ...points[i], index: i };
+          }
+        }
+      }
+      if (!maxElePt) break;
+      
+      let sAsc = 0, sDesc = 0;
+      for (let i = lastCpIndex + 1; i <= maxElePt.index; i++) {
+        const diff = points[i].ele - points[i-1].ele;
+        if (diff > 0) sAsc += diff; else sDesc -= diff;
+      }
+      checkpoints.push({
+        id: cpId++,
+        name: 'Wzniesienie (Auto)',
+        type: 'Peak',
+        km: maxElePt.dist,
+        ele: maxElePt.ele,
+        lat: maxElePt.lat,
+        lon: maxElePt.lon,
+        pointIndex: maxElePt.index,
+        sectionAscent: Math.round(sAsc),
+        sectionDescent: Math.round(sDesc),
+        sectionPoints: points.slice(lastCpIndex, maxElePt.index + 1)
+      });
+      lastCpIndex = maxElePt.index;
+      lastCpDist = maxElePt.dist;
     }
 
     // Add Finish if not exactly at the end
