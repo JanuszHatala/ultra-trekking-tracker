@@ -500,12 +500,16 @@ function App() {
             <button onClick={() => setActiveTab('schedule')} className={`px-3 md:px-4 py-1.5 md:py-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'schedule' ? 'border-lime-400 text-lime-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-300 font-medium'}`}>
               {lang === 'en' ? 'Schedule' : 'Harmonogram'}
             </button>
-            <button onClick={() => setActiveTab('tests')} className={`px-3 md:px-4 py-1.5 md:py-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'tests' ? 'border-lime-400 text-lime-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-300 font-medium'}`}>
-              {lang === 'en' ? 'Tests' : 'Testy'}
-            </button>
-            <button onClick={() => setActiveTab('training')} className={`px-3 md:px-4 py-1.5 md:py-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'training' ? 'border-lime-400 text-lime-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-300 font-medium'}`}>
-              {lang === 'en' ? 'Training' : 'Trening'}
-            </button>
+            { (routeId !== 'korona-brennej-54k' || (dataset?.tests && dataset.tests.length > 0)) && (
+              <button onClick={() => setActiveTab('tests')} className={`px-3 md:px-4 py-1.5 md:py-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'tests' ? 'border-lime-400 text-lime-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-300 font-medium'}`}>
+                {lang === 'en' ? 'Tests' : 'Testy'}
+              </button>
+            )}
+            { (routeId !== 'korona-brennej-54k' || (dataset?.training && dataset.training.length > 0)) && (
+              <button onClick={() => setActiveTab('training')} className={`px-3 md:px-4 py-1.5 md:py-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'training' ? 'border-lime-400 text-lime-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-300 font-medium'}`}>
+                {lang === 'en' ? 'Training' : 'Trening'}
+              </button>
+            )}
           </div>
         </div>
 
