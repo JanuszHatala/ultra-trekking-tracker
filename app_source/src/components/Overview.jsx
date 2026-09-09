@@ -16,7 +16,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [cacheStats, setCacheStats] = useState({ total: 0, zooms: {} });
   const [startTime, setStartTime] = useState('05:00');
-  const [challengeDate, setChallengeDate] = useState('2026-07-10');
+  const [challengeDate, setChallengeDate] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -32,7 +32,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
-  const handleKeepScreenOnToggle = (e) => {
+  const handleToggleScreen = (e) => {
     setKeepScreenOn(e.target.checked);
     autoKeepScreenOnRef.current = false;
   };
@@ -43,8 +43,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
         setKeepScreenOn(true);
         autoKeepScreenOnRef.current = true;
       }
-    }
-    else if (!isDownloading && lastIsDownloadingRef.current) {
+    } else if (!isDownloading && lastIsDownloadingRef.current) {
       if (autoKeepScreenOnRef.current) {
         setKeepScreenOn(false);
         autoKeepScreenOnRef.current = false;
@@ -57,7 +56,10 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     if (dataset?.route_id) {
       const key = `ultra_challenge_date_${dataset.route_id}`;
       const savedDate = localStorage.getItem(key);
-      setChallengeDate(savedDate || dataset.challengeParameters?.date || '2026-07-10');
+      const defaultDate = dataset.challengeParameters?.date ? dataset.challengeParameters.date.split('T')[0] : '2026-09-13';
+      // Discard previously cached 2026-07-10 if the route definition has another date
+      const validSavedDate = (savedDate && savedDate !== '2026-07-10') ? savedDate : null;
+      setChallengeDate(validSavedDate || defaultDate);
 
       const timeKey = `ultra_start_time_v2_${dataset.route_id}`;
       const savedTime = localStorage.getItem(timeKey);
