@@ -10,7 +10,7 @@ export const StorageEngine = {
    * Generates a cache key based on route ID and parameters
    */
   getCacheKey: (routeId, minWindow, maxWindow, algorithm = 'strict', wptCount = 0) => {
-    return `v12_${routeId}_${minWindow}_${maxWindow}_${algorithm}_wpt${wptCount}`;
+    return `v13_${routeId}_${minWindow}_${maxWindow}_${algorithm}_wpt${wptCount}`;
   },
 
   /**

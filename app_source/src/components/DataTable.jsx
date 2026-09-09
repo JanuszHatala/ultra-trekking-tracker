@@ -358,7 +358,7 @@ export function DataTable({ routeId, startTime, checkpoints, actionTimeline, min
           <thead className="sticky top-0 z-30">
             <tr className="bg-slate-800 border-b border-slate-700 text-slate-300 text-[10px] md:text-xs uppercase tracking-wider">
               <th className="p-2 md:p-3 font-semibold bg-slate-800 w-[40px]">Nr</th>
-              <th className="p-2 md:p-3 font-semibold bg-slate-800">KM</th>
+              <th className="p-2 md:p-3 font-semibold bg-slate-800 min-w-[160px]">{lang === 'en' ? 'Point / KM' : 'Punkt / KM'}</th>
               <th className="p-2 md:p-3 font-semibold bg-slate-800">{lang === 'en' ? 'Time' : 'Czas'}</th>
               <th className="p-2 md:p-3 font-semibold bg-slate-800">{lang === 'en' ? 'Avg Total' : 'Śr. Całość'}</th>
               <th className="p-2 md:p-3 font-semibold bg-slate-800 border-r border-slate-700/50">{lang === 'en' ? 'Section Avg' : 'Śr. Odcinek'}</th>
@@ -429,11 +429,13 @@ export function DataTable({ routeId, startTime, checkpoints, actionTimeline, min
                   </td>
                   
                   <td className="p-2 md:p-3 border-r border-slate-700/30">
-                    <div className="flex items-center gap-1.5 font-bold text-slate-200">
-                      {cp.km.toFixed(1)}
+                    <div className="font-bold text-slate-100 text-sm truncate max-w-[200px]" title={cp.name}>
+                      {cp.name} {!cp.name.includes('m)') && cp.ele ? `(${Math.round(cp.ele)}m)` : ''}
                     </div>
-                    <div className="text-[10px] text-cyan-500">+{sectionDist.toFixed(1)} km section</div>
-                    <div className="text-[10px] text-slate-500 truncate max-w-[180px]" title={cp.name}>{cp.name}</div>
+                    <div className="flex items-center gap-1.5 text-xs text-slate-300 font-semibold mt-0.5">
+                      <span>{cp.km.toFixed(1)} km</span>
+                      <span className="text-[10px] text-cyan-400 font-normal">+{sectionDist.toFixed(1)} km</span>
+                    </div>
                     {cp.type && (
                       <div className="mt-1 select-none">
                         <span className={`inline-block text-[8px] font-bold px-1.5 py-0.5 rounded ${
