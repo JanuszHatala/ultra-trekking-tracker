@@ -1,0 +1,170 @@
+{
+  "route_id": "korona-brennej-54k",
+  "title_pl": "Korona Gór Brennej",
+  "title_en": "Crown of Brenna Mountains",
+  "subtitle_pl": "20 Szczytów / 54.5km / 2450m D+",
+  "subtitle_en": "20 Peaks / 54.5km / 2450m D+",
+  "themeColor": "orange",
+  "metadata": {
+    "totalDistanceKm": 54.5,
+    "totalAscendM": 2450,
+    "timeLimitHours": 13.5,
+    "difficulty": "hard"
+  },
+  "challengeParameters": {
+    "date": "2026-09-13T05:00:00",
+    "weightKg": "80",
+    "targetBpm": "140-155",
+    "goalTime": "< 13.5h"
+  },
+  "actionTimeline": [
+    {
+      "startElapsedHours": 0.0,
+      "endElapsedHours": 3.0,
+      "action_pl": "Godziny 0-3: Chłodny poranek. Szybki start, wymuszenie truchtu na płaskich i łagodnych zbiegach. Pilnuj tętna poniżej 155 bpm na pierwszych stromych podejściach.",
+      "action_en": "Hours 0-3: Cool morning. Fast start, force jogging on flats and gentle downhills. Keep HR below 155 bpm on first steep ascents."
+    },
+    {
+      "startElapsedHours": 3.0,
+      "endElapsedHours": 6.0,
+      "action_pl": "Godziny 3-6: Słońce wschodzi wyżej. Rozpocznij regularne nawadnianie (500ml/h). Spożyj pierwszą stałą przekąskę. Utrzymuj żwawe tempo zbiegów (ok. 8:00 min/km).",
+      "action_en": "Hours 3-6: Sun gets higher. Start regular hydration (500ml/h). Eat first solid snack. Maintain brisk downhill pace (approx. 8:00 min/km)."
+    },
+    {
+      "startElapsedHours": 6.0,
+      "endElapsedHours": 9.0,
+      "action_pl": "Godziny 6-9: Najwyższe szczyty (Trzy Kopce, Kotarz). Podejścia wymuszą marsz ok. 16:00 min/km. Nadrabiaj czas zbiegając. Przejdź w 100% na żele węglowodanowe i izotonik.",
+      "action_en": "Hours 6-9: Highest peaks (Trzy Kopce, Kotarz). Ascents will force 16:00 min/km march. Make up time running down. Switch 100% to carb gels and isotonic."
+    },
+    {
+      "startElapsedHours": 9.0,
+      "endElapsedHours": 12.0,
+      "action_pl": "Godziny 9-12: Narastające zmęczenie nóg. Kije trekkingowe przejmują 20% obciążenia. Podwójna dawka soli (SaltStick). Jeśli tempo siada, zażyj Red Bulla lub żel z kofeiną.",
+      "action_en": "Hours 9-12: Accumulating leg fatigue. Trekking poles take 20% of load. Double salt dose (SaltStick). If pace drops, take Red Bull or caffeine gel."
+    },
+    {
+      "startElapsedHours": 12.0,
+      "endElapsedHours": 13.5,
+      "action_pl": "Godziny 12-13.5: Faza walki o czas. Ignoruj mikrourazy, truchtaj wszystko co płaskie lub opada. Wykorzystaj całą rezerwę węglowodanów i zbiegaj do mety.",
+      "action_en": "Hours 12-13.5: Time crunch phase. Ignore micro-injuries, jog everything flat or downhill. Burn all remaining carb reserves and rush to the finish."
+    }
+  ],
+  "tactics": [
+    {
+      "title_pl": "Trucht na Płaskim i Zbiegach (Trail Running)",
+      "title_en": "Jogging on Flats & Downhills (Trail Running)",
+      "description_pl": "Aby zmieścić się w 13.5h przy tej sumie podejść, musisz truchtać zbiegi i sekcje płaskie z tempem ok. 7:30 - 8:30 min/km. Rozluźnij ramiona, skróć krok na zbiegach by nie obciążać kolan.",
+      "description_en": "To fit within 13.5h with this elevation, you must jog downhills and flat sections at approx. 7:30 - 8:30 min/km. Relax shoulders, use short steps downhill to save knees.",
+      "themeColor": "emerald",
+      "icon": "🏃"
+    },
+    {
+      "title_pl": "Podejścia - Mocny Marsz z Kijami",
+      "title_en": "Ascents - Power Hike with Poles",
+      "description_pl": "Tętno max 155 bpm. Tempo na podejściach spadnie do 16:00 min/km. Aktywnie używaj kijków do odpychania. Oddychaj rytmicznie.",
+      "description_en": "Max HR 155 bpm. Uphill pace will drop to 16:00 min/km. Actively push with poles. Breathe rhythmically.",
+      "themeColor": "orange",
+      "icon": "⛰️"
+    },
+    {
+      "title_pl": "Zarządzanie Czasem (Brak Postojów)",
+      "title_en": "Time Management (No Stops)",
+      "description_pl": "Wykorzystujemy strategię Unsupported. Jedzenie i picie odbywa się WYŁĄCZNIE w marszu lub truchcie. Na szczytach zatrzymujesz się tylko na sekundę by udokumentować szczyt.",
+      "description_en": "Unsupported strategy. Eating and drinking must be done EXCLUSIVELY while moving. At the peaks, stop only for a second to log your presence.",
+      "themeColor": "red",
+      "icon": "⏱️"
+    }
+  ],
+  "inventory": [
+    {
+      "category_pl": "Bieganie (Trail Gear)",
+      "category_en": "Trail Gear",
+      "themeColor": "blue",
+      "displayMode": "list",
+      "items": [
+        {
+          "text_pl": "Kamizelka biegowa z 2x 500ml Softflaskami",
+          "text_en": "Running vest with 2x 500ml softflasks",
+          "icon": "🎽",
+          "isCritical": true
+        },
+        {
+          "text_pl": "Lekkie kije do biegów górskich",
+          "text_en": "Lightweight trail running poles",
+          "icon": "🦯",
+          "isCritical": true
+        },
+        {
+          "text_pl": "Buty trailowe z agresywnym bieżnikiem",
+          "text_en": "Trail shoes with aggressive grip",
+          "icon": "👟",
+          "isCritical": true
+        }
+      ]
+    },
+    {
+      "category_pl": "Odżywianie w Biegu",
+      "category_en": "Nutrition on the Run",
+      "themeColor": "orange",
+      "displayMode": "list",
+      "items": [
+        {
+          "text_pl": "10 Żeli energetycznych (co najmniej 3 z kofeiną)",
+          "text_en": "10 Energy gels (at least 3 with caffeine)",
+          "icon": "🍯",
+          "isCritical": true
+        },
+        {
+          "text_pl": "Izotonik w proszku na 6-8 bidonów",
+          "text_en": "Isotonic powder for 6-8 flasks",
+          "icon": "🧪",
+          "isCritical": true
+        },
+        {
+          "text_pl": "2 Batony energetyczne (łatwe do żucia) na wczesne kilometry",
+          "text_en": "2 Energy bars (easy to chew) for early km",
+          "icon": "🍫",
+          "isCritical": false
+        },
+        {
+          "text_pl": "Kapsułki z solą (SaltStick) do zażywania co 2h",
+          "text_en": "Salt capsules (SaltStick) to take every 2h",
+          "icon": "🧂",
+          "isCritical": true
+        }
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "time": "04:00",
+      "task_pl": "Pobudka. Lekkie śniadanie: Owsianka lub dżem + chleb. Kawa.",
+      "task_en": "Wake up. Light breakfast: Oatmeal or jam + bread. Coffee."
+    },
+    {
+      "time": "04:50",
+      "task_pl": "Rozgrzewka stawów w Górkach Wielkich. Ostatnie sprawdzenie sprzętu.",
+      "task_en": "Joint warm-up in Górki Wielkie. Final gear check."
+    },
+    {
+      "time": "05:00",
+      "task_pl": "Start wyzwania. Czołówka włączona, szybkie tempo.",
+      "task_en": "Challenge starts. Headlamp on, fast pace."
+    },
+    {
+      "time": "09:00",
+      "task_pl": "Pierwszy przegląd zapasów wody. Zjedz stały baton.",
+      "task_en": "First water check. Eat solid bar."
+    },
+    {
+      "time": "14:00",
+      "task_pl": "Środek dnia, najwyższa temperatura. Uważaj na nawodnienie i sole.",
+      "task_en": "Midday, peak temperature. Watch hydration and salt."
+    },
+    {
+      "time": "18:30",
+      "task_pl": "Planowany powrót do Górek Wielkich.",
+      "task_en": "Planned return to Górki Wielkie."
+    }
+  ]
+}
