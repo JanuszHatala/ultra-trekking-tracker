@@ -317,11 +317,12 @@ function App() {
 
     const processCheckpoints = async () => {
       setLoading(true);
-      const cacheKey = StorageEngine.getCacheKey(routeId, minWindow, maxWindow, cpAlgorithm);
+      const cacheKey = StorageEngine.getCacheKey(routeId, minWindow, maxWindow, cpAlgorithm, gpxWaypoints?.length || 0);
       
       let cached = await StorageEngine.getCheckpoints(cacheKey);
       let loadedCheckpoints = [];
-      if (cached) {
+      const expectedMinCps = (gpxWaypoints && gpxWaypoints.length > 0) ? gpxWaypoints.length : 0;
+      if (cached && (expectedMinCps === 0 || cached.length >= expectedMinCps)) {
         loadedCheckpoints = cached;
       } else {
         loadedCheckpoints = GpsEngine.generateTopologicalCheckpoints(gpxPoints, gpxWaypoints, minWindow, maxWindow, cpAlgorithm);
