@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap, useMapEvents, ZoomControl, Circle, CircleMarker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -208,9 +209,11 @@ function MapOverlayControls({ mapVisible, setMapVisible, isTracking, setIsTracki
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            const container = map.getContainer();
+            const container = map.getContainer().closest('#map-container') || map.getContainer().parentElement || map.getContainer();
             if (!document.fullscreenElement) {
-              container.requestFullscreen().catch(err => console.warn(err));
+              container.requestFullscreen().catch(err => {
+                map.getContainer().requestFullscreen().catch(e => console.warn(e));
+              });
             } else {
               document.exitFullscreen();
             }
@@ -364,53 +367,63 @@ export function MapRenderer({ gpxPoints, checkpoints, actionTimeline, activeSect
       {/* Map Actions Overlay (desktop) -> moved inside MapContainer */}
       
       {/* Section Information Overlay Card */}
-      {activeSection && mapVisible && activeSection.sectionPoints && showOverlay && (
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-[340px] md:max-w-[500px] z-[2000] bg-slate-800/95 backdrop-blur-md border border-cyan-500/50 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] pointer-events-auto">
-          <button 
-            onClick={() => setShowOverlay(false)}
-            className="absolute top-3 right-3 text-slate-400 hover:text-white bg-slate-700/50 hover:bg-slate-600 rounded-full p-1 transition-colors"
-          >
-            <X size={16} />
-          </button>
-          <div className="font-bold text-cyan-400 text-sm mb-2 pb-2 border-b border-slate-700 pr-6 flex items-center gap-2">
-            <span>{activeSection.name}</span>
-            {activeSection.type && (
-              <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded select-none ${
-                activeSection.type === 'Peak' ? 'bg-red-950/60 text-red-400 border border-red-800/40' :
-                activeSection.type === 'Valley' ? 'bg-blue-950/60 text-blue-400 border border-blue-800/40' :
-                activeSection.type === 'Start' ? 'bg-lime-950/60 text-lime-400 border border-lime-800/40' :
-                activeSection.type === 'Finish' ? 'bg-pink-950/60 text-pink-400 border border-pink-800/40' :
-                'bg-slate-800 text-slate-400 border border-slate-700'
-              }`}>
-                {activeSection.type === 'Peak' ? (lang === 'en' ? 'PEAK' : 'SZCZYT') :
-                 activeSection.type === 'Valley' ? (lang === 'en' ? 'VALLEY' : 'DOLINA') :
-                 activeSection.type === 'Start' ? 'START' :
-                 activeSection.type === 'Finish' ? (lang === 'en' ? 'FINISH' : 'META') :
-                 (lang === 'en' ? 'FLAT' : 'PŁASKO')}
-              </span>
+      {activeSection && mapVisible && activeSection.sectionPoints && showOverlay && (() => {
+        const cardContent = (
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-[340px] md:max-w-[500px] z-[2000] bg-slate-800/95 backdrop-blur-md border border-cyan-500/50 p-4 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] pointer-events-auto">
+            <button 
+              onClick={() => setShowOverlay(false)}
+              className="absolute top-3 right-3 text-slate-400 hover:text-white bg-slate-700/50 hover:bg-slate-600 rounded-full p-1 transition-colors"
+            >
+              <X size={16} />
+            </button>
+            <div className="font-bold text-cyan-400 text-sm mb-2 pb-2 border-b border-slate-700 pr-6 flex items-center gap-2">
+              <span>{activeSection.name}</span>
+              {activeSection.ele && !activeSection.name.includes('m)') && (
+                <span className="text-slate-300 font-normal text-xs">({Math.round(activeSection.ele)}m)</span>
+              )}
+              {activeSection.type && (
+                <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded select-none ${
+                  activeSection.type === 'Peak' ? 'bg-red-950/60 text-red-400 border border-red-800/40' :
+                  activeSection.type === 'Valley' ? 'bg-blue-950/60 text-blue-400 border border-blue-800/40' :
+                  activeSection.type === 'Start' ? 'bg-lime-950/60 text-lime-400 border border-lime-800/40' :
+                  activeSection.type === 'Finish' ? 'bg-pink-950/60 text-pink-400 border border-pink-800/40' :
+                  'bg-slate-800 text-slate-400 border border-slate-700'
+                }`}>
+                  {activeSection.type === 'Peak' ? (lang === 'en' ? 'PEAK' : 'SZCZYT') :
+                   activeSection.type === 'Valley' ? (lang === 'en' ? 'VALLEY' : 'DOLINA') :
+                   activeSection.type === 'Start' ? 'START' :
+                   activeSection.type === 'Finish' ? (lang === 'en' ? 'FINISH' : 'META') :
+                   (lang === 'en' ? 'FLAT' : 'PŁASKO')}
+                </span>
+              )}
+            </div>
+            <div className="flex justify-between items-center mb-2">
+              <div className="text-xs text-slate-300">
+                <span className="text-slate-500">Dist: </span>
+                {activeSection.km.toFixed(1)} km {activeSection.sectionDist && <span className="text-cyan-400">(+{activeSection.sectionDist.toFixed(1)} km)</span>}
+              </div>
+              <div className="flex gap-2 text-xs">
+                <span className="text-lime-400">+{Math.round(activeSection.sectionAscent)}m</span>
+                <span className="text-red-400">-{Math.round(activeSection.sectionDescent)}m</span>
+              </div>
+            </div>
+            <div className="flex justify-between items-center mb-2 bg-slate-900/50 p-1.5 rounded border border-slate-700/50 text-xs">
+               <div><span className="text-slate-500">Total ETA:</span> <span className="text-orange-400 font-bold">{Math.floor(activeSection.etaHrs)}h {Math.round((activeSection.etaHrs % 1) * 60).toString().padStart(2, '0')}m</span></div>
+               <div className="text-slate-400 font-semibold">{(activeSection.etaHrs / activeSection.km * 60).toFixed(0)} min/km</div>
+            </div>
+            {activeSection.actionText && (
+              <div className="text-[10px] md:text-[11px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50 max-h-[35vh] md:max-h-[60vh] overflow-y-auto custom-scrollbar">
+                {activeSection.actionText}
+              </div>
             )}
           </div>
-          <div className="flex justify-between items-center mb-2">
-            <div className="text-xs text-slate-300">
-              <span className="text-slate-500">Dist: </span>
-              {activeSection.km.toFixed(1)} km {activeSection.sectionDist && <span className="text-cyan-400">(+{activeSection.sectionDist.toFixed(1)} km)</span>}
-            </div>
-            <div className="flex gap-2 text-xs">
-              <span className="text-lime-400">+{Math.round(activeSection.sectionAscent)}m</span>
-              <span className="text-red-400">-{Math.round(activeSection.sectionDescent)}m</span>
-            </div>
-          </div>
-          <div className="flex justify-between items-center mb-2 bg-slate-900/50 p-1.5 rounded border border-slate-700/50 text-xs">
-             <div><span className="text-slate-500">Total ETA:</span> <span className="text-orange-400 font-bold">{Math.floor(activeSection.etaHrs)}h {Math.round((activeSection.etaHrs % 1) * 60).toString().padStart(2, '0')}m</span></div>
-             <div className="text-slate-400 font-semibold">{(activeSection.etaHrs / activeSection.km * 60).toFixed(0)} min/km</div>
-          </div>
-          {activeSection.actionText && (
-            <div className="text-[10px] md:text-[11px] leading-tight text-slate-400 mt-2 bg-slate-900/50 p-2 rounded border border-slate-700/50 max-h-[35vh] md:max-h-[60vh] overflow-y-auto custom-scrollbar">
-              {activeSection.actionText}
-            </div>
-          )}
-        </div>
-      )}
+        );
+
+        if (document.fullscreenElement) {
+          return createPortal(cardContent, document.fullscreenElement);
+        }
+        return cardContent;
+      })()}
 
       <div className={`w-full h-full ${!mapVisible ? 'hidden md:block' : ''}`}>
         <MapContainer 
