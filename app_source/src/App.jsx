@@ -232,7 +232,7 @@ function App() {
 
   // Load route catalog once on mount
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}routes.json`)
+    fetch(`${import.meta.env.BASE_URL}routes.json?v=${Date.now()}`)
       .then(r => r.json())
       .then(catalog => {
         setRoutesList(catalog.routes);
@@ -277,8 +277,8 @@ function App() {
     const [datasetPath, gpxPath] = routeConfig.files;
 
     Promise.all([
-      fetch(`${import.meta.env.BASE_URL}${datasetPath}`).then(r => r.json()),
-      fetch(`${import.meta.env.BASE_URL}${gpxPath}`).then(r => r.text())
+      fetch(`${import.meta.env.BASE_URL}${datasetPath}?v=${Date.now()}`).then(r => r.json()),
+      fetch(`${import.meta.env.BASE_URL}${gpxPath}?v=${Date.now()}`).then(r => r.text())
     ])
       .then(([ds, gpxText]) => {
         setDataset(ds);
