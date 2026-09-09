@@ -32,7 +32,7 @@ export function Overview({ dataset, gpxPoints, checkpoints, lang, hoverPoint, se
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
-  const handleToggleScreen = (e) => {
+  const handleKeepScreenOnToggle = (e) => {
     setKeepScreenOn(e.target.checked);
     autoKeepScreenOnRef.current = false;
   };
