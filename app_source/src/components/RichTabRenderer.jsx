@@ -294,7 +294,7 @@ export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
         <div className="relative border-l-2 border-slate-700 ml-4 space-y-8 pb-8">
           {data.map((event, idx) => {
             const badges = event[`badges_${lang}`] || event.badges_en;
-            const kmTitle = event.startKm === event.endKm ? `${event.startKm} km` : `${event.startKm} - ${event.endKm} km`;
+            const kmTitle = event.time ? event.time : (event.startKm === event.endKm ? `${event.startKm} km` : `${event.startKm} - ${event.endKm} km`);
             // If the dotColor is red/green/yellow, use it, else default
             const colorClass = PILL_MAP[event.dotColor] || PILL_MAP.gray;
             const textThemeMap = {
@@ -307,6 +307,7 @@ export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
               emerald: 'text-emerald-400',
             };
             const titleColor = textThemeMap[event.dotColor] || 'text-slate-200';
+            const desc = event.time ? t(event, 'task') : t(event, 'description');
             
             return (
               <div key={idx} className="relative pl-6">
@@ -323,7 +324,7 @@ export function RichTabRenderer({ data, type, lang = 'en', routeId }) {
                     </div>
                   )}
                 </div>
-                <p className="text-sm text-slate-300">{t(event, 'description')}</p>
+                <p className="text-sm text-slate-300">{desc}</p>
               </div>
             );
           })}
