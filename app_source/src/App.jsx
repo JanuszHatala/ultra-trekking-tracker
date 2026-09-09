@@ -19,6 +19,7 @@ function App() {
   const [gpxRouteId, setGpxRouteId] = useState(null);
   const [dataset, setDataset] = useState(null);
   const [gpxPoints, setGpxPoints] = useState([]);
+  const [gpxWaypoints, setGpxWaypoints] = useState([]);
   const [checkpoints, setCheckpoints] = useState([]);
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
@@ -281,8 +282,9 @@ function App() {
     ])
       .then(([ds, gpxText]) => {
         setDataset(ds);
-        const points = GpsEngine.parseGpx(gpxText);
-        setGpxPoints(points);
+        const parsed = GpsEngine.parseGpx(gpxText);
+        setGpxPoints(parsed.enrichedPoints);
+        setGpxWaypoints(parsed.waypoints);
         setGpxRouteId(routeId);
         
         // Reset navigation / hover states on route change to prevent visual mismatch
@@ -322,7 +324,7 @@ function App() {
       if (cached) {
         loadedCheckpoints = cached;
       } else {
-        loadedCheckpoints = GpsEngine.generateTopologicalCheckpoints(gpxPoints, minWindow, maxWindow, cpAlgorithm);
+        loadedCheckpoints = GpsEngine.generateTopologicalCheckpoints(gpxPoints, gpxWaypoints, minWindow, maxWindow, cpAlgorithm);
         await StorageEngine.cacheCheckpoints(cacheKey, loadedCheckpoints);
       }
       setCheckpoints(loadedCheckpoints);

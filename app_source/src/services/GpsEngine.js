@@ -42,14 +42,23 @@ export const GpsEngine = {
         dist: totalDist // distance from start in km
       });
     }
-    return enrichedPoints;
+
+    const waypoints = gpx.waypoints.map(wpt => ({
+      name: wpt.name,
+      lat: wpt.lat,
+      lon: wpt.lon,
+      ele: wpt.ele
+    }));
+
+    return { enrichedPoints, waypoints };
   },
 
   /**
    * Applies the Topological Checkpoint Algorithm (Anchored Sliding Window)
    * to chunk the track into logical sections based on peaks/valleys.
+   * If explicit waypoints are provided in the GPX, it uses those instead to ensure user's exact markers are shown.
    */
-  generateTopologicalCheckpoints: (points, minWindowKm = 5, maxWindowKm = 10, algorithm = 'strict') => {
+  generateTopologicalCheckpoints: (points, waypoints = [], minWindowKm = 5, maxWindowKm = 10, algorithm = 'strict') => {
     if (!points || points.length === 0) return [];
 
     const checkpoints = [];
@@ -74,125 +83,162 @@ export const GpsEngine = {
     const totalDistance = points[points.length - 1].dist;
     let cpId = 1;
 
-    while (lastCpDist + minWindowKm < totalDistance) {
-      const windowStartDist = lastCpDist + minWindowKm;
-      const windowEndDist = Math.min(lastCpDist + maxWindowKm, totalDistance);
-      
-      // Find points in this window
-      let windowPoints = [];
-      let windowStartIndex = lastCpIndex;
-      let windowEndIndex = lastCpIndex;
-      
-      for (let i = lastCpIndex; i < points.length; i++) {
-        if (points[i].dist >= windowStartDist && points[i].dist <= windowEndDist) {
-          if (windowPoints.length === 0) windowStartIndex = i;
-          windowPoints.push({ ...points[i], index: i });
-          windowEndIndex = i;
-        } else if (points[i].dist > windowEndDist) {
+    if (waypoints && waypoints.length > 0) {
+      // Use exact waypoints provided in GPX
+      waypoints.forEach((wpt) => {
+        // Find nearest point on track
+        let nearestPt = points[0];
+        let minDist = Infinity;
+        for (let i = lastCpIndex; i < points.length; i++) {
+          const d = getDistance(wpt.lat, wpt.lon, points[i].lat, points[i].lon);
+          if (d < minDist) {
+            minDist = d;
+            nearestPt = { ...points[i], index: i };
+          }
+        }
+        
+        // Ensure strictly increasing order if waypoints are slightly misordered
+        if (nearestPt.index <= lastCpIndex) return;
+
+        let sectionAscent = 0;
+        let sectionDescent = 0;
+        for (let i = lastCpIndex + 1; i <= nearestPt.index; i++) {
+          const diff = points[i].ele - points[i-1].ele;
+          if (diff > 0) sectionAscent += diff;
+          else sectionDescent -= diff;
+        }
+
+        checkpoints.push({
+          id: cpId++,
+          name: wpt.name,
+          type: 'Peak',
+          km: nearestPt.dist,
+          ele: nearestPt.ele,
+          lat: nearestPt.lat,
+          lon: nearestPt.lon,
+          pointIndex: nearestPt.index,
+          sectionAscent: Math.round(sectionAscent),
+          sectionDescent: Math.round(sectionDescent),
+          sectionPoints: points.slice(lastCpIndex, nearestPt.index + 1)
+        });
+
+        lastCpIndex = nearestPt.index;
+        lastCpDist = nearestPt.dist;
+      });
+    } else {
+      while (lastCpDist + minWindowKm < totalDistance) {
+        const windowStartDist = lastCpDist + minWindowKm;
+        const windowEndDist = Math.min(lastCpDist + maxWindowKm, totalDistance);
+        
+        // Find points in this window
+        let windowPoints = [];
+        let windowStartIndex = lastCpIndex;
+        let windowEndIndex = lastCpIndex;
+        
+        for (let i = lastCpIndex; i < points.length; i++) {
+          if (points[i].dist >= windowStartDist && points[i].dist <= windowEndDist) {
+            if (windowPoints.length === 0) windowStartIndex = i;
+            windowPoints.push({ ...points[i], index: i });
+            windowEndIndex = i;
+          } else if (points[i].dist > windowEndDist) {
+            break;
+          }
+        }
+
+        if (windowPoints.length === 0) {
           break;
         }
-      }
 
-      if (windowPoints.length === 0) {
-        // Should only happen near the very end
-        break;
-      }
+        // Topological analysis in this window
+        let maxElePt = windowPoints[0];
+        let minElePt = windowPoints[0];
 
-      // Topological analysis in this window
-      let maxElePt = windowPoints[0];
-      let minElePt = windowPoints[0];
+        if (algorithm === 'balanced') {
+          const windowCenterDist = lastCpDist + minWindowKm + (Math.min(maxWindowKm, totalDistance - lastCpDist) - minWindowKm) / 2;
+          let bestMaxScore = -Infinity;
+          let bestMinScore = Infinity;
 
-      if (algorithm === 'balanced') {
-        const windowCenterDist = lastCpDist + minWindowKm + (Math.min(maxWindowKm, totalDistance - lastCpDist) - minWindowKm) / 2;
-        let bestMaxScore = -Infinity;
-        let bestMinScore = Infinity;
-
-        windowPoints.forEach(pt => {
-          const distError = Math.abs(pt.dist - windowCenterDist);
-          const penalty = distError * 100; // 100m prominence penalty per 1km distance error
-          
-          const peakScore = pt.ele - penalty;
-          const valleyScore = pt.ele + penalty;
-          
-          if (peakScore > bestMaxScore) {
-            bestMaxScore = peakScore;
-            maxElePt = pt;
-          }
-          if (valleyScore < bestMinScore) {
-            bestMinScore = valleyScore;
-            minElePt = pt;
-          }
-        });
-      } else {
-        windowPoints.forEach(pt => {
-          if (pt.ele > maxElePt.ele) maxElePt = pt;
-          if (pt.ele < minElePt.ele) minElePt = pt;
-        });
-      }
-
-      const eleVariance = maxElePt.ele - minElePt.ele;
-      
-      // Calculate TrueClimb: Max prominence of the peak from the lowest point preceding it
-      let localMinBeforePeak = points[lastCpIndex].ele;
-      for (let i = lastCpIndex; i <= maxElePt.index; i++) {
-         if (points[i].ele < localMinBeforePeak) localMinBeforePeak = points[i].ele;
-      }
-      const trueClimb = maxElePt.ele - localMinBeforePeak;
-
-      // Calculate TrueDrop: Max depth of the valley from the highest point preceding it
-      let localMaxBeforeValley = points[lastCpIndex].ele;
-      for (let i = lastCpIndex; i <= minElePt.index; i++) {
-         if (points[i].ele > localMaxBeforeValley) localMaxBeforeValley = points[i].ele;
-      }
-      const trueDrop = localMaxBeforeValley - minElePt.ele;
-      
-      let selectedPt;
-      let cpName = '';
-
-      let cpType = 'Flat';
-      if (eleVariance > 40) { // If there is significant topology (>40m variance)
-        // Bias towards peaks in trekking: pick Peak if its true climb is at least half as significant as the true drop
-        if (trueClimb > trueDrop * 0.5) {
-          selectedPt = maxElePt;
-          cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)}) (Peak)`;
-          cpType = 'Peak';
+          windowPoints.forEach(pt => {
+            const distError = Math.abs(pt.dist - windowCenterDist);
+            const penalty = distError * 100; // 100m prominence penalty per 1km distance error
+            
+            const peakScore = pt.ele - penalty;
+            const valleyScore = pt.ele + penalty;
+            
+            if (peakScore > bestMaxScore) {
+              bestMaxScore = peakScore;
+              maxElePt = pt;
+            }
+            if (valleyScore < bestMinScore) {
+              bestMinScore = valleyScore;
+              minElePt = pt;
+            }
+          });
         } else {
-          selectedPt = minElePt;
-          cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)}) (Valley)`;
-          cpType = 'Valley';
+          windowPoints.forEach(pt => {
+            if (pt.ele > maxElePt.ele) maxElePt = pt;
+            if (pt.ele < minElePt.ele) minElePt = pt;
+          });
         }
-      } else {
-        // Flat terrain fallback -> just take the furthest point in the window
-        selectedPt = windowPoints[windowPoints.length - 1];
-        cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)})`;
-        cpType = 'Flat';
+
+        const eleVariance = maxElePt.ele - minElePt.ele;
+        
+        let localMinBeforePeak = points[lastCpIndex].ele;
+        for (let i = lastCpIndex; i <= maxElePt.index; i++) {
+           if (points[i].ele < localMinBeforePeak) localMinBeforePeak = points[i].ele;
+        }
+        const trueClimb = maxElePt.ele - localMinBeforePeak;
+
+        let localMaxBeforeValley = points[lastCpIndex].ele;
+        for (let i = lastCpIndex; i <= minElePt.index; i++) {
+           if (points[i].ele > localMaxBeforeValley) localMaxBeforeValley = points[i].ele;
+        }
+        const trueDrop = localMaxBeforeValley - minElePt.ele;
+        
+        let selectedPt;
+        let cpName = '';
+        let cpType = 'Flat';
+        if (eleVariance > 40) {
+          if (trueClimb > trueDrop * 0.5) {
+            selectedPt = maxElePt;
+            cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)}) (Peak)`;
+            cpType = 'Peak';
+          } else {
+            selectedPt = minElePt;
+            cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)}) (Valley)`;
+            cpType = 'Valley';
+          }
+        } else {
+          selectedPt = windowPoints[windowPoints.length - 1];
+          cpName = `Section ${cpId} (KM ${lastCpDist.toFixed(1)} - ${selectedPt.dist.toFixed(1)})`;
+          cpType = 'Flat';
+        }
+
+        let sectionAscent = 0;
+        let sectionDescent = 0;
+        for (let i = lastCpIndex + 1; i <= selectedPt.index; i++) {
+          const diff = points[i].ele - points[i-1].ele;
+          if (diff > 0) sectionAscent += diff;
+          else sectionDescent -= diff;
+        }
+
+        checkpoints.push({
+          id: cpId++,
+          name: cpName,
+          type: cpType,
+          km: selectedPt.dist,
+          ele: selectedPt.ele,
+          lat: selectedPt.lat,
+          lon: selectedPt.lon,
+          pointIndex: selectedPt.index,
+          sectionAscent: Math.round(sectionAscent),
+          sectionDescent: Math.round(sectionDescent),
+          sectionPoints: points.slice(lastCpIndex, selectedPt.index + 1)
+        });
+
+        lastCpIndex = selectedPt.index;
+        lastCpDist = selectedPt.dist;
       }
-
-      // Calculate ascent/descent for this section (from lastCp to selectedPt)
-      let sectionAscent = 0;
-      let sectionDescent = 0;
-      for (let i = lastCpIndex + 1; i <= selectedPt.index; i++) {
-        const diff = points[i].ele - points[i-1].ele;
-        if (diff > 0) sectionAscent += diff;
-        else sectionDescent -= diff;
-      }
-
-      checkpoints.push({
-        id: cpId++,
-        name: cpName,
-        type: cpType,
-        km: selectedPt.dist,
-        ele: selectedPt.ele,
-        lat: selectedPt.lat,
-        lon: selectedPt.lon,
-        pointIndex: selectedPt.index,
-        sectionAscent: Math.round(sectionAscent),
-        sectionDescent: Math.round(sectionDescent),
-        sectionPoints: points.slice(lastCpIndex, selectedPt.index + 1)
-      });
-
-      lastCpIndex = selectedPt.index;
-      lastCpDist = selectedPt.dist;
     }
 
     // Add Finish if not exactly at the end

@@ -26,6 +26,15 @@
         "data/routes/wyrypa-75k/dataset.json",
         "data/routes/wyrypa-75k/route.gpx"
       ]
+    },
+    {
+      "id": "korona-brennej-54k",
+      "name": "Korona Gór Brennej",
+      "version": "1.0.0",
+      "files": [
+        "data/routes/korona-brennej-54k/dataset.json",
+        "data/routes/korona-brennej-54k/route.gpx"
+      ]
     }
   ]
 }
