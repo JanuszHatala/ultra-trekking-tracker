@@ -1,0 +1,76 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-check:
+    name: Web Build & Lint Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app_source/package-lock.json
+
+      - name: Install dependencies
+        working-directory: app_source
+        run: npm ci
+
+      - name: Lint web application
+        working-directory: app_source
+        run: npm run lint
+
+      - name: Build web application
+        working-directory: app_source
+        run: npm run build
+
+  android-check:
+    name: Android Build & Test Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Grant execute permission for gradlew
+        working-directory: app_source/android
+        run: chmod +x gradlew
+
+      - name: Run Android unit tests
+        working-directory: app_source/android
+        run: ./gradlew test --no-daemon
+
+      - name: Assemble Android Debug APK
+        working-directory: app_source/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload Test Report Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-reports
+          path: app_source/android/app/build/reports/tests/
+          if-no-files-found: ignore
